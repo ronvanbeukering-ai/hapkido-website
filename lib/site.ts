@@ -1,0 +1,300 @@
+export const site = {
+  name: "Hapkido Yong",
+  altName: "Complete Self Defence",
+  tagline: "Zelfverdediging voor alle leeftijden",
+  description:
+    "Hapkido Combinatie, Koreaans MMA voor alle leeftijden. Twee locaties in Noord-Brabant: Berkel-Enschot en Waalwijk. Plan een gratis proefles.",
+  url: "https://hapkidonederland.nl",
+  domainAlias: "completeselfdefence.nl",
+  phone: "+31 6 46 55 55 55",
+  phoneRaw: "+31646555555",
+  email: "info@hapkidonederland.nl",
+  whatsapp: "https://wa.me/message/GBCYDJPCHVCCA1",
+  iban: "NL87 INGB 0007859334",
+  socials: {
+    facebook: "https://www.facebook.com/Kwannyomhapkido",
+    instagram: "https://www.instagram.com/hapkidonederland",
+    youtube: "https://www.youtube.com/@hapkidonederland",
+  },
+  stats: [
+    { value: "18+", label: "Jaar in Nederland" },
+    { value: "150+", label: "Actieve leden" },
+    { value: "2", label: "Locaties" },
+    { value: "9", label: "Vechtsporten gecombineerd" },
+  ],
+} as const;
+
+export type Location = {
+  slug: "berkel-enschot" | "waalwijk";
+  city: string;
+  street: string;
+  postalCode: string;
+  region: string;
+  geo: { lat: number; lng: number };
+  trainerName: string;
+  trainerSlug: string;
+  schedule: { day: string; time: string; group: string }[];
+  note?: string;
+  mapsUrl: string;
+  mapsEmbed: string;
+  photo: string;
+};
+
+export const locations: Location[] = [
+  {
+    slug: "berkel-enschot",
+    city: "Berkel-Enschot",
+    street: "Kerkstraat 9B",
+    postalCode: "5056 AE",
+    region: "Noord-Brabant",
+    geo: { lat: 51.5741, lng: 5.1564 },
+    trainerName: "Master Ron van Beukering",
+    trainerSlug: "ron-van-beukering",
+    schedule: [
+      { day: "Maandag", time: "18:30 – 19:15", group: "Jeugd t/m 12 jaar" },
+      { day: "Maandag", time: "19:15 – 20:15", group: "Gemixte groep dames, heren en jongeren" },
+      { day: "Woensdag", time: "18:30 – 19:15", group: "Jeugd t/m 13 jaar" },
+      { day: "Woensdag", time: "19:15 – 20:15", group: "Gemixte groep" },
+      { day: "Woensdag", time: "19:15 – 21:00", group: "Hogere-bandtraining" },
+      { day: "Zaterdag", time: "10:30 – 11:30", group: "Gemixte groep" },
+      { day: "Zaterdag", time: "11:30 – 12:15", group: "Jeugd t/m 13 jaar" },
+    ],
+    note: "De eerste maandag van de maand vervalt de reguliere avondles i.v.m. zwarte-bandtraining van de Hapkido Combinatie Academie. Jeugdtraining gaat door.",
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=Kerkstraat+9B+Berkel-Enschot",
+    mapsEmbed: "https://www.google.com/maps?q=Kerkstraat+9B+Berkel-Enschot&z=16&output=embed",
+    photo: "/images/training/training-4.jpg",
+  },
+  {
+    slug: "waalwijk",
+    city: "Waalwijk",
+    street: "Dominee Louwe Kooymanslaan 9",
+    postalCode: "5141 AP",
+    region: "Noord-Brabant",
+    geo: { lat: 51.6899, lng: 5.0614 },
+    trainerName: "CGN Marco van Gulik",
+    trainerSlug: "marco-van-gulik",
+    schedule: [
+      { day: "Maandag", time: "19:00 – 20:00", group: "Gemixte groep" },
+      { day: "Zaterdag", time: "11:00 – 12:00", group: "Gemixte groep" },
+    ],
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=Dominee+Louwe+Kooymanslaan+9+Waalwijk",
+    mapsEmbed: "https://www.google.com/maps?q=Dominee+Louwe+Kooymanslaan+9+Waalwijk&z=16&output=embed",
+    photo: "/images/training/training-2.jpg",
+  },
+];
+
+export type Trainer = {
+  slug: string;
+  name: string;
+  rank: string;
+  shortRank: string;
+  role: string;
+  location?: "Berkel-Enschot" | "Waalwijk";
+  bio: string;
+  knowsAbout: string[];
+  featured?: boolean;
+  photo?: string;
+};
+
+export const trainers: Trainer[] = [
+  {
+    slug: "ron-van-beukering",
+    name: "Master Ron van Beukering",
+    rank: "6e Dan Hapkido Combinatie · 5e Dan Kwan Nyom Hapkido",
+    shortRank: "6e Dan",
+    role: "Hoofdtrainer & Oprichter",
+    location: "Berkel-Enschot",
+    bio: "Master Ron van Beukering introduceerde Kwan Nyom Hapkido in 2006 in Nederland. In oktober 2023 startte hij Hapkido Combinatie, waarin technieken uit Taekwondo, Aikido, Jiu-Jitsu, Braziliaans Jiu-Jitsu, Pencak Silat en Krav Maga worden gecombineerd. Hij trainde met Master G.M. Booth en ontmoette Dojunim Ji Han-Jae, de grondlegger van Hapkido.",
+    knowsAbout: ["Hapkido Combinatie", "Kwan Nyom Hapkido", "Taekwondo", "Aikido", "BJJ", "Pencak Silat", "Krav Maga"],
+    featured: true,
+    photo: "/images/trainers/ron-van-beukering.jpg",
+  },
+  {
+    slug: "marco-van-gulik",
+    name: "CGN Marco van Gulik",
+    rank: "2e Dan Hapkido Combinatie · Senior Instructor",
+    shortRank: "2e Dan",
+    role: "Hoofdtrainer Waalwijk",
+    location: "Waalwijk",
+    bio: "Senior Instructor met een sterke Pencak Silat-achtergrond. Al jaren actief als trainer Marietje Kessels-project en hoofdtrainer van de Waalwijkse locatie.",
+    knowsAbout: ["Hapkido Combinatie", "Pencak Silat", "Weerbaarheidstraining"],
+    featured: true,
+    photo: "/images/trainers/marco-van-gulik.jpg",
+  },
+  {
+    slug: "jamy-van-den-heuvel-toorop",
+    name: "CGN Jamy van den Heuvel-Toorop",
+    rank: "2e Dan Senior Instructor",
+    shortRank: "2e Dan",
+    role: "Senior Instructor",
+    bio: "Senior Instructor met jarenlange ervaring in technische lessen en mentorschap.",
+    knowsAbout: ["Hapkido Combinatie", "Mentorschap"],
+    photo: "/images/trainers/jamy.jpg",
+  },
+  {
+    slug: "john-lemmens",
+    name: "John Lemmens",
+    rank: "7e Dan Koreaanse Karate · 1e Dan Krav Maga",
+    shortRank: "7e Dan",
+    role: "Instructor",
+    bio: "Ruime ervaring in real combat training en diverse martial arts. Specialist Koreaanse Karate en Krav Maga.",
+    knowsAbout: ["Koreaanse Karate", "Krav Maga", "Real Combat"],
+    photo: "/images/trainers/john-lemmens.jpg",
+  },
+  {
+    slug: "jesse-van-mierlo",
+    name: "KSN Jesse van Mierlo",
+    rank: "2e Dan",
+    shortRank: "2e Dan",
+    role: "Instructor",
+    bio: "Instructor met focus op techniek en jeugdtraining.",
+    knowsAbout: ["Hapkido Combinatie", "Jeugdtraining"],
+    photo: "/images/trainers/jesse-van-mierlo.jpg",
+  },
+  {
+    slug: "cgn-ad",
+    name: "CGN Ad",
+    rank: "3e Dan Koreaanse Karate",
+    shortRank: "3e Dan",
+    role: "Instructor, Knife Fighting",
+    bio: "Basis instructor knife fighting met achtergrond in Koreaanse Karate.",
+    knowsAbout: ["Knife Fighting", "Koreaanse Karate"],
+    photo: "/images/trainers/cgn-ad.png",
+  },
+  {
+    slug: "cgn-zhour",
+    name: "CGN Zhour",
+    rank: "1e Dan",
+    shortRank: "1e Dan",
+    role: "Instructor",
+    bio: "Instructor met focus op vrouw-specifieke weerbaarheid.",
+    knowsAbout: ["Hapkido Combinatie", "Vrouwen-weerbaarheid"],
+    photo: "/images/trainers/zhour.jpg",
+  },
+  {
+    slug: "cho-gyo-chang",
+    name: "Cho Gyo Chang",
+    rank: "1e Dan",
+    shortRank: "1e Dan",
+    role: "Instructor",
+    bio: "Instructor met focus op traditionele Hapkido technieken.",
+    knowsAbout: ["Hapkido Combinatie"],
+    photo: "/images/trainers/cho-gyo-chang.jpg",
+  },
+  {
+    slug: "cgn-sill",
+    name: "CGN Sill, KSN Marco, CGN Michiel",
+    rank: "1e Dan",
+    shortRank: "1e Dan",
+    role: "",
+    bio: "Toegewijd Instructor binnen het Berkel-Enschotse team.",
+    knowsAbout: ["Hapkido Combinatie"],
+    photo: "/images/trainers/sill-michiel.jpg",
+  },
+  {
+    slug: "cgn-michiel",
+    name: "CGN Michiel",
+    rank: "1e Dan",
+    shortRank: "1e Dan",
+    role: "Instructor",
+    bio: "Instructor met focus op stand-up technieken en sparring.",
+    knowsAbout: ["Hapkido Combinatie", "Sparring"],
+  },
+  {
+    slug: "cgn-frits-groenen",
+    name: "CGN Frits Groenen",
+    rank: "1e Dan",
+    shortRank: "1e Dan",
+    role: "Instructor",
+    bio: "Instructor met passie voor grondtechnieken en klemmen.",
+    knowsAbout: ["Hapkido Combinatie", "Grondwerk"],
+    photo: "/images/trainers/frits.jpg",
+  },
+  {
+    slug: "cgn-leonie-klerkx",
+    name: "CGN Leonie Klerkx",
+    rank: "1e Dan",
+    shortRank: "1e Dan",
+    role: "Instructor",
+    bio: "Instructor met affiniteit voor jeugd- en vrouwenlessen.",
+    knowsAbout: ["Hapkido Combinatie", "Jeugd & Vrouwen"],
+    photo: "/images/trainers/leonie.jpg",
+  },
+];
+
+export const faq = [
+  {
+    q: "Vanaf welke leeftijd kan mijn kind meedoen?",
+    a: "Kinderen kunnen meedoen vanaf 7 jaar. Voor de leeftijdsgroep tot 12 jaar zijn er aparte jeugdlessen in Berkel-Enschot en Waalwijk.",
+  },
+  {
+    q: "Hoeveel kost de contributie?",
+    a: "Jeugd van 7 t/m 12 jaar betaalt €75,00 per kwartaal of €265,00 per jaar. Vanaf 13 jaar is dat €90,00 per kwartaal of €300,00 per jaar. Er is ook een strippenkaart van 10 strippen voor €75,00 voor wie niet regelmatig kan trainen.",
+  },
+  {
+    q: "Hoe vaak per week mag ik trainen?",
+    a: "Met een reguliere contributie mag je tot twee keer per week trainen. Extra trainingen zijn in overleg ook mogelijk.",
+  },
+  {
+    q: "Wat moet ik meenemen naar een proefles?",
+    a: "Sportkleding, een drinkfles en een handdoek zijn voldoende. Een hapkido-pak heb je voor de proefles niet nodig, dat krijg je pas wanneer je lid wordt.",
+  },
+  {
+    q: "Is Hapkido geschikt voor 50-plussers of beginners?",
+    a: "Ja, absoluut. Hapkido Combinatie wordt aangepast aan jouw fysieke mogelijkheden. Er trainen mensen van alle leeftijden en niveaus naast elkaar.",
+  },
+  {
+    q: "Wat is de Hapkido Combinatie Academie?",
+    a: "De Hapkido Combinatie Academie organiseert maandelijkse zwarte-bandtrainingen, toegankelijk voor leden vanaf bruine band. Op de eerste maandag van de maand vervalt hiervoor de reguliere avondles in Berkel-Enschot (de jeugdtraining gaat wel door).",
+  },
+  {
+    q: "Bij welke federatie is Hapkido Yong aangesloten?",
+    a: "Hapkido Yong is aangesloten bij de NBJJV (Nederlandse Brazilian Jiu-Jitsu en Mixed Martial Arts Vereniging). De bondsbijdrage bedraagt €25,00 per jaar, plus eenmalig €5,00 inschrijfgeld.",
+  },
+  {
+    q: "Leg ik examen af voor een band?",
+    a: "Ja. Bandexamens worden afgenomen via de NBJJV. Je trainer bepaalt wanneer je klaar bent om examen te doen.",
+  },
+] as const;
+
+export const testimonials = [
+  {
+    quote:
+      "Ik kwam binnen met nul ervaring en ben in twee jaar enorm gegroeid, niet alleen technisch maar ook mentaal. De sfeer is open, je wordt nooit afgebrand, en de trainers nemen écht de tijd.",
+    name: "Sandra V.",
+    meta: "Lid Berkel-Enschot · 2 jaar",
+  },
+  {
+    quote:
+      "Mijn zoon was eerst onzeker en wat klein voor zijn leeftijd. Na een jaar Hapkido staat hij sterker in zijn schoenen, letterlijk en figuurlijk. De jeugdtraining is streng waar nodig en speels waar het kan.",
+    name: "Joris H.",
+    meta: "Vader van Liam (9) · Berkel-Enschot",
+  },
+  {
+    quote:
+      "Ik zocht iets praktisch, geen sport-vechten maar echte zelfverdediging. Marco geeft les met humor en serieuze inhoud, je leert technieken die op straat kloppen, niet alleen in een ring.",
+    name: "Karim B.",
+    meta: "Lid Waalwijk · 6 maanden",
+  },
+];
+
+export const benefits = [
+  { title: "Zelfvertrouwen", body: "Sterker in je schoenen staan, in elke situatie." },
+  { title: "Weerbaarheid", body: "Praktische technieken die op straat kloppen, niet alleen in de ring." },
+  { title: "Conditie", body: "Lenigheid, kracht, snelheid en uithoudingsvermogen." },
+  { title: "De-escalatie", body: "Je leert niet vechten, maar voorkomen, controle eerst." },
+  { title: "Focus", body: "Ademhaling en meditatie geven controle over stress en emoties." },
+  { title: "Community", body: "Een gezellige groep van alle leeftijden, sociale contacten en respect." },
+] as const;
+
+export const disciplines = [
+  "Hapkido",
+  "Jiu-Jitsu",
+  "Judo",
+  "Taekwondo",
+  "Systema",
+  "Boksen",
+  "Pencak Silat",
+  "Krav Maga",
+  "Braziliaans Jiu-Jitsu",
+] as const;
