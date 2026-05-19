@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { LessenLijst, VideoGalerij, type VideoItem } from "@/components/CursusPlayer";
 import type { Les } from "@/lib/cursussen";
 import { hapkidoLessen, hapkidoVideos } from "@/lib/cursussen";
+import { isLidOfAdmin, isAdminOrSuperAdmin } from "@/lib/auth";
 
 type Profiel = {
   id: string;
@@ -19,16 +20,6 @@ type Props = {
   lessen: Les[];
   videos: { id: string; titel: string; beschrijving: string; categorie: string }[];
 };
-
-function isLidActief(profiel: Profiel | null): boolean {
-  if (!profiel) return false;
-  if (profiel.rol === "admin") return true;
-  if (profiel.rol === "lid") {
-    if (!profiel.lid_geldig_tot) return true;
-    return new Date(profiel.lid_geldig_tot) > new Date();
-  }
-  return false;
-}
 
 export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Props) {
   const [profiel, setProfiel] = useState<Profiel | null>(null);
@@ -73,7 +64,8 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
     return () => subscription.unsubscribe();
   }, [supabase]);
 
-  const isLid = isLidActief(profiel);
+  const isLid = isLidOfAdmin(profiel?.email, profiel?.rol, profiel?.lid_geldig_tot);
+  const isAdmin = isAdminOrSuperAdmin(profiel?.email, profiel?.rol);
   const isIngelogd = !!profiel;
 
   // Gebruik DB data als beschikbaar, anders statische fallback
@@ -105,10 +97,10 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
         <div className="bg-emerald-50 border-b border-emerald-200">
           <div className="container-x py-3 flex items-center gap-2 text-sm text-emerald-800">
             <CheckCircle size={16} />
-            {profiel?.rol === "admin"
+            {isAdmin
               ? "Je bent ingelogd als beheerder — volledige toegang."
               : "Je bent actief lid — volledige toegang tot alle lessen en video's."}
-            {profiel?.rol === "admin" && (
+            {isAdmin && (
               <Link href="/dashboard" className="ml-auto font-semibold hover:underline flex items-center gap-1">
                 <Crown size={14} /> Dashboard
               </Link>

@@ -9,13 +9,12 @@ import {
   Youtube, Eye, EyeOff,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { isSuperAdmin, isAdminOrSuperAdmin } from "@/lib/auth";
 
 /* ─── types ─────────────────────────────────────── */
 type Profiel = { id: string; email: string; rol: "admin" | "lid" | "geen"; lid_geldig_tot: string | null };
 type HKVideo = { id: string; titel: string; beschrijving: string; categorie: string; platform?: string; url?: string; volgorde?: number };
 type HKLes  = { nr: number; titel: string; duur: string; categorie: string; gratis: boolean; beschrijving?: string; video_url?: string };
-
-const ADMIN_EMAIL = "ronvanbeukering@gmail.com";
 const SB_URL  = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SB_KEY  = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
@@ -50,7 +49,7 @@ export default function Dashboard() {
       if (!user) { router.replace("/login"); return; }
       const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
       const p: Profiel = data ?? { id: user.id, email: user.email ?? "", rol: "geen", lid_geldig_tot: null };
-      if (p.rol !== "admin" && p.email !== ADMIN_EMAIL) { router.replace("/"); return; }
+      if (!isAdminOrSuperAdmin(p.email, p.rol)) { router.replace("/"); return; }
       setProfiel(p);
       setLoading(false);
     })();
@@ -472,7 +471,7 @@ function LedenBeheer() {
                 <tr key={l.id} className={`border-b border-[color:var(--color-border)] ${i % 2 === 0 ? "" : "bg-[color:var(--color-stone-50)]/50"}`}>
                   <td className="px-5 py-4">
                     <span className="font-medium text-[color:var(--color-heading)]">{l.email}</span>
-                    {l.email === ADMIN_EMAIL && <span className="ml-2 text-[10px] text-[color:var(--color-gold-600)]">★ eigenaar</span>}
+                    {isSuperAdmin(l.email) && <span className="ml-2 text-[10px] text-[color:var(--color-gold-600)]">★ eigenaar</span>}
                   </td>
                   <td className="px-5 py-4">
                     <span className={`text-[10px] font-bold px-2 py-1 rounded border ${rolKleur[l.rol] ?? rolKleur.geen}`}>
@@ -502,7 +501,7 @@ function LedenBeheer() {
                           <XCircle size={12} /> Intrekken
                         </button>
                       )}
-                      {l.rol !== "admin" && l.email !== ADMIN_EMAIL && (
+                      {l.rol !== "admin" && !isSuperAdmin(l.email) && (
                         <button onClick={() => setAdmin(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-[color:var(--color-gold-100)] text-[color:var(--color-gold-600)] hover:bg-[color:var(--color-gold-200)] transition-colors font-semibold">
                           <Crown size={12} /> Admin
                         </button>

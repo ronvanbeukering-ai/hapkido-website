@@ -7,6 +7,7 @@ import { Logo } from "./Logo";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { isSuperAdmin } from "@/lib/auth";
 
 const navLinks = [
   { href: "/hapkido-combinatie", label: "Hapkido Combinatie" },
@@ -32,7 +33,8 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { setNavUser(null); return; }
       const { data: profile } = await supabase.from("profiles").select("rol").eq("id", user.id).single();
-      setNavUser({ email: user.email ?? "", isAdmin: profile?.rol === "admin" });
+      const email = user.email ?? "";
+      setNavUser({ email, isAdmin: profile?.rol === "admin" || isSuperAdmin(email) });
     }
     loadUser();
     const { data: { subscription } } = supabase.auth.onAuthStateChange(() => loadUser());
