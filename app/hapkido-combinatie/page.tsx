@@ -11,11 +11,39 @@ import { breadcrumbSchema } from "@/lib/jsonld";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Wat is Hapkido Combinatie? Het Koreaanse MMA uitgelegd",
+  title: "Hapkido Combinatie uitgelegd Koreaans MMA & street defence",
   description:
-    "Hapkido Combinatie combineert Hapkido, Jiu-Jitsu, Judo, Krav Maga en meer. Ontdek waarom het ook Koreaans MMA wordt genoemd en wat jij eraan hebt.",
-  keywords: ["hapkido combinatie", "koreaans mma", "wat is hapkido"],
+    "Hapkido Combinatie combineert diverse vechtsporten: Hapkido, BJJ, Krav Maga, Systema en meer. Ontdek complete street defence bij Hapkido Yong in Noord-Brabant.",
+  keywords: [
+    "hapkido combinatie",
+    "koreaans mma",
+    "wat is hapkido",
+    "kwan nyom hapkido",
+    "sin moo hapkido",
+    "dim mak",
+    "pressure point fighting",
+    "street defence nederland",
+    "complete defence",
+    "hapkido versus krav maga",
+    "hapkido versus bjj",
+    "systema nederland",
+    "hapkido voor beginners",
+  ],
   alternates: { canonical: `${site.url}/hapkido-combinatie` },
+  openGraph: {
+    title: "Hapkido Combinatie Koreaans MMA & complete street defence",
+    description:
+      "Hapkido Combinatie combineert diverse vechtsporten tot één complete zelfverdedigingsstijl. Ontdek Hapkido, BJJ, Krav Maga, Systema en meer bij Hapkido Yong.",
+    locale: "nl_NL",
+    type: "website",
+    images: [{ url: "/images/training/training-3.jpg", width: 1200, height: 630, alt: "Hapkido Combinatie grondtechnieken en klemmen in de training" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hapkido Combinatie Koreaans MMA uitgelegd",
+    description: "Diverse vechtsporten in één stijl: Hapkido, BJJ, Krav Maga, Systema en meer. Berkel-Enschot & Waalwijk.",
+    images: ["/images/training/training-3.jpg"],
+  },
 };
 
 export default function Page() {
@@ -30,7 +58,7 @@ export default function Page() {
       <PageHero
         eyebrow="Wat is Hapkido Combinatie"
         title="Het Koreaanse MMA uitgelegd"
-        subtitle="Negen vechtsporten gecombineerd in één moderne, complete zelfverdedigingsstijl. Vanaf 7 jaar tot ver in je 60ers."
+        subtitle="Diverse vechtsporten gecombineerd in één moderne, complete zelfverdedigingsstijl. Vanaf 7 jaar tot ver in je 60ers."
         breadcrumb={[
           { name: "Home", href: "/" },
           { name: "Hapkido Combinatie", href: "/hapkido-combinatie" },
@@ -39,10 +67,10 @@ export default function Page() {
 
       <section className="section">
         <div className="container-x grid lg:grid-cols-12 gap-10">
-          <Reveal className="lg:col-span-7">
+          <div className="lg:col-span-7">
             <div className="space-y-5 text-[color:var(--color-text)] leading-relaxed text-base md:text-lg">
               <p>
-                Hapkido is een vrij jonge martial art gericht op zelfverdediging voor op straat. Je leert trappen, stoten, worpen, klemmen en grondtechnieken, aangevuld met ademhalings-, meditatie- en ontspanningsoefeningen.
+                Hapkido Combinatie is Hapkido gecombineerd met inzichten uit andere martial arts. Door het samenbrengen van verdedigingsstijlen en vooropleidingen ontstaat een methode waarbij je het maximum haalt uit praktische zelfverdediging.
               </p>
               <p>
                 <strong className="text-[color:var(--color-heading)] font-semibold">Hapkido Combinatie</strong> is een innovatieve, moderne zelfverdedigingsstijl die technieken combineert uit Hapkido, Jiu-Jitsu, Judo, Taekwondo, Systema, Boksen, Pencak Silat, Krav Maga en Braziliaans Jiu-Jitsu. Daarom wordt het ook wel <em>Koreaans MMA</em> genoemd.
@@ -50,10 +78,13 @@ export default function Page() {
               <p>
                 Kwan Nyom Hapkido is in 2006 door Master Ron van Beukering in Nederland geïntroduceerd. In oktober 2023 startte hij Hapkido Combinatie, een eigen, complete stijl die de beste elementen uit moderne vechtsporten samenbrengt.
               </p>
+              <p>
+                Je leert trappen, stoten, worpen, klemmen en grondtechnieken, aangevuld met ademhalings-, meditatie- en ontspanningsoefeningen. Niet om te vechten maar om situaties te voorkomen en jezelf en anderen te beschermen.
+              </p>
             </div>
-          </Reveal>
+          </div>
 
-          <Reveal delay={150} className="lg:col-span-5">
+          <div className="lg:col-span-5">
             <div className="card p-6 md:p-8">
               <h3 className="font-[family-name:var(--font-display)] text-3xl mb-5">In het kort</h3>
               <ul className="space-y-3 text-sm text-[color:var(--color-text)]">
@@ -62,7 +93,7 @@ export default function Page() {
                 <li className="flex gap-3"><History size={16} className="text-[color:var(--color-accent-500)] shrink-0 mt-1" /><span>Sinds 2006 in Nederland · sinds 2023 als Hapkido Combinatie</span></li>
               </ul>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
@@ -77,6 +108,7 @@ export default function Page() {
           <ol className="relative border-l border-[color:var(--color-border)] ml-3 space-y-8">
             {[
               { y: "1948", t: "Hapkido opgericht", b: "Dojunim Choi Yong-sool legt in Korea de basis voor wat later Hapkido wordt." },
+              { y: "1983", t: "Sin Moo Hapkido", b: "Dojunim Ji Han-Jae ontwikkelt Sin Moo Hapkido, een verfijnde tak met nadruk op spirituele en filosofische diepgang." },
               { y: "1984", t: "Kwan Nyom Hapkido geboren", b: "Master G.M. Booth ontwikkelt een eigen tak waar Master Ron later mee traint." },
               { y: "2006", t: "Introductie in Nederland", b: "Master Ron van Beukering brengt Kwan Nyom Hapkido naar Nederland." },
               { y: "2023", t: "Hapkido Combinatie", b: "Lancering van de moderne, gecombineerde stijl, Koreaans MMA." },
@@ -113,13 +145,13 @@ export default function Page() {
               <figure className="relative overflow-hidden rounded-xl aspect-video bg-[color:var(--color-stone-200)]">
                 <Image
                   src="/images/training/training-3.jpg"
-                  alt="Hapkido Combinatie — grondtechnieken en klemmen tijdens training in Berkel-Enschot"
+                  alt="Hapkido Combinatie grondtechnieken en klemmen tijdens training in Berkel-Enschot"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                 />
-                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white text-sm font-medium">
-                  Grondtechnieken &amp; klemmen — Berkel-Enschot
+                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm font-medium">
+                  Grondtechnieken &amp; klemmen Berkel-Enschot
                 </figcaption>
               </figure>
             </Reveal>
@@ -127,13 +159,13 @@ export default function Page() {
               <figure className="relative overflow-hidden rounded-xl aspect-video bg-[color:var(--color-stone-200)]">
                 <Image
                   src="/images/training/academy.jpg"
-                  alt="Hapkido Combinatie Academie — zwarte-bandtraining voor gevorderden"
+                  alt="Hapkido Combinatie Academie zwarte-bandtraining voor gevorderden"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                 />
-                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white text-sm font-medium">
-                  Hapkido Combinatie Academie — zwarte-bandtraining
+                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm font-medium">
+                  Hapkido Combinatie Academie zwarte-bandtraining
                 </figcaption>
               </figure>
             </Reveal>
@@ -150,7 +182,7 @@ export default function Page() {
               Zo ziet Hapkido Combinatie eruit
             </h2>
             <p className="mt-4 text-white/70 max-w-2xl">
-              Echte trainingsopnames van onze lessen in Noord-Brabant. Geen showvechten — gewone lessen, echte technieken.
+              Echte trainingsopnames van onze lessen in Noord-Brabant. Geen showvechten gewone lessen, echte technieken.
             </p>
           </Reveal>
           <div className="mt-10">
@@ -159,6 +191,18 @@ export default function Page() {
         </div>
       </section>
 
+      <section className="section">
+        <div className="container-x max-w-3xl">
+          <Reveal>
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl tracking-tight mb-4">
+              Train Hapkido Combinatie in Noord-Brabant
+            </h2>
+            <p className="text-[color:var(--color-muted)] leading-relaxed">
+              Hapkido Combinatie wordt gegeven op twee locaties: <Link href="/lessen/berkel-enschot" className="text-[color:var(--color-accent-400)] hover:underline">Berkel-Enschot</Link> en <Link href="/lessen/waalwijk" className="text-[color:var(--color-accent-400)] hover:underline">Waalwijk</Link>. Bekijk het profiel van onze hoofdtrainer <Link href="/trainers/ron-van-beukering" className="text-[color:var(--color-accent-400)] hover:underline">Master Ron van Beukering</Link>, of ga direct naar <Link href="/proefles" className="text-[color:var(--color-accent-400)] hover:underline">gratis proefles aanvragen</Link>.
+            </p>
+          </Reveal>
+        </div>
+      </section>
       <CTABanner title="Klinkt dit als iets voor jou?" subtitle="Ervaar het in een gratis proefles, geen verplichting." />
     </>
   );

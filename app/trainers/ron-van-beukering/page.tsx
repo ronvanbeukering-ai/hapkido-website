@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { PageHero } from "@/components/Hero";
 import { CTABanner } from "@/components/CTABanner";
 import { Reveal } from "@/components/Reveal";
@@ -11,9 +12,34 @@ import { site, trainers } from "@/lib/site";
 const trainer = trainers.find((t) => t.slug === "ron-van-beukering")!;
 
 export const metadata: Metadata = {
-  title: `${trainer.name}, Hoofdtrainer & Oprichter`,
-  description: trainer.bio,
+  title: "Ron van Beukering 6e Dan Hapkido Combinatie, Hoofdtrainer",
+  description:
+    "Master Ron van Beukering (6e Dan) introduceerde Kwan Nyom Hapkido in Nederland en richtte Hapkido Combinatie op. Hoofdtrainer van Hapkido Yong Berkel-Enschot.",
+  keywords: [
+    "ron van beukering",
+    "master ron",
+    "ron van beukering-bin ghoni",
+    "hapkido combinatie hoofdtrainer",
+    "kwan nyom hapkido nederland",
+    "sin moo hapkido",
+    "6e dan hapkido",
+    "hapkido berkel-enschot",
+  ],
   alternates: { canonical: `${site.url}/trainers/ron-van-beukering` },
+  openGraph: {
+    title: "Ron van Beukering 6e Dan Hapkido Combinatie, Oprichter Hapkido Yong",
+    description:
+      "Master Ron van Beukering introduceerde Kwan Nyom Hapkido in 2006 in Nederland en stichtte Hapkido Combinatie in 2023. Hoofdtrainer in Berkel-Enschot.",
+    locale: "nl_NL",
+    type: "profile",
+    images: [{ url: "/images/trainers/ron-van-beukering.jpg", width: 800, height: 1067, alt: "Master Ron van Beukering 6e Dan Hapkido Combinatie, oprichter Hapkido Yong" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ron van Beukering 6e Dan Hapkido Combinatie",
+    description: "Oprichter van Hapkido Yong en Hapkido Combinatie. Hoofdtrainer in Berkel-Enschot, Noord-Brabant.",
+    images: ["/images/trainers/ron-van-beukering.jpg"],
+  },
 };
 
 export default function Page() {
@@ -47,7 +73,7 @@ export default function Page() {
               {trainer.photo && (
                 <Image
                   src={trainer.photo}
-                  alt="Master Ron van Beukering — 6e Dan Hapkido Combinatie, oprichter en hoofdtrainer van Hapkido Yong in Berkel-Enschot"
+                  alt="Master Ron van Beukering 6e Dan Hapkido Combinatie, oprichter en hoofdtrainer van Hapkido Yong in Berkel-Enschot"
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
                   className="object-cover object-top"
@@ -63,17 +89,6 @@ export default function Page() {
             </h2>
             <div className="space-y-5 text-[color:var(--color-text)] leading-relaxed">
               <p>{trainer.bio}</p>
-              <p>
-                Onder zijn leiding is Hapkido Yong uitgegroeid tot een vereniging met twee locaties, ruim 150 leden en een actief examenprogramma onder NBJJV.
-              </p>
-            </div>
-            <h3 className="font-[family-name:var(--font-display)] text-2xl mt-10 mb-4">Specialisaties</h3>
-            <div className="flex flex-wrap gap-2">
-              {trainer.knowsAbout.map((k) => (
-                <span key={k} className="px-3 py-1.5 rounded-md bg-[color:var(--color-surface-2)] border border-[color:var(--color-border)] text-sm text-[color:var(--color-text)]">
-                  {k}
-                </span>
-              ))}
             </div>
           </Reveal>
         </div>
@@ -97,6 +112,18 @@ export default function Page() {
         </div>
       </section>
 
+      <section className="section">
+        <div className="container-x max-w-3xl">
+          <Reveal>
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl tracking-tight mb-4">
+              Train Hapkido Combinatie in Berkel-Enschot
+            </h2>
+            <p className="text-[color:var(--color-muted)] leading-relaxed">
+              Master Ron geeft les op <Link href="/lessen/berkel-enschot" className="text-[color:var(--color-accent-400)] hover:underline">Kerkstraat 9B in Berkel-Enschot</Link> (bij Tilburg). Lees alles over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-400)] hover:underline">Hapkido Combinatie</Link> of bekijk alle <Link href="/trainers" className="text-[color:var(--color-accent-400)] hover:underline">trainers van Hapkido Yong</Link>.
+            </p>
+          </Reveal>
+        </div>
+      </section>
       <CTABanner title="Train onder Master Ron" subtitle="Maandag, woensdag en zaterdag in Berkel-Enschot." />
     </>
   );

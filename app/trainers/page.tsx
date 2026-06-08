@@ -9,11 +9,33 @@ import { breadcrumbSchema } from "@/lib/jsonld";
 import { site, trainers } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Onze trainers, Master Ron van Beukering & het team",
+  title: "Trainers Master Ron van Beukering & team Hapkido Yong",
   description:
-    "Ontmoet de trainers van Hapkido Yong. Master Ron van Beukering (6e Dan) en een team van gediplomeerde instructeurs in Berkel-Enschot en Waalwijk.",
-  keywords: ["hapkido trainer nederland", "ron van beukering hapkido", "hapkido instructeur tilburg"],
+    "Ontmoet de trainers van Hapkido Yong. Master Ron van Beukering (6e Dan Hapkido Combinatie) leidt het team in Berkel-Enschot en Waalwijk. Plan een gratis proefles.",
+  keywords: [
+    "hapkido trainer nederland",
+    "ron van beukering hapkido",
+    "ron van beukering-bin ghoni",
+    "master ron",
+    "hapkido instructeur tilburg",
+    "hapkido instructeur noord-brabant",
+    "marco van gulik hapkido",
+  ],
   alternates: { canonical: `${site.url}/trainers` },
+  openGraph: {
+    title: "Trainers Master Ron van Beukering & team Hapkido Yong",
+    description:
+      "Master Ron van Beukering (6e Dan) leidt het team van Hapkido Yong. Gediplomeerde instructeurs in Berkel-Enschot en Waalwijk.",
+    locale: "nl_NL",
+    type: "website",
+    images: [{ url: "/images/trainers/ron-van-beukering.jpg", width: 1200, height: 630, alt: "Master Ron van Beukering 6e Dan Hapkido Combinatie" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Trainers Hapkido Yong Master Ron van Beukering",
+    description: "Master Ron van Beukering (6e Dan) en team. Gediplomeerde instructeurs in Berkel-Enschot en Waalwijk.",
+    images: ["/images/trainers/ron-van-beukering.jpg"],
+  },
 };
 
 export default function Page() {
@@ -57,7 +79,7 @@ export default function Page() {
       <section className="section bg-[color:var(--color-surface-2)] border-y border-[color:var(--color-border)]">
         <div className="container-x">
           <Reveal>
-            <div className="badge-red mb-4">Instructors</div>
+            <div className="badge-red mb-4">Instructeurs</div>
             <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-5xl tracking-tight mb-10">
               Het volledige team
             </h2>
@@ -72,6 +94,18 @@ export default function Page() {
         </div>
       </section>
 
+      <section className="section">
+        <div className="container-x max-w-3xl">
+          <Reveal>
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl tracking-tight mb-4">
+              Train Hapkido Combinatie in Noord-Brabant
+            </h2>
+            <p className="text-[color:var(--color-muted)] leading-relaxed mb-6">
+              Onze trainers geven les op twee locaties: <Link href="/lessen/berkel-enschot" className="text-[color:var(--color-accent-400)] hover:underline">Berkel-Enschot</Link> (Master Ron van Beukering) en <Link href="/lessen/waalwijk" className="text-[color:var(--color-accent-400)] hover:underline">Waalwijk</Link> (CGN Marco van Gulik). Bekijk ook meer over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-400)] hover:underline">Hapkido Combinatie</Link>.
+            </p>
+          </Reveal>
+        </div>
+      </section>
       <CTABanner title="Train met onze masters" subtitle="Plan een gratis proefles en ervaar de kwaliteit zelf." />
     </>
   );

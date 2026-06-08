@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Menu, Phone, X, LogIn, LogOut, LayoutDashboard, User } from "lucide-react";
 import { Logo } from "./Logo";
 import { site } from "@/lib/site";
@@ -26,7 +26,7 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [navUser, setNavUser] = useState<NavUser>(undefined as unknown as NavUser);
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
     async function loadUser() {
@@ -84,7 +84,7 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
                 className={cn(
                   "text-sm px-3 py-2 transition-colors font-medium",
                   solid
-                    ? "text-[color:var(--color-text-strong)] hover:text-[color:var(--color-accent-700)]"
+                    ? "text-[color:var(--color-text-strong)] hover:text-[color:var(--color-accent-400)]"
                     : "text-white/85 hover:text-white"
                 )}
               >
@@ -98,21 +98,21 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
               href={`tel:${site.phoneRaw}`}
               className={cn(
                 "lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md",
-                solid ? "text-[color:var(--color-text-strong)] hover:bg-[color:var(--color-stone-100)]" : "text-white hover:bg-white/10"
+                solid ? "text-[color:var(--color-text-strong)] hover:bg-white/10" : "text-white hover:bg-white/10"
               )}
               aria-label={`Bel ${site.phone}`}
             >
               <Phone size={20} />
             </a>
 
-            {/* Auth buttons — desktop */}
+            {/* Auth buttons desktop */}
             {navUser === null ? (
               <Link
                 href="/login"
                 className={cn(
                   "hidden lg:inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-md transition-colors",
                   solid
-                    ? "text-[color:var(--color-text-strong)] hover:bg-[color:var(--color-stone-100)]"
+                    ? "text-[color:var(--color-text-strong)] hover:bg-white/10"
                     : "text-white/85 hover:text-white hover:bg-white/10"
                 )}
               >
@@ -126,7 +126,7 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
                     className={cn(
                       "inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-md transition-colors",
                       solid
-                        ? "text-[color:var(--color-text-strong)] hover:bg-[color:var(--color-stone-100)]"
+                        ? "text-[color:var(--color-text-strong)] hover:bg-white/10"
                         : "text-white/85 hover:text-white hover:bg-white/10"
                     )}
                   >
@@ -140,7 +140,7 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
                   className={cn(
                     "inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-md transition-colors",
                     solid
-                      ? "text-[color:var(--color-text-strong)] hover:bg-[color:var(--color-stone-100)]"
+                      ? "text-[color:var(--color-text-strong)] hover:bg-white/10"
                       : "text-white/85 hover:text-white hover:bg-white/10"
                   )}
                 >
@@ -159,7 +159,7 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
               onClick={() => setOpen(true)}
               className={cn(
                 "lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md",
-                solid ? "text-[color:var(--color-text-strong)] hover:bg-[color:var(--color-stone-100)]" : "text-white hover:bg-white/10"
+                solid ? "text-[color:var(--color-text-strong)] hover:bg-white/10" : "text-white hover:bg-white/10"
               )}
               aria-label="Open menu"
               aria-expanded={open}
@@ -178,13 +178,13 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
             aria-label="Sluit menu"
             className="absolute inset-0 bg-stone-950/60 backdrop-blur-sm"
           />
-          <div className="absolute inset-y-0 right-0 w-[88%] max-w-sm bg-white border-l border-[color:var(--color-border)] flex flex-col shadow-2xl">
+          <div className="absolute inset-y-0 right-0 w-[88%] max-w-sm bg-[color:var(--color-stone-900)] border-l border-[color:var(--color-border)] flex flex-col shadow-2xl">
             <div className="flex items-center justify-between h-16 px-5 border-b border-[color:var(--color-border)]">
               <Logo />
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="w-11 h-11 inline-flex items-center justify-center rounded-md text-[color:var(--color-text-strong)] hover:bg-[color:var(--color-stone-100)]"
+                className="w-11 h-11 inline-flex items-center justify-center rounded-md text-[color:var(--color-text-strong)] hover:bg-white/10"
                 aria-label="Sluit menu"
               >
                 <X size={22} />
@@ -196,13 +196,13 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="block px-5 py-4 text-base text-[color:var(--color-text-strong)] hover:bg-[color:var(--color-stone-100)] border-b border-[color:var(--color-border)] font-medium"
+                  className="block px-5 py-4 text-base text-[color:var(--color-text-strong)] hover:bg-white/10 border-b border-[color:var(--color-border)] font-medium"
                 >
                   {l.label}
                 </Link>
               ))}
             </nav>
-            <div className="p-5 border-t border-[color:var(--color-border)] space-y-3 bg-[color:var(--color-stone-50)]">
+            <div className="p-5 border-t border-[color:var(--color-border)] space-y-3 bg-[color:var(--color-stone-950)]">
               <Link href="/proefles" onClick={() => setOpen(false)} className="btn-primary w-full">
                 Plan gratis proefles
               </Link>

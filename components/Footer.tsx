@@ -5,7 +5,7 @@ import { site, locations } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="dark-section border-t border-white/10 mt-20" style={{ backgroundColor: "var(--color-stone-900)" }}>
+    <footer className="dark-section border-t border-white/10 mt-20">
       <div className="container-x py-16 grid grid-cols-1 md:grid-cols-4 gap-10">
         <div className="space-y-4">
           <Logo dark />

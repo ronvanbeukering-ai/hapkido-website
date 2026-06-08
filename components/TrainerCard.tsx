@@ -14,7 +14,7 @@ export function TrainerCard({ t }: { t: Trainer }) {
       {t.photo ? (
         <Image
           src={t.photo}
-          alt={t.name}
+          alt={`${t.name} ${t.shortRank} Hapkido Combinatie${t.location ? `, ${t.location}` : ""}`}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
           className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
@@ -27,7 +27,7 @@ export function TrainerCard({ t }: { t: Trainer }) {
         </div>
       )}
 
-      <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/90 via-black/55 to-transparent">
+      <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-[#0e0b08]/90 via-[#0e0b08]/55 to-transparent">
         <div className="flex items-start justify-between gap-2 mb-1">
           <span className="badge-gold text-[10px]">{t.shortRank}</span>
           {t.location && (

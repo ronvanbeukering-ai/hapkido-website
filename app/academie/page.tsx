@@ -8,10 +8,32 @@ import { breadcrumbSchema } from "@/lib/jsonld";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Hapkido Combinatie Academie, Zwarte-bandtraining",
+  title: "Hapkido Combinatie Academie Zwarte-bandtraining Noord-Brabant",
   description:
-    "De Hapkido Combinatie Academie organiseert maandelijkse zwarte-bandtrainingen voor gevorderde beoefenaars vanaf bruine band.",
+    "De Hapkido Combinatie Academie biedt maandelijkse zwarte-bandtrainingen voor gevorderden (vanaf bruine band) in Noord-Brabant. Geavanceerde hapkido-technieken.",
+  keywords: [
+    "hapkido combinatie academie",
+    "hapkido zwarte band training",
+    "hapkido gevorderden",
+    "hapkido dan training",
+    "hapkido noord-brabant",
+    "hapkido master training",
+  ],
   alternates: { canonical: `${site.url}/academie` },
+  openGraph: {
+    title: "Hapkido Combinatie Academie Zwarte-bandtraining",
+    description:
+      "Maandelijkse zwarte-bandtraining voor gevorderde hapkido-beoefenaars. Geavanceerde technieken onder leiding van Master Ron van Beukering.",
+    locale: "nl_NL",
+    type: "website",
+    images: [{ url: "/images/training/academy.jpg", width: 1200, height: 630, alt: "Hapkido Combinatie Academie zwarte-bandtraining voor gevorderden" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hapkido Combinatie Academie Zwarte-bandtraining",
+    description: "Maandelijkse zwarte-bandtraining voor gevorderde beoefenaars. Hapkido Yong, Noord-Brabant.",
+    images: ["/images/training/academy.jpg"],
+  },
 };
 
 export default function Page() {

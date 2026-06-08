@@ -7,27 +7,30 @@ type VideoItem = {
   src: string;
   title: string;
   description: string;
-  poster?: string;
+  poster: string;
 };
 
 const trainingVideos: VideoItem[] = [
   {
-    src: "/videos/training-les-1.mov",
-    title: "Hapkido training — stand-up technieken",
+    src: "/videos/training-les-1.mp4",
+    poster: "/images/training/training-4.jpg",
+    title: "Hapkido training stand-up technieken",
     description:
       "Trainingsopname bij Hapkido Yong Berkel-Enschot. Je ziet werpen, klemmen en stand-up technieken zoals die elke les aan bod komen, voor beginners én gevorderden.",
   },
   {
-    src: "/videos/training-les-2.mov",
-    title: "Groepsles — gemixte groep",
+    src: "/videos/training-les-2.mp4",
+    poster: "/images/training/training-2.jpg",
+    title: "Groepsles gemixte groep",
     description:
       "Sfeerimpressie van een gemixte groepsles. Alle leeftijden trainen samen: je leert van elkaar en het niveau wordt altijd aangepast aan de deelnemer.",
   },
   {
-    src: "/videos/training-les-3.mov",
-    title: "Hapkido Combinatie — technieken demonstratie",
+    src: "/videos/training-les-3.mp4",
+    poster: "/images/training/training-3.jpg",
+    title: "Hapkido Combinatie technieken demonstratie",
     description:
-      "Demonstratie van Hapkido Combinatie-technieken: zelfverdediging in de praktijk, de kracht van negen vechtsporten gecombineerd in één stijl.",
+      "Demonstratie van Hapkido Combinatie-technieken: zelfverdediging in de praktijk, de kracht van diverse vechtsporten gecombineerd in één stijl.",
   },
 ];
 
@@ -36,14 +39,18 @@ function VideoCard({ video }: { video: VideoItem }) {
   const [muted, setMuted] = useState(true);
   const ref = useRef<HTMLVideoElement>(null);
 
-  function toggle() {
+  async function toggle() {
     if (!ref.current) return;
     if (playing) {
       ref.current.pause();
       setPlaying(false);
     } else {
-      ref.current.play();
-      setPlaying(true);
+      try {
+        await ref.current.play();
+        setPlaying(true);
+      } catch {
+        // play() geblokkeerd door browser
+      }
     }
   }
 
@@ -66,6 +73,7 @@ function VideoCard({ video }: { video: VideoItem }) {
         <video
           ref={ref}
           src={video.src}
+          poster={video.poster}
           muted={muted}
           playsInline
           loop
@@ -79,7 +87,7 @@ function VideoCard({ video }: { video: VideoItem }) {
         <div
           className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${playing ? "opacity-0 group-hover:opacity-100" : "opacity-100"}`}
         >
-          <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors" />
+          <div className="absolute inset-0 bg-[#0e0b08]/30 group-hover:bg-[#0e0b08]/20 transition-colors" />
 
           <button
             type="button"
@@ -101,7 +109,7 @@ function VideoCard({ video }: { video: VideoItem }) {
             <button
               type="button"
               onClick={toggleMute}
-              className="w-8 h-8 rounded-md bg-black/60 flex items-center justify-center text-white hover:bg-black/80 transition-colors"
+              className="w-8 h-8 rounded-md bg-[#0e0b08]/60 flex items-center justify-center text-white hover:bg-[#0e0b08]/80 transition-colors"
               aria-label={muted ? "Geluid aan" : "Geluid uit"}
             >
               {muted ? <VolumeX size={14} /> : <Volume2 size={14} />}
@@ -110,7 +118,7 @@ function VideoCard({ video }: { video: VideoItem }) {
           <button
             type="button"
             onClick={openFullscreen}
-            className="w-8 h-8 rounded-md bg-black/60 flex items-center justify-center text-white hover:bg-black/80 transition-colors"
+            className="w-8 h-8 rounded-md bg-[#0e0b08]/60 flex items-center justify-center text-white hover:bg-[#0e0b08]/80 transition-colors"
             aria-label="Volledig scherm"
           >
             <Maximize size={14} />

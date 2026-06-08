@@ -1,36 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Lock, ArrowRight, Crown, CheckCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { LessenLijst, VideoGalerij, type VideoItem } from "@/components/CursusPlayer";
 import type { Les } from "@/lib/cursussen";
-import { hapkidoLessen, hapkidoVideos } from "@/lib/cursussen";
-import { isLidOfAdmin, isAdminOrSuperAdmin } from "@/lib/auth";
+import { ledenLessen } from "@/lib/cursussen";
+import { isLidOfAdmin, isAdminOrSuperAdmin, isCursusAbonnee } from "@/lib/auth";
 
 type Profiel = {
   id: string;
   email: string;
-  rol: "admin" | "lid" | "geen";
+  rol: "admin" | "lid" | "cursus" | "geen";
   lid_geldig_tot: string | null;
 };
 
 type Props = {
   lessen: Les[];
-  videos: { id: string; titel: string; beschrijving: string; categorie: string }[];
+  videos: { id: string; titel: string; beschrijving: string; categorie: string; platform?: string }[];
 };
 
 export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Props) {
   const [profiel, setProfiel] = useState<Profiel | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [dbVideos, setDbVideos] = useState<VideoItem[] | null>(null);
-  const [dbLessen, setDbLessen] = useState<Les[] | null>(null);
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
-    async function laadData() {
-      // Auth
+    async function checkAuth() {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         const { data } = await supabase
@@ -38,68 +34,35 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
           .select("*")
           .eq("id", user.id)
           .single();
-        setProfiel(data ?? { id: user.id, email: user.email ?? "", rol: "geen", lid_geldig_tot: null });
+        if (data) setProfiel(data);
       }
-
-      // Videos van database
-      const { data: vids } = await supabase
-        .from("hapkido_videos")
-        .select("id, titel, beschrijving, categorie, platform, volgorde")
-        .eq("zichtbaar", true)
-        .order("volgorde");
-      if (vids && vids.length > 0) setDbVideos(vids as VideoItem[]);
-
-      // Lessen van database
-      const { data: les } = await supabase
-        .from("hapkido_lessen")
-        .select("nr, titel, duur, categorie, gratis")
-        .order("nr");
-      if (les && les.length > 0) setDbLessen(les as Les[]);
-
-      setLoading(false);
     }
-
-    laadData();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => laadData());
-    return () => subscription.unsubscribe();
+    checkAuth();
   }, [supabase]);
 
   const isLid = isLidOfAdmin(profiel?.email, profiel?.rol, profiel?.lid_geldig_tot);
+  const isCursus = isCursusAbonnee(profiel?.email, profiel?.rol, profiel?.lid_geldig_tot);
   const isAdmin = isAdminOrSuperAdmin(profiel?.email, profiel?.rol);
   const isIngelogd = !!profiel;
+  const heeftCursustoegang = isCursus;
 
-  // Gebruik DB data als beschikbaar, anders statische fallback
-  const allVideos: VideoItem[] = dbVideos
-    ? dbVideos
-    : staticVideos.map((v) => ({ ...v, platform: "youtube" }));
-  const allLessen: Les[] = dbLessen ?? staticLessen;
-
-  // Niet-leden zien alleen YouTube video's (geen eigen/private content)
+  const allVideos: VideoItem[] = staticVideos.map((v) => ({ ...v, platform: v.platform ?? "youtube" }));
+  const allLessen: Les[] = isLid ? ledenLessen : staticLessen;
   const publiekeVideos = allVideos.filter((v) => v.platform === "youtube");
-
-  // Leden: gratis-markering op alle lessen
-  const lessenVoorLid = isLid ? allLessen.map((l) => ({ ...l, gratis: true })) : allLessen;
-
-  if (loading) {
-    return (
-      <div className="section">
-        <div className="container-x flex justify-center">
-          <div className="w-8 h-8 border-2 border-[color:var(--color-accent-600)] border-t-transparent rounded-full animate-spin" />
-        </div>
-      </div>
-    );
-  }
+  const lessenVoorLid = heeftCursustoegang ? allLessen.map((l) => ({ ...l, gratis: true })) : allLessen;
 
   return (
     <>
       {/* Status banner */}
-      {isLid && (
+      {heeftCursustoegang && (
         <div className="bg-emerald-50 border-b border-emerald-200">
           <div className="container-x py-3 flex items-center gap-2 text-sm text-emerald-800">
             <CheckCircle size={16} />
             {isAdmin
               ? "Je bent ingelogd als beheerder — volledige toegang."
-              : "Je bent actief lid — volledige toegang tot alle lessen en video's."}
+              : isLid
+              ? "Je bent actief lid — volledige toegang tot alle lessen en video's."
+              : "Je hebt een cursusabonnement — volledige toegang tot alle online lessen."}
             {isAdmin && (
               <Link href="/dashboard" className="ml-auto font-semibold hover:underline flex items-center gap-1">
                 <Crown size={14} /> Dashboard
@@ -116,10 +79,10 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
             <div>
               <div className="badge-red mb-4">Cursus</div>
               <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-tight">
-                Hapkido — Basis tot Gevorderd
+                Hapkido Basis tot Gevorderd
               </h2>
               <p className="mt-4 text-[color:var(--color-text)] leading-relaxed">
-                Beheers de kunst van Hapkido Combinatie — van basisgrepen en valbreektechnieken
+                Beheers de kunst van Hapkido Combinatie van basisgrepen en valbreektechnieken
                 tot gevorderde joint-locks en wapentechnieken. Opgebouwd door{" "}
                 <strong>Master Ron van Beukering</strong> (6e Dan) voor leden van Hapkido Yong.
               </p>
@@ -142,36 +105,36 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
               </div>
               <div className="flex justify-between">
                 <span className="text-[color:var(--color-muted)]">Toegang</span>
-                <span className={`font-semibold ${isLid ? "text-emerald-600" : "text-[color:var(--color-accent-700)]"}`}>
-                  {isLid ? "✓ Volledige toegang" : "Lidmaatschap vereist"}
+                <span className={`font-semibold ${heeftCursustoegang ? "text-emerald-600" : "text-[color:var(--color-accent-700)]"}`}>
+                  {isLid ? "✓ Volledige toegang" : heeftCursustoegang ? "✓ Cursusabonnement" : "Abonnement vereist"}
                 </span>
               </div>
             </div>
 
-            {!isLid && (
+            {!heeftCursustoegang && (
               <div className="rounded-xl border border-[color:var(--color-accent-200)] bg-[color:var(--color-accent-50)] p-5 space-y-3">
                 {isIngelogd ? (
                   <>
                     <p className="text-sm text-[color:var(--color-accent-800)] leading-relaxed">
-                      <strong>Je account is aangemaakt</strong>, maar je lidmaatschap is nog niet actief.
-                      Betaal je contributie of neem contact op met Ron.
+                      <strong>Je account is aangemaakt</strong>, maar je hebt nog geen actief abonnement.
+                      Kies een lidmaatschap of een cursusabonnement.
                     </p>
                     <Link href="/contributie" className="btn-primary !py-2 !px-4 text-sm inline-flex">
-                      Contributie bekijken <ArrowRight size={14} />
+                      Abonnementen bekijken <ArrowRight size={14} />
                     </Link>
                   </>
                 ) : (
                   <>
                     <p className="text-sm text-[color:var(--color-accent-800)] leading-relaxed">
-                      <strong>Lessen 1 &amp; 2 zijn gratis.</strong> Voor volledige toegang heb je een
-                      actief lidmaatschap nodig.
+                      <strong>Lessen 1 &amp; 2 zijn gratis.</strong> Voor volledige toegang kun je lid worden
+                      of eenmalig <strong>€35</strong> betalen voor levenslange toegang.
                     </p>
                     <div className="flex flex-wrap gap-2">
                       <Link href="/login" className="btn-primary !py-2 !px-4 text-sm inline-flex">
                         Inloggen <ArrowRight size={14} />
                       </Link>
-                      <Link href="/contributie" className="btn-secondary !py-2 !px-4 text-sm inline-flex">
-                        Lid worden
+                      <Link href="/contributie" className="btn-secondary !py-2 !px-4 text-sm inline-flex !text-[color:var(--color-accent-800)] !border-[color:var(--color-accent-400)] hover:!bg-[color:var(--color-accent-100)]">
+                        Abonnementen bekijken
                       </Link>
                     </div>
                   </>
@@ -186,7 +149,7 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
                 <h3 className="font-[family-name:var(--font-display)] text-2xl">
                   Lessen ({allLessen.length})
                 </h3>
-                {isLid && (
+                {heeftCursustoegang && (
                   <span className="text-xs font-semibold text-emerald-600 bg-emerald-100 border border-emerald-200 px-2 py-1 rounded">
                     Volledige toegang
                   </span>
@@ -198,8 +161,8 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
         </div>
       </section>
 
-      {/* Niet-leden: vergrendelde preview */}
-      {!isLid && (
+      {/* Niet-abonnees: vergrendelde preview */}
+      {!heeftCursustoegang && (
         <section className="section bg-[color:var(--color-surface-2)] border-y border-[color:var(--color-border)]">
           <div className="container-x">
             <div className="badge-red mb-4">Videobibliotheek</div>
@@ -223,7 +186,7 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
                       className="w-full h-full object-cover blur-sm scale-105"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-[#0e0b08]/55 flex items-center justify-center">
                       <div className="w-14 h-14 rounded-full bg-white/20 border border-white/30 flex items-center justify-center">
                         <Lock size={20} className="text-white" />
                       </div>
@@ -239,15 +202,15 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
             <div className="mt-8 flex gap-3">
               <Link href="/login" className="btn-primary">Inloggen</Link>
               <Link href="/contributie" className="btn-secondary">
-                Lid worden <ArrowRight size={16} />
+                Abonnementen bekijken <ArrowRight size={16} />
               </Link>
             </div>
           </div>
         </section>
       )}
 
-      {/* Leden: volledige videobibliotheek */}
-      {isLid && (
+      {/* Abonnees: volledige videobibliotheek */}
+      {heeftCursustoegang && (
         <section className="section bg-[color:var(--color-surface-2)] border-y border-[color:var(--color-border)]">
           <div className="container-x">
             <div className="badge-red mb-4">Videobibliotheek</div>
@@ -255,7 +218,7 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
               Hapkido in beeld
             </h2>
             <p className="mt-4 text-[color:var(--color-muted)] max-w-2xl">
-              Demonstraties, trainingsopnames en eigen video&apos;s — klik om af te spelen.
+              Demonstraties, trainingsopnames en eigen video&apos;s klik om af te spelen.
             </p>
             <div className="mt-10">
               <VideoGalerij videos={allVideos} />

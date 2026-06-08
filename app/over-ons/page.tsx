@@ -8,10 +8,32 @@ import { breadcrumbSchema } from "@/lib/jsonld";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Over Hapkido Yong, Sinds 2006 zelfverdediging in Brabant",
+  title: "Over Hapkido Yong Hapkido in Noord-Brabant sinds 2006",
   description:
-    "Hapkido Yong is sinds 2006 actief in Brabant met Hapkido Combinatie, een complete, moderne zelfverdedigingsstijl. Ontdek ons verhaal en onze waarden.",
+    "Hapkido Yong brengt Hapkido Combinatie naar Noord-Brabant. Opgericht door Master Ron van Beukering, met vestigingen in Berkel-Enschot en Waalwijk. Bekijk ons verhaal.",
+  keywords: [
+    "hapkido yong",
+    "hapkido combinatie",
+    "ron van beukering",
+    "hapkido noord-brabant",
+    "kwan nyom hapkido",
+    "hapkido 2006",
+  ],
   alternates: { canonical: `${site.url}/over-ons` },
+  openGraph: {
+    title: "Over Hapkido Yong Hapkido in Noord-Brabant sinds 2006",
+    description:
+      "Hapkido Yong brengt Hapkido Combinatie naar Noord-Brabant. Opgericht door Master Ron van Beukering, met vestigingen in Berkel-Enschot en Waalwijk.",
+    locale: "nl_NL",
+    type: "website",
+    images: [{ url: "/images/training/training-1.jpg", width: 1200, height: 630, alt: "Hapkido Yong training in Noord-Brabant" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Over Hapkido Yong Hapkido in Noord-Brabant",
+    description: "Opgericht door Master Ron van Beukering in 2006. Twee locaties: Berkel-Enschot en Waalwijk.",
+    images: ["/images/training/training-1.jpg"],
+  },
 };
 
 const values = [
@@ -44,14 +66,14 @@ export default function Page() {
           <Reveal className="lg:col-span-7">
             <div className="badge-red mb-4">Onze missie</div>
             <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-tight mb-6">
-              Je leert niet vechten,<br />maar voorkomen
+              Hapkido als levensstijl:<br />je leert voorkomen, niet vechten
             </h2>
             <div className="space-y-5 text-[color:var(--color-text)] leading-relaxed">
               <p>
                 De-escalatie staat voorop. We trainen technieken om jezelf en je geliefden te beschermen, maar bovenal leren we situaties te voorkomen en met emoties om te gaan.
               </p>
               <p>
-                Master Ron van Beukering introduceerde Kwan Nyom Hapkido in 2006 in Nederland. In 2023 ontstond hieruit Hapkido Combinatie, een moderne, complete stijl die negen vechtsporten samenbrengt.
+                Master Ron van Beukering introduceerde Kwan Nyom Hapkido in 2006 in Nederland. In 2023 ontstond hieruit Hapkido Combinatie, een moderne, complete stijl die diverse vechtsporten samenbrengt.
               </p>
               <p>
                 Vandaag traint Hapkido Yong meer dan 150 leden op twee locaties in Noord-Brabant. We zijn aangesloten bij de NBJJV, hebben een eigen Academie voor zwarte-bandtraining en verzorgen examens tot in de hoogste Dan-graden.
@@ -118,13 +140,13 @@ export default function Page() {
               <figure className="relative overflow-hidden rounded-xl aspect-video bg-[color:var(--color-stone-200)]">
                 <Image
                   src="/images/training/training-1.jpg"
-                  alt="Hapkido Yong Berkel-Enschot — stand-up technieken en werpen tijdens reguliere les"
+                  alt="Hapkido Yong Berkel-Enschot stand-up technieken en werpen tijdens reguliere les"
                   fill
                   sizes="(max-width: 768px) 100vw, 66vw"
                   className="object-cover"
                 />
-                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white text-sm">
-                  <span className="font-semibold">Stand-up technieken</span> — Berkel-Enschot
+                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm">
+                  <span className="font-semibold">Stand-up technieken</span> Berkel-Enschot
                 </figcaption>
               </figure>
             </Reveal>
@@ -132,13 +154,13 @@ export default function Page() {
               <figure className="relative overflow-hidden rounded-xl aspect-video md:aspect-auto md:h-full bg-[color:var(--color-stone-200)]">
                 <Image
                   src="/images/training/training-2.jpg"
-                  alt="Hapkido Yong Waalwijk — gemixte groepsles met volwassenen en jongeren"
+                  alt="Hapkido Yong Waalwijk gemixte groepsles met volwassenen en jongeren"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover"
                 />
-                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white text-sm">
-                  <span className="font-semibold">Groepsles</span> — Waalwijk
+                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm">
+                  <span className="font-semibold">Groepsles</span> Waalwijk
                 </figcaption>
               </figure>
             </Reveal>
@@ -146,13 +168,13 @@ export default function Page() {
               <figure className="relative overflow-hidden rounded-xl aspect-video bg-[color:var(--color-stone-200)]">
                 <Image
                   src="/images/training/training-3.jpg"
-                  alt="Grondtechnieken en klemmen — Hapkido Combinatie in de praktijk"
+                  alt="Grondtechnieken en klemmen Hapkido Combinatie in de praktijk"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover"
                 />
-                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white text-sm">
-                  <span className="font-semibold">Grondtechnieken</span> — Hapkido Combinatie
+                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm">
+                  <span className="font-semibold">Grondtechnieken</span> Hapkido Combinatie
                 </figcaption>
               </figure>
             </Reveal>
@@ -160,13 +182,13 @@ export default function Page() {
               <figure className="relative overflow-hidden rounded-xl aspect-video bg-[color:var(--color-stone-200)]">
                 <Image
                   src="/images/training/academy.jpg"
-                  alt="Hapkido Combinatie Academie — maandelijkse zwarte-bandtraining voor gevorderden"
+                  alt="Hapkido Combinatie Academie maandelijkse zwarte-bandtraining voor gevorderden"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover"
                 />
-                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white text-sm">
-                  <span className="font-semibold">Hapkido Combinatie Academie</span> — zwarte-bandtraining
+                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm">
+                  <span className="font-semibold">Hapkido Combinatie Academie</span> zwarte-bandtraining
                 </figcaption>
               </figure>
             </Reveal>
@@ -174,13 +196,13 @@ export default function Page() {
               <figure className="relative overflow-hidden rounded-xl aspect-video bg-[color:var(--color-stone-200)]">
                 <Image
                   src="/images/training/training-4.jpg"
-                  alt="Dojo Berkel-Enschot — trainingsruimte aan de Kerkstraat 9B"
+                  alt="Dojo Berkel-Enschot trainingsruimte aan de Kerkstraat 9B"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover"
                 />
-                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white text-sm">
-                  <span className="font-semibold">Dojo</span> — Kerkstraat 9B, Berkel-Enschot
+                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm">
+                  <span className="font-semibold">Dojo</span> Kerkstraat 9B, Berkel-Enschot
                 </figcaption>
               </figure>
             </Reveal>

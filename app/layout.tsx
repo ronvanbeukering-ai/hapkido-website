@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { WhatsAppFab } from "@/components/WhatsAppFab";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationSchema } from "@/lib/jsonld";
-import { site } from "@/lib/site";
+import { site, siteKeywords } from "@/lib/site";
 import "./globals.css";
 
 const displayFont = Bebas_Neue({
@@ -24,12 +24,13 @@ const bodyFont = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name}, ${site.tagline}`,
+    default: `${site.name} Hapkido Combinatie in Berkel-Enschot & Waalwijk`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
+  keywords: [...siteKeywords],
   applicationName: site.name,
-  authors: [{ name: site.name }],
+  authors: [{ name: site.name, url: site.url }],
   creator: site.name,
   publisher: site.name,
   formatDetection: { telephone: false, email: false, address: false },
@@ -42,10 +43,23 @@ export const metadata: Metadata = {
     locale: "nl_NL",
     url: site.url,
     siteName: site.name,
-    title: `${site.name}, ${site.tagline}`,
+    title: `${site.name} Hapkido Combinatie in Noord-Brabant`,
     description: site.description,
+    images: [
+      {
+        url: "/images/training/training-1.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Hapkido Yong Hapkido Combinatie training in Berkel-Enschot en Waalwijk",
+      },
+    ],
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.name} Hapkido Combinatie in Noord-Brabant`,
+    description: site.description,
+    images: ["/images/training/training-1.jpg"],
+  },
   robots: { index: true, follow: true },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],

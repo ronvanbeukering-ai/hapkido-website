@@ -10,9 +10,32 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Gratis proefles Hapkido Berkel-Enschot of Waalwijk",
   description:
-    "Plan een gratis proefles Hapkido in Berkel-Enschot of Waalwijk. Geen verplichting, gewoon meedoen en kijken of het klikt.",
-  keywords: ["hapkido proefles", "gratis proefles zelfverdediging", "hapkido yong aanmelden"],
+    "Plan een gratis proefles Hapkido Combinatie in Berkel-Enschot of Waalwijk. Geen verplichting, geen kosten. Gewoon meedoen en kijken of het klikt.",
+  keywords: [
+    "hapkido proefles",
+    "gratis proefles hapkido",
+    "gratis proefles zelfverdediging",
+    "hapkido proefles tilburg",
+    "hapkido proefles waalwijk",
+    "hapkido yong aanmelden",
+    "zelfverdediging proberen",
+    "hapkido beginners",
+  ],
   alternates: { canonical: `${site.url}/proefles` },
+  openGraph: {
+    title: "Gratis proefles Hapkido Combinatie Berkel-Enschot of Waalwijk",
+    description:
+      "Meld je aan voor een gratis proefles Hapkido Combinatie. Geen verplichting, geen kosten. Kies Berkel-Enschot of Waalwijk.",
+    locale: "nl_NL",
+    type: "website",
+    images: [{ url: "/images/training/training-1.jpg", width: 1200, height: 630, alt: "Gratis proefles Hapkido Yong" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Gratis proefles Hapkido Berkel-Enschot of Waalwijk",
+    description: "Geen verplichting, geen kosten. Plan je gratis proefles Hapkido Combinatie.",
+    images: ["/images/training/training-1.jpg"],
+  },
 };
 
 const steps = [

@@ -8,11 +8,33 @@ import { breadcrumbSchema } from "@/lib/jsonld";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Contributie & tarieven, Hapkido Yong | Berkel-Enschot & Waalwijk",
+  title: "Hapkido Contributie & Tarieven Hapkido Yong Noord-Brabant",
   description:
-    "Jeugd €75/kwartaal, volwassenen €90/kwartaal. Strippenkaart beschikbaar. Bekijk alle contributietarieven van Hapkido Yong en hoe je je inschrijft.",
-  keywords: ["hapkido contributie", "hapkido kosten", "zelfverdediging tarieven tilburg"],
+    "Hapkido Yong contributie: jeugd €75/kwartaal, volwassenen €90/kwartaal, strippenkaart €75 per 10 lessen. Eerlijke tarieven in Berkel-Enschot en Waalwijk.",
+  keywords: [
+    "hapkido contributie",
+    "hapkido kosten",
+    "zelfverdediging tarieven tilburg",
+    "hapkido lidmaatschap",
+    "hapkido prijs nederland",
+    "hapkido combinatie kosten",
+    "hapkido abonnement",
+  ],
   alternates: { canonical: `${site.url}/contributie` },
+  openGraph: {
+    title: "Hapkido Contributie & Tarieven Hapkido Yong",
+    description:
+      "Hapkido lessen vanaf €75 per kwartaal. Jeugd, volwassenen en strippenkaart. Berkel-Enschot en Waalwijk.",
+    locale: "nl_NL",
+    type: "website",
+    images: [{ url: "/images/training/training-1.jpg", width: 1200, height: 630, alt: "Hapkido Yong tarieven en contributie" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hapkido Contributie Hapkido Yong vanaf €75/kwartaal",
+    description: "Eerlijke tarieven voor hapkido lessen in Noord-Brabant. Jeugd, volwassenen, strippenkaart.",
+    images: ["/images/training/training-1.jpg"],
+  },
 };
 
 const plans = [
@@ -49,9 +71,22 @@ const plans = [
     features: [
       "Voor wie niet regelmatig kan",
       "Geldig op alle lessen",
-      "Een strip per training",
+      "Eén strip per training",
       "Bondskosten apart (€25/jaar)",
     ],
+  },
+  {
+    title: "Online Cursustoegang",
+    price: "€35",
+    period: "eenmalig",
+    yearly: "geen mat-training",
+    features: [
+      "Volledige toegang tot alle online lessen",
+      "Videobibliotheek met trainingsopnames",
+      "Levenslange toegang na aankoop",
+      "Geen mat-training inbegrepen",
+    ],
+    online: true,
   },
 ];
 
@@ -76,19 +111,27 @@ export default function Page() {
 
       <section className="section">
         <div className="container-x">
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {plans.map((p, i) => (
               <Reveal key={p.title} delay={i * 100}>
                 <div
-                  className={`card p-6 md:p-8 h-full flex flex-col ${
+                  className={`card p-6 md:p-8 h-full flex flex-col relative ${
                     p.featured
-                      ? "border-[color:var(--color-accent-700)] relative shadow-[var(--shadow-glow-red)]"
+                      ? "border-[color:var(--color-accent-700)] shadow-[var(--shadow-glow-red)]"
+                      : ""
+                  } ${"online" in p && p.online
+                      ? "border-[color:var(--color-gold-600)]"
                       : ""
                   }`}
                 >
                   {p.featured && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 badge-red text-xs">
                       Meest gekozen
+                    </div>
+                  )}
+                  {"online" in p && p.online && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 badge-gold text-xs whitespace-nowrap">
+                      Niet-leden
                     </div>
                   )}
                   <h3 className="font-[family-name:var(--font-display)] text-2xl">{p.title}</h3>

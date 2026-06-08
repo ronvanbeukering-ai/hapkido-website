@@ -14,11 +14,35 @@ import { site, locations, faq } from "@/lib/site";
 const loc = locations.find((l) => l.slug === "berkel-enschot")!;
 
 export const metadata: Metadata = {
-  title: "Hapkido lessen Berkel-Enschot (Tilburg), Gratis proefles",
+  title: "Hapkido Berkel-Enschot (bij Tilburg) Gratis proefles",
   description:
-    "Hapkido lessen in Berkel-Enschot op Kerkstraat 9B. Lessen voor jeugd en volwassenen op maandag, woensdag en zaterdag. Plan vandaag een gratis proefles.",
-  keywords: ["hapkido berkel-enschot", "hapkido tilburg", "zelfverdediging berkel-enschot"],
+    "Hapkido Combinatie lessen in Berkel-Enschot, Kerkstraat 9B. Jeugd en volwassenen, ma/wo/za. Trainer: Master Ron van Beukering (6e Dan). Plan gratis proefles.",
+  keywords: [
+    "hapkido berkel-enschot",
+    "hapkido tilburg",
+    "hapkido combinatie tilburg",
+    "zelfverdediging berkel-enschot",
+    "zelfverdediging tilburg",
+    "hapkido noord-brabant",
+    "martial arts tilburg",
+    "kwan nyom hapkido tilburg",
+    "hapkido proefles tilburg",
+  ],
   alternates: { canonical: `${site.url}/lessen/berkel-enschot` },
+  openGraph: {
+    title: "Hapkido Berkel-Enschot (bij Tilburg) Gratis proefles",
+    description:
+      "Hapkido Combinatie in Berkel-Enschot onder leiding van Master Ron van Beukering. Lessen voor jeugd en volwassenen. Maandag, woensdag en zaterdag.",
+    locale: "nl_NL",
+    type: "website",
+    images: [{ url: "/images/training/training-4.jpg", width: 1200, height: 630, alt: "Hapkido Yong dojo Berkel-Enschot Kerkstraat 9B" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hapkido Berkel-Enschot Hapkido Combinatie bij Tilburg",
+    description: "Master Ron van Beukering (6e Dan). Lessen ma/wo/za. Gratis proefles aanvragen.",
+    images: ["/images/training/training-4.jpg"],
+  },
 };
 
 export default function Page() {
@@ -46,7 +70,7 @@ export default function Page() {
       />
 
       <section className="bg-[color:var(--color-surface-2)] border-b border-[color:var(--color-border)]">
-        <div className="container-x grid sm:grid-cols-3 gap-px bg-[color:var(--color-stone-200)]">
+        <div className="container-x grid sm:grid-cols-3 gap-px bg-[color:var(--color-border)]">
           <div className="bg-[color:var(--color-surface-2)] p-6 flex items-center gap-3">
             <MapPin className="text-[color:var(--color-accent-500)]" size={18} />
             <div>
@@ -141,6 +165,18 @@ export default function Page() {
         </div>
       </section>
 
+      <section className="section bg-[color:var(--color-surface-2)] border-y border-[color:var(--color-border)]">
+        <div className="container-x max-w-3xl">
+          <Reveal>
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl tracking-tight mb-4">
+              Meer weten over Hapkido Combinatie?
+            </h2>
+            <p className="text-[color:var(--color-muted)] leading-relaxed">
+              Lees alles over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-400)] hover:underline">Hapkido Combinatie</Link>, onze complete zelfverdedigingsstijl. Of bekijk de andere locatie in <Link href="/lessen/waalwijk" className="text-[color:var(--color-accent-400)] hover:underline">Waalwijk</Link>. Meer over onze hoofdtrainer: <Link href="/trainers/ron-van-beukering" className="text-[color:var(--color-accent-400)] hover:underline">Master Ron van Beukering</Link>.
+            </p>
+          </Reveal>
+        </div>
+      </section>
       <CTABanner title="Klaar om mee te trainen?" />
     </>
   );

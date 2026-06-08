@@ -23,7 +23,7 @@ export function ScheduleTable({ entries, note }: { entries: Entry[]; note?: stri
         ))}
       </ul>
       {note && (
-        <div className="mt-5 flex gap-3 p-4 rounded-md bg-black/30 border-l-2 border-[color:var(--color-gold)]">
+        <div className="mt-5 flex gap-3 p-4 rounded-md bg-[#0e0b08]/30 border-l-2 border-[color:var(--color-gold)]">
           <Info size={16} className="shrink-0 text-[color:var(--color-gold)] mt-0.5" />
           <p className="text-xs text-[color:var(--color-muted)] leading-relaxed">{note}</p>
         </div>

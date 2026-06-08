@@ -12,14 +12,14 @@ export function LocationCard({ loc }: { loc: Location }) {
       <div className="aspect-[16/10] bg-[color:var(--color-stone-200)] relative overflow-hidden">
         <Image
           src={loc.photo}
-          alt={`Training Hapkido ${loc.city}`}
+          alt={`Hapkido Yong ${loc.city} Hapkido Combinatie training, ${loc.street}`}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-stone-950/15 to-stone-950/10" />
         <div className="absolute top-4 left-4">
-          <span className="inline-flex items-center px-3 py-1 rounded-md bg-white/95 backdrop-blur text-[color:var(--color-heading)] text-sm font-semibold shadow-md">
+          <span className="inline-flex items-center px-3 py-1 rounded-md bg-[#0e0b08]/80 backdrop-blur text-white text-sm font-semibold shadow-md border border-white/20">
             {loc.city}
           </span>
         </div>
@@ -59,7 +59,7 @@ export function LocationCard({ loc }: { loc: Location }) {
           )}
           <Link
             href={`/lessen/${loc.slug}`}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--color-accent-700)] hover:text-[color:var(--color-accent-600)] group/cta"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--color-accent-400)] hover:text-[color:var(--color-accent-300)] group/cta"
           >
             Bekijk {loc.city}
             <ArrowRight size={14} className="transition-transform group-hover/cta:translate-x-0.5" />

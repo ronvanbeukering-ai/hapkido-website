@@ -12,7 +12,7 @@ import { createClient } from "@/lib/supabase/client";
 import { isSuperAdmin, isAdminOrSuperAdmin } from "@/lib/auth";
 
 /* ─── types ─────────────────────────────────────── */
-type Profiel = { id: string; email: string; rol: "admin" | "lid" | "geen"; lid_geldig_tot: string | null };
+type Profiel = { id: string; email: string; rol: "admin" | "lid" | "cursus" | "geen"; lid_geldig_tot: string | null };
 type HKVideo = { id: string; titel: string; beschrijving: string; categorie: string; platform?: string; url?: string; volgorde?: number };
 type HKLes  = { nr: number; titel: string; duur: string; categorie: string; gratis: boolean; beschrijving?: string; video_url?: string };
 const SB_URL  = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -255,7 +255,7 @@ function VideosBeheer() {
                 {v.platform === "local" && (
                   <video src={v.url} className="w-full h-full object-cover" preload="metadata" muted />
                 )}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                <div className="absolute inset-0 bg-[#0e0b08]/0 group-hover:bg-[#0e0b08]/20 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
                   <button onClick={() => setForm({ ...v })} className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow hover:scale-105 transition-transform">
                     <Pencil size={14} className="text-stone-700" />
                   </button>
@@ -263,7 +263,7 @@ function VideosBeheer() {
                     <Trash2 size={14} className="text-white" />
                   </button>
                 </div>
-                <span className="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white uppercase">{v.platform ?? "youtube"}</span>
+                <span className="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-[#0e0b08]/60 text-white uppercase">{v.platform ?? "youtube"}</span>
               </div>
               <div className="p-3">
                 <p className="text-sm font-semibold text-[color:var(--color-heading)] truncate">{v.titel}</p>
@@ -288,18 +288,11 @@ function LessenBeheer() {
   const [bewerkt, setBewerkt] = useState<HKLes | null>(null);
 
   const STANDAARD: HKLes[] = [
-    { nr: 1,  titel: "Introductie & doelstellingen",       duur: "12m", categorie: "Basis",     gratis: true  },
-    { nr: 2,  titel: "Houding en voetenwerk",              duur: "18m", categorie: "Basis",     gratis: true  },
-    { nr: 3,  titel: "Valbreektechnieken (ukemi)",         duur: "22m", categorie: "Basis",     gratis: false },
-    { nr: 4,  titel: "Basisgrepen — pols en arm",          duur: "25m", categorie: "Grepen",    gratis: false },
-    { nr: 5,  titel: "Ontgrendelen bij manchetgreep",      duur: "20m", categorie: "Grepen",    gratis: false },
-    { nr: 6,  titel: "Stoten en trappen — basisreeks",     duur: "30m", categorie: "Slagen",    gratis: false },
-    { nr: 7,  titel: "Werpingen — ogoshi en o-soto-gari",  duur: "28m", categorie: "Werpingen", gratis: false },
-    { nr: 8,  titel: "Joint locks — elleboog en schouder", duur: "35m", categorie: "Locks",     gratis: false },
-    { nr: 9,  titel: "Verweer bij zijdelingse aanval",     duur: "22m", categorie: "Verweer",   gratis: false },
-    { nr: 10, titel: "Verweer bij achteraanval",           duur: "24m", categorie: "Verweer",   gratis: false },
-    { nr: 11, titel: "Wapen: bokken (houten stok)",        duur: "32m", categorie: "Wapens",    gratis: false },
-    { nr: 12, titel: "Wapen: korte stok (dan bong)",       duur: "28m", categorie: "Wapens",    gratis: false },
+    { nr: 1, titel: "Basishoudingen & voetenwerk",        duur: "18m", categorie: "Houding", gratis: true  },
+    { nr: 2, titel: "Valbreken (ukemi)",                  duur: "22m", categorie: "Houding", gratis: true  },
+    { nr: 3, titel: "Stoten — basisreeks tot rode band",  duur: "30m", categorie: "Stoten",  gratis: false },
+    { nr: 4, titel: "Trappen — basisreeks tot rode band", duur: "30m", categorie: "Trappen", gratis: false },
+    { nr: 5, titel: "Locks — uitleg en demonstratie",     duur: "35m", categorie: "Locks",   gratis: false },
   ];
 
   const laad = useCallback(async () => {
@@ -428,6 +421,27 @@ function LedenBeheer() {
     laad();
   }
 
+  async function activeerCursus(id: string) {
+    const over30 = new Date();
+    over30.setDate(over30.getDate() + 30);
+    const tot = over30.toISOString().slice(0, 10);
+    await supabase.from("profiles").update({ rol: "cursus", lid_geldig_tot: tot }).eq("id", id);
+    toast("Cursus abonnement geactiveerd (30 dagen)!");
+    laad();
+  }
+
+  async function verlengCursus(id: string) {
+    const huidig = leden.find(l => l.id === id);
+    const basis = huidig?.lid_geldig_tot && new Date(huidig.lid_geldig_tot) > new Date()
+      ? new Date(huidig.lid_geldig_tot)
+      : new Date();
+    basis.setDate(basis.getDate() + 30);
+    const tot = basis.toISOString().slice(0, 10);
+    await supabase.from("profiles").update({ lid_geldig_tot: tot }).eq("id", id);
+    toast("Cursus verlengd met 30 dagen!");
+    laad();
+  }
+
   async function setAdmin(id: string) {
     await supabase.from("profiles").update({ rol: "admin" }).eq("id", id);
     toast("Admin toegang gegeven!");
@@ -437,9 +451,17 @@ function LedenBeheer() {
   const gefilterd = leden.filter(l => l.email?.toLowerCase().includes(zoek.toLowerCase()));
 
   const rolKleur: Record<string, string> = {
-    admin: "bg-[color:var(--color-gold-100)] text-[color:var(--color-gold-600)] border-[color:var(--color-gold-200)]",
-    lid:   "bg-emerald-100 text-emerald-700 border-emerald-200",
-    geen:  "bg-[color:var(--color-stone-100)] text-[color:var(--color-muted)] border-[color:var(--color-border)]",
+    admin:  "bg-[color:var(--color-gold-100)] text-[color:var(--color-gold-600)] border-[color:var(--color-gold-200)]",
+    lid:    "bg-emerald-100 text-emerald-700 border-emerald-200",
+    cursus: "bg-blue-100 text-blue-700 border-blue-200",
+    geen:   "bg-[color:var(--color-stone-100)] text-[color:var(--color-muted)] border-[color:var(--color-border)]",
+  };
+
+  const rolLabel: Record<string, string> = {
+    admin:  "ADMIN",
+    lid:    "LID",
+    cursus: "CURSUS",
+    geen:   "GEEN",
   };
 
   return (
@@ -475,11 +497,11 @@ function LedenBeheer() {
                   </td>
                   <td className="px-5 py-4">
                     <span className={`text-[10px] font-bold px-2 py-1 rounded border ${rolKleur[l.rol] ?? rolKleur.geen}`}>
-                      {l.rol.toUpperCase()}
+                      {rolLabel[l.rol] ?? l.rol.toUpperCase()}
                     </span>
                   </td>
                   <td className="px-5 py-4">
-                    {l.rol === "lid" ? (
+                    {(l.rol === "lid" || l.rol === "cursus") ? (
                       <input type="date" className="input !py-1 !px-2 text-xs w-36"
                         value={geldigTot[l.id] ?? l.lid_geldig_tot?.slice(0, 10) ?? ""}
                         onChange={e => setGeldigTot(g => ({ ...g, [l.id]: e.target.value }))}
@@ -490,13 +512,23 @@ function LedenBeheer() {
                     )}
                   </td>
                   <td className="px-5 py-4">
-                    <div className="flex items-center justify-end gap-2">
+                    <div className="flex items-center justify-end gap-2 flex-wrap">
                       {l.rol !== "lid" && l.rol !== "admin" && (
                         <button onClick={() => setRol(l.id, "lid")} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors font-semibold">
                           <CheckCircle size={12} /> Lid maken
                         </button>
                       )}
-                      {l.rol === "lid" && (
+                      {l.rol === "geen" && (
+                        <button onClick={() => activeerCursus(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-semibold">
+                          <Video size={12} /> Cursus activeren
+                        </button>
+                      )}
+                      {l.rol === "cursus" && (
+                        <button onClick={() => verlengCursus(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors font-semibold">
+                          <CheckCircle size={12} /> Verleng 30 dagen
+                        </button>
+                      )}
+                      {(l.rol === "lid" || l.rol === "cursus") && (
                         <button onClick={() => setRol(l.id, "geen")} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition-colors font-semibold">
                           <XCircle size={12} /> Intrekken
                         </button>

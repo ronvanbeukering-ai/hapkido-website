@@ -1,6 +1,7 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Shield, Heart, Brain, Zap, Users, Flame } from "lucide-react";
+import { ArrowRight, Shield, Heart, Brain, Zap, Users, Flame, Play } from "lucide-react";
 import { HomeHero } from "@/components/Hero";
 import { LocationCard } from "@/components/LocationCard";
 import { TrainerCard } from "@/components/TrainerCard";
@@ -11,19 +12,60 @@ import { Reveal } from "@/components/Reveal";
 import { JsonLd } from "@/components/JsonLd";
 import { VideoGallery } from "@/components/VideoGallery";
 import { videoSchema } from "@/lib/jsonld";
-import { locations, trainers, benefits, disciplines, faq } from "@/lib/site";
+import { locations, trainers, benefits, faq, site } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Hapkido Yong Hapkido Combinatie in Berkel-Enschot & Waalwijk",
+  description:
+    "Hapkido Combinatie (Koreaans MMA) bij Hapkido Yong in Berkel-Enschot en Waalwijk. Zelfverdediging voor alle leeftijden onder leiding van Master Ron van Beukering. Gratis proefles.",
+  keywords: [
+    "hapkido nederland",
+    "hapkido combinatie",
+    "kwan nyom hapkido",
+    "hapkido berkel-enschot",
+    "hapkido waalwijk",
+    "hapkido tilburg",
+    "hapkido noord-brabant",
+    "ron van beukering",
+    "zelfverdediging nederland",
+    "koreaans mma",
+  ],
+  alternates: { canonical: site.url },
+  openGraph: {
+    title: "Hapkido Yong Hapkido Combinatie in Berkel-Enschot & Waalwijk",
+    description:
+      "Hapkido Combinatie (Koreaans MMA) bij Hapkido Yong in Berkel-Enschot en Waalwijk. Zelfverdediging voor alle leeftijden onder leiding van Master Ron van Beukering. Gratis proefles.",
+    locale: "nl_NL",
+    type: "website",
+    images: [
+      {
+        url: "/images/training/training-1.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Hapkido Yong Hapkido Combinatie training in Berkel-Enschot",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hapkido Yong Hapkido Combinatie in Noord-Brabant",
+    description:
+      "Hapkido Combinatie bij Hapkido Yong. Twee locaties: Berkel-Enschot en Waalwijk. Gratis proefles.",
+    images: ["/images/training/training-1.jpg"],
+  },
+};
 
 const benefitIcons = [Shield, Zap, Heart, Brain, Flame, Users];
 
 const trainingPhotos = [
   {
     src: "/images/training/training-1.jpg",
-    alt: "Hapkido training — stand-up technieken bij Hapkido Yong Berkel-Enschot",
+    alt: "Hapkido training stand-up technieken bij Hapkido Yong Berkel-Enschot",
     caption: "Stand-up technieken",
   },
   {
     src: "/images/training/training-2.jpg",
-    alt: "Groepsles bij Hapkido Yong Waalwijk — gemixte groep volwassenen en jongeren",
+    alt: "Groepsles bij Hapkido Yong Waalwijk gemixte groep volwassenen en jongeren",
     caption: "Groepsles Waalwijk",
   },
   {
@@ -33,7 +75,7 @@ const trainingPhotos = [
   },
   {
     src: "/images/training/training-4.jpg",
-    alt: "Hapkido Yong dojo in Berkel-Enschot — trainingsruimte Kerkstraat 9B",
+    alt: "Hapkido Yong dojo in Berkel-Enschot trainingsruimte Kerkstraat 9B",
     caption: "Dojo Berkel-Enschot",
   },
 ];
@@ -49,22 +91,12 @@ export default function Home() {
           <Reveal className="max-w-3xl">
             <div className="badge-red mb-4">Hapkido Combinatie</div>
             <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-6xl tracking-tight leading-[1] mb-6">
-              Negen vechtsporten<br />in één moderne stijl
+              Hapkido Combinatie:<br />diverse vechtsporten in één
             </h2>
             <p className="text-base md:text-lg text-[color:var(--color-muted)] leading-relaxed">
-              Hapkido Combinatie, ook bekend als Koreaans MMA, combineert technieken uit Hapkido, Jiu-Jitsu, Judo, Taekwondo, Systema, Boksen, Pencak Silat, Krav Maga en Braziliaans Jiu-Jitsu. Eén complete, moderne zelfverdedigingsstijl. Je leert niet vechten, maar voorkomen.
+              Hapkido Combinatie is Hapkido gecombineerd met inzichten uit andere martial arts. Door het samenbrengen van verdedigingsstijlen en vooropleidingen in Fysiotherapie, Manueel therapie en Shiatsu therapie is er een methode ontstaan waarbij je het maximum haalt uit praktische zelfverdediging.
             </p>
           </Reveal>
-
-          <div className="mt-12 flex flex-wrap gap-2">
-            {disciplines.map((d, i) => (
-              <Reveal key={d} delay={i * 40}>
-                <span className="inline-flex items-center px-4 py-2 rounded-md bg-[color:var(--color-surface-2)] border border-[color:var(--color-border)] text-sm text-[color:var(--color-text)] hover:border-[color:var(--color-stone-300)] hover:text-[color:var(--color-heading)] transition-colors">
-                  {d}
-                </span>
-              </Reveal>
-            ))}
-          </div>
 
           <div className="mt-10">
             <Link href="/hapkido-combinatie" className="btn-ghost">
@@ -74,8 +106,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trainingsvideo's — lokale opnames */}
-      <section className="section bg-[color:var(--color-stone-950)] border-y border-white/10">
+      {/* Trainingsvideo's lokale opnames */}
+      <section className="section">
         <div className="container-x">
           <Reveal>
             <div className="badge-red mb-4">Echte trainingen</div>
@@ -112,7 +144,7 @@ export default function Home() {
                     sizes="(max-width: 768px) 50vw, 25vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <figcaption className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  <figcaption className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                     {p.caption}
                   </figcaption>
                 </figure>
@@ -122,7 +154,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section bg-[color:var(--color-surface-2)] border-y border-[color:var(--color-border)]">
+      <section className="section">
         <div className="container-x">
           <Reveal>
             <div className="badge-red mb-4">Locaties</div>
@@ -140,6 +172,31 @@ export default function Home() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Online training callout */}
+      <section className="section">
+        <div className="container-x">
+          <Reveal>
+            <div className="card p-6 md:p-8 border-[color:var(--color-gold-600)] flex flex-col md:flex-row md:items-center gap-6">
+              <div className="w-14 h-14 rounded-xl bg-[color:var(--color-gold-600)]/15 border border-[color:var(--color-gold-600)]/30 inline-flex items-center justify-center text-[color:var(--color-gold-400)] shrink-0">
+                <Play size={24} />
+              </div>
+              <div className="flex-1">
+                <div className="badge-gold mb-2">Online training</div>
+                <h3 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl leading-tight">
+                  Woon je te ver weg of wil je eerst thuis oefenen?
+                </h3>
+                <p className="mt-2 text-sm text-[color:var(--color-muted)] max-w-xl leading-relaxed">
+                  Volg de volledige Hapkido Combinatie cursus van Master Ron vanuit huis. Vijf lessen met video's — eenmalig €35 voor levenslange toegang.
+                </p>
+              </div>
+              <Link href="/online-aanmelden" className="btn-primary shrink-0">
+                Start online <ArrowRight size={16} />
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -170,7 +227,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section bg-[color:var(--color-surface-2)] border-y border-[color:var(--color-border)]">
+      <section className="section">
         <div className="container-x">
           <Reveal>
             <div className="badge-red mb-4">Verhalen van leden</div>
@@ -205,8 +262,7 @@ export default function Home() {
             })()}
             <Reveal delay={150} className="lg:col-span-7">
               <p className="text-lg leading-relaxed text-[color:var(--color-text)] max-w-xl">
-                Master Ron introduceerde Kwan Nyom Hapkido in 2006 in Nederland en richtte in 2023 Hapkido Combinatie op. Met 6e Dan Hapkido Combinatie en 5e Dan Kwan Nyom Hapkido is hij het gezicht en de drijvende kracht achter Hapkido Yong.
-              </p>
+                Hapkido Combinatie is Hapkido gecombineerd met inzichten uit andere martial arts. Door het samenbrengen van verdedigingsstijlen en vooropleidingen in Fysiotherapie, Manueel therapie en Shiatsu therapie is er een methode ontstaan waarbij je het maximum haalt uit praktische zelfverdediging. Ron van Beukering heeft 1e Dan Hapkido volgens Mung Jae Nam, 1e Dan Sin Moo Hapkido, 5e Dan Kwan Nyom Hapkido, 6e Dan Hapkido Combinatie, 1e Dan Dim Mak en is basis instructeur Knife Fighting. Verder heeft hij zich verdiept in Systema, Taekwondo (o.b.v. GM Harry Bottse), Dim Mak, diverse meditatie- en ontspanningstechnieken en agressiebeheersing. Hapkido Combinatie ontwikkelt zich door gesprekken, trainingen en bestudering van diverse methodieken. Een belangrijke klankbord hierin is Harry Bottse.              </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link href="/trainers/ron-van-beukering" className="btn-primary">
                   Bekijk profiel

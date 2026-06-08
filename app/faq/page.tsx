@@ -7,11 +7,34 @@ import { faqPageSchema, breadcrumbSchema } from "@/lib/jsonld";
 import { site, faq } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Veelgestelde vragen over Hapkido",
+  title: "FAQ Veelgestelde vragen over Hapkido Combinatie",
   description:
-    "Alles wat je wilt weten over Hapkido: leeftijd, kosten, proefles, banden, examens en meer. Antwoorden van Hapkido Yong in Berkel-Enschot en Waalwijk.",
-  keywords: ["hapkido vragen", "hapkido beginnen", "hapkido leeftijd kinderen"],
+    "Antwoorden op al je vragen over hapkido: leeftijd, kosten, proefles, banden en examens. Hapkido Yong, Berkel-Enschot en Waalwijk, Noord-Brabant.",
+  keywords: [
+    "hapkido vragen",
+    "hapkido beginnen",
+    "hapkido leeftijd kinderen",
+    "hapkido kosten contributie",
+    "hapkido bandexamen",
+    "hapkido combinatie uitleg",
+    "hapkido voor beginners",
+    "hapkido yong faq",
+  ],
   alternates: { canonical: `${site.url}/faq` },
+  openGraph: {
+    title: "FAQ Veelgestelde vragen over Hapkido Combinatie",
+    description:
+      "Alles over hapkido: leeftijd, contributie, proefles, banden en examens. Hapkido Yong in Berkel-Enschot en Waalwijk.",
+    locale: "nl_NL",
+    type: "website",
+    images: [{ url: "/images/training/training-1.jpg", width: 1200, height: 630, alt: "Hapkido Yong veelgestelde vragen" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FAQ Hapkido Yong Hapkido Combinatie vragen",
+    description: "Leeftijd, kosten, proefles, banden. Alles over hapkido bij Hapkido Yong in Noord-Brabant.",
+    images: ["/images/training/training-1.jpg"],
+  },
 };
 
 export default function Page() {

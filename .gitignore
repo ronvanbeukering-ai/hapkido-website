@@ -6,3 +6,6 @@ out
 .DS_Store
 *.log
 .vercel
+tsconfig.tsbuildinfo
+public/videos/*.mp4
+public/videos/*.mov

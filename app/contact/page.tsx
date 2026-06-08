@@ -9,10 +9,32 @@ import { breadcrumbSchema } from "@/lib/jsonld";
 import { site, locations } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Contact, Hapkido Yong Berkel-Enschot & Waalwijk",
+  title: "Contact Hapkido Yong Berkel-Enschot & Waalwijk",
   description:
-    "Neem contact op met Hapkido Yong. Bel of WhatsApp +31 6 46 55 55 55, mail info@hapkidonederland.nl of bezoek onze dojo in Berkel-Enschot of Waalwijk.",
+    "Neem contact op met Hapkido Yong. Bel of WhatsApp +31 6 46 55 55 55, mail hapkidonederland@gmail.com. Dojo in Berkel-Enschot (Tilburg) en Waalwijk.",
+  keywords: [
+    "contact hapkido yong",
+    "hapkido berkel-enschot contact",
+    "hapkido waalwijk contact",
+    "hapkido tilburg bellen",
+    "hapkido aanmelden",
+    "hapkido whatsapp",
+  ],
   alternates: { canonical: `${site.url}/contact` },
+  openGraph: {
+    title: "Contact Hapkido Yong Berkel-Enschot & Waalwijk",
+    description:
+      "Bel, WhatsApp of mail Hapkido Yong. Twee locaties in Noord-Brabant: Berkel-Enschot en Waalwijk.",
+    locale: "nl_NL",
+    type: "website",
+    images: [{ url: "/images/training/training-1.jpg", width: 1200, height: 630, alt: "Hapkido Yong contact opnemen" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Hapkido Yong Berkel-Enschot & Waalwijk",
+    description: "Bel of WhatsApp +31 6 46 55 55 55. Twee locaties: Berkel-Enschot en Waalwijk.",
+    images: ["/images/training/training-1.jpg"],
+  },
 };
 
 export default function Page() {

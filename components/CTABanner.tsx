@@ -14,11 +14,7 @@ export function CTABanner({
   const isAccent = variant === "accent";
   return (
     <section
-      className={
-        isAccent
-          ? "relative overflow-hidden bg-gradient-to-br from-[color:var(--color-accent-700)] via-[color:var(--color-accent-800)] to-neutral-950"
-          : "bg-[color:var(--color-surface-2)] border-y border-[color:var(--color-border)]"
-      }
+      className="relative overflow-hidden"
     >
       {isAccent && (
         <div

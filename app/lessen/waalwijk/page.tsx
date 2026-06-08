@@ -14,11 +14,34 @@ import { site, locations, faq } from "@/lib/site";
 const loc = locations.find((l) => l.slug === "waalwijk")!;
 
 export const metadata: Metadata = {
-  title: "Hapkido & zelfverdediging Waalwijk, Lestijden en proefles",
+  title: "Hapkido Waalwijk Hapkido Combinatie, Gratis proefles",
   description:
-    "Hapkido lessen in Waalwijk op Dominee Louwe Kooymanslaan 9. Maandag en zaterdag. Hoofdtrainer Marco van Gulik. Meld je aan voor een gratis proefles.",
-  keywords: ["hapkido waalwijk", "zelfverdediging waalwijk", "martial arts waalwijk"],
+    "Hapkido Combinatie lessen in Waalwijk, Dominee Louwe Kooymanslaan 9. Maandag en zaterdag. Trainer CGN Marco van Gulik (2e Dan). Plan een gratis proefles.",
+  keywords: [
+    "hapkido waalwijk",
+    "hapkido combinatie waalwijk",
+    "zelfverdediging waalwijk",
+    "martial arts waalwijk",
+    "hapkido noord-brabant",
+    "pencak silat waalwijk",
+    "hapkido proefles waalwijk",
+    "marco van gulik",
+  ],
   alternates: { canonical: `${site.url}/lessen/waalwijk` },
+  openGraph: {
+    title: "Hapkido Waalwijk Hapkido Combinatie, Gratis proefles",
+    description:
+      "Hapkido Combinatie in Waalwijk onder leiding van CGN Marco van Gulik. Lessen maandag en zaterdag. Gratis proefles aanvragen.",
+    locale: "nl_NL",
+    type: "website",
+    images: [{ url: "/images/training/training-2.jpg", width: 1200, height: 630, alt: "Hapkido Yong Waalwijk groepsles Hapkido Combinatie" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hapkido Waalwijk Hapkido Combinatie",
+    description: "CGN Marco van Gulik (2e Dan). Lessen ma/za. Gratis proefles in Waalwijk.",
+    images: ["/images/training/training-2.jpg"],
+  },
 };
 
 export default function Page() {
@@ -46,7 +69,7 @@ export default function Page() {
       />
 
       <section className="bg-[color:var(--color-surface-2)] border-b border-[color:var(--color-border)]">
-        <div className="container-x grid sm:grid-cols-3 gap-px bg-[color:var(--color-stone-200)]">
+        <div className="container-x grid sm:grid-cols-3 gap-px bg-[color:var(--color-border)]">
           <div className="bg-[color:var(--color-surface-2)] p-6 flex items-center gap-3">
             <MapPin className="text-[color:var(--color-accent-500)]" size={18} />
             <div>
@@ -140,6 +163,18 @@ export default function Page() {
         </div>
       </section>
 
+      <section className="section bg-[color:var(--color-surface-2)] border-y border-[color:var(--color-border)]">
+        <div className="container-x max-w-3xl">
+          <Reveal>
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl tracking-tight mb-4">
+              Meer weten over Hapkido Combinatie?
+            </h2>
+            <p className="text-[color:var(--color-muted)] leading-relaxed">
+              Lees alles over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-400)] hover:underline">Hapkido Combinatie</Link>, onze complete zelfverdedigingsstijl. Of bekijk de andere locatie in <Link href="/lessen/berkel-enschot" className="text-[color:var(--color-accent-400)] hover:underline">Berkel-Enschot (bij Tilburg)</Link>. Meer over onze trainer in Waalwijk: <Link href="/trainers/marco-van-gulik" className="text-[color:var(--color-accent-400)] hover:underline">CGN Marco van Gulik</Link>.
+            </p>
+          </Reveal>
+        </div>
+      </section>
       <CTABanner title="Klaar om mee te trainen?" />
     </>
   );
