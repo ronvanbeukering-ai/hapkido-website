@@ -110,12 +110,12 @@ export default function Home() {
       <section className="section">
         <div className="container-x">
           <Reveal>
-            <div className="badge-red mb-4">Echte trainingen</div>
+            <div className="badge-red mb-4">In de training</div>
             <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-6xl tracking-tight leading-tight text-white">
-              Zo ziet een les eruit
+              Bekijk de lessen van Hapkido Yong
             </h2>
             <p className="mt-4 text-white/70 max-w-2xl">
-              Bekijk fragmenten van onze echte trainingen in Berkel-Enschot en Waalwijk. Geen toneelstukken, gewoon de mat.
+              Echte trainingsopnames uit de dojo&apos;s in Berkel-Enschot en Waalwijk. Geen toneelstukken, gewoon de mat.
             </p>
           </Reveal>
           <div className="mt-10">

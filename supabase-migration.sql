@@ -8,7 +8,7 @@
 create table if not exists public.profiles (
   id            uuid primary key references auth.users on delete cascade,
   email         text not null,
-  rol           text not null default 'geen' check (rol in ('admin', 'lid', 'geen')),
+  rol           text not null default 'geen' check (rol in ('admin', 'lid', 'cursus', 'geen')),
   lid_geldig_tot timestamptz,
   aangemaakt_op  timestamptz default now()
 );

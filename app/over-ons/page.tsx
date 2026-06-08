@@ -132,35 +132,35 @@ export default function Page() {
           <Reveal>
             <div className="badge-red mb-4">De club in beeld</div>
             <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-6xl tracking-tight mb-10">
-              Onze dojo&apos;s en trainingen
+              Op de mat in Brabant
             </h2>
           </Reveal>
-          <div className="grid md:grid-cols-3 gap-5">
-            <Reveal className="md:col-span-2">
+          <div className="grid md:grid-cols-2 gap-5">
+            <Reveal>
               <figure className="relative overflow-hidden rounded-xl aspect-video bg-[color:var(--color-stone-200)]">
                 <Image
                   src="/images/training/training-1.jpg"
-                  alt="Hapkido Yong Berkel-Enschot stand-up technieken en werpen tijdens reguliere les"
+                  alt="Examens bij de NBJJV — Hapkido Yong"
                   fill
-                  sizes="(max-width: 768px) 100vw, 66vw"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                 />
                 <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm">
-                  <span className="font-semibold">Stand-up technieken</span> Berkel-Enschot
+                  <span className="font-semibold">Examens bij de NBJJV</span>
                 </figcaption>
               </figure>
             </Reveal>
             <Reveal delay={100}>
-              <figure className="relative overflow-hidden rounded-xl aspect-video md:aspect-auto md:h-full bg-[color:var(--color-stone-200)]">
+              <figure className="relative overflow-hidden rounded-xl aspect-video bg-[color:var(--color-stone-200)]">
                 <Image
                   src="/images/training/training-2.jpg"
-                  alt="Hapkido Yong Waalwijk gemixte groepsles met volwassenen en jongeren"
+                  alt="Dojang Berkel-Enschot — Hapkido Yong"
                   fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                 />
                 <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm">
-                  <span className="font-semibold">Groepsles</span> Waalwijk
+                  <span className="font-semibold">Dojang Berkel-Enschot</span>
                 </figcaption>
               </figure>
             </Reveal>
@@ -168,41 +168,27 @@ export default function Page() {
               <figure className="relative overflow-hidden rounded-xl aspect-video bg-[color:var(--color-stone-200)]">
                 <Image
                   src="/images/training/training-3.jpg"
-                  alt="Grondtechnieken en klemmen Hapkido Combinatie in de praktijk"
+                  alt="Impressie van diverse trainingen — Hapkido Yong"
                   fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                 />
                 <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm">
-                  <span className="font-semibold">Grondtechnieken</span> Hapkido Combinatie
+                  <span className="font-semibold">Impressie van diverse trainingen</span>
                 </figcaption>
               </figure>
             </Reveal>
             <Reveal delay={120}>
               <figure className="relative overflow-hidden rounded-xl aspect-video bg-[color:var(--color-stone-200)]">
                 <Image
-                  src="/images/training/academy.jpg"
-                  alt="Hapkido Combinatie Academie maandelijkse zwarte-bandtraining voor gevorderden"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover"
-                />
-                <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm">
-                  <span className="font-semibold">Hapkido Combinatie Academie</span> zwarte-bandtraining
-                </figcaption>
-              </figure>
-            </Reveal>
-            <Reveal delay={180} className="md:col-span-1">
-              <figure className="relative overflow-hidden rounded-xl aspect-video bg-[color:var(--color-stone-200)]">
-                <Image
                   src="/images/training/training-4.jpg"
-                  alt="Dojo Berkel-Enschot trainingsruimte aan de Kerkstraat 9B"
+                  alt="Diploma uitreiking bij de NBJJV — Hapkido Yong"
                   fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                 />
                 <figcaption className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent text-white text-sm">
-                  <span className="font-semibold">Dojo</span> Kerkstraat 9B, Berkel-Enschot
+                  <span className="font-semibold">Diploma uitreiking bij de NBJJV</span>
                 </figcaption>
               </figure>
             </Reveal>

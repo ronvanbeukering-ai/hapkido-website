@@ -60,7 +60,11 @@ export const hapkidoVideos: HapkidoVideo[] = [
   { id: "1198905757", platform: "vimeo", categorie: "uitleg",     titel: "Hapkido Combinatie — uitleg",      beschrijving: "Algemene uitleg over de Hapkido Combinatie methode." },
   { id: "1198905880", platform: "vimeo", categorie: "uitleg",     titel: "Uitleg locks & klemmen",           beschrijving: "Introductie van gewrichtsklemmen in hapkido." },
   { id: "1198905900", platform: "vimeo", categorie: "uitleg",     titel: "Uitleg Drills",                    beschrijving: "Drills en oefenmethoden voor efficiënt trainen." },
-  { id: "762278422",  platform: "vimeo", categorie: "uitleg",     titel: "Hapkido Yong — training",          beschrijving: "Trainingsvideo Hapkido Yong." },
+  { id: "762278422",   platform: "vimeo", categorie: "uitleg",     titel: "Hapkido Yong — training",          beschrijving: "Trainingsvideo Hapkido Yong." },
+  { id: "1199526926", platform: "vimeo", categorie: "uitleg",     titel: "Groepsles — gemixte groep",        beschrijving: "Impressie van een training met een gemixte groep." },
+  { id: "809686134",  platform: "vimeo", categorie: "uitleg",     titel: "Hapkido Combinatie — technieken demonstratie", beschrijving: "Demonstratie van Hapkido Combinatie technieken." },
+  { id: "1199536635", platform: "vimeo", categorie: "uitleg",     titel: "Hapkido training stand-up technieken — deel 1", beschrijving: "Stand-up technieken uit de Hapkido training." },
+  { id: "1199539288", platform: "vimeo", categorie: "uitleg",     titel: "Hapkido training stand-up technieken — deel 2", beschrijving: "Stand-up technieken uit de Hapkido training." },
 
   // ── Stoten & Slagen ─────────────────────────────────────────
   { id: "1198905933", platform: "vimeo", categorie: "stoten",     titel: "Jab",                              beschrijving: "Basis jab stoot." },
