@@ -8,6 +8,7 @@ import { breadcrumbSchema, courseSchema } from "@/lib/jsonld";
 import { CursusContent } from "@/components/CursusContent";
 import { onlineLessen, hapkidoVideos, totalDuur } from "@/lib/cursussen";
 import { site } from "@/lib/site";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Hapkido Online Cursus Lessen van Ron van Beukering",
@@ -47,7 +48,15 @@ const stats = [
   { icon: Lock, value: "€7,50", label: "Niet-leden (per maand)" },
 ];
 
-export default function Page() {
+export default async function Page() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("hapkido_videos")
+    .select("url, titel, beschrijving, categorie, platform")
+    .order("volgorde", { ascending: true });
+
+  const videos = (data ?? hapkidoVideos.map(v => ({ url: v.id, titel: v.titel, beschrijving: v.beschrijving, categorie: v.categorie, platform: v.platform ?? "vimeo" })))
+    .map(v => ({ id: v.url ?? "", titel: v.titel, beschrijving: v.beschrijving, categorie: v.categorie, platform: v.platform as "youtube" | "vimeo" | "local" | undefined }));
   return (
     <>
       <JsonLd
@@ -199,7 +208,7 @@ export default function Page() {
       </section>
 
       {/* Auth-aware content (client component) */}
-      <CursusContent lessen={onlineLessen} videos={hapkidoVideos} />
+      <CursusContent lessen={onlineLessen} videos={videos} />
 
       <CTABanner
         title="Toegang voor iedereen"
