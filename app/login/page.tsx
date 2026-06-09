@@ -117,7 +117,7 @@ function LoginForm() {
           Lid worden (mat-training) <ArrowRight size={15} />
         </Link>
         <Link href="/online-aanmelden" className="btn-secondary w-full inline-flex items-center justify-center gap-2 text-sm !border-[color:var(--color-gold-500)] !text-[color:var(--color-gold-300)] hover:!bg-[color:var(--color-gold-600)]/10">
-          Online trainen – eenmalig €35 <ArrowRight size={15} />
+          Online trainen – vanaf €7,50/maand <ArrowRight size={15} />
         </Link>
       </div>
     </div>

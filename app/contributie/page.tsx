@@ -77,13 +77,13 @@ const plans = [
   },
   {
     title: "Online Cursustoegang",
-    price: "€35",
-    period: "eenmalig",
-    yearly: "geen mat-training",
+    price: "€7,50",
+    period: "per maand",
+    yearly: "€50 per jaar",
     features: [
       "Volledige toegang tot alle online lessen",
       "Videobibliotheek met trainingsopnames",
-      "Levenslange toegang na aankoop",
+      "Maandelijks opzegbaar",
       "Geen mat-training inbegrepen",
     ],
     online: true,
