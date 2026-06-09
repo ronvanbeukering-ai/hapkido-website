@@ -114,6 +114,20 @@ export default function Dashboard() {
   );
 }
 
+/* ── Vimeo thumbnail ─────────────────────────────── */
+function VimeoThumb({ videoId, titel }: { videoId: string; titel: string }) {
+  const [thumb, setThumb] = useState<string | null>(null);
+  const vid = videoId.split("/")[0];
+  useEffect(() => {
+    fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${vid}&width=400`)
+      .then(r => r.ok ? r.json() : null)
+      .then(d => d?.thumbnail_url && setThumb(d.thumbnail_url))
+      .catch(() => null);
+  }, [vid]);
+  if (thumb) return <img src={thumb} alt={titel} className="w-full h-full object-cover" loading="lazy" />;
+  return <div className="w-full h-full bg-[#1ab7ea]/20 flex items-center justify-center text-[#1ab7ea] text-2xl font-bold">V</div>;
+}
+
 /* ══════════════════════════════════════════════════
    VIDEO'S BEHEER
 ══════════════════════════════════════════════════ */
@@ -250,7 +264,7 @@ function VideosBeheer() {
                   <img src={`https://img.youtube.com/vi/${v.url ?? v.id}/hqdefault.jpg`} alt={v.titel} className="w-full h-full object-cover" loading="lazy" />
                 )}
                 {v.platform === "vimeo" && (
-                  <div className="w-full h-full bg-[#1ab7ea] flex items-center justify-center text-white text-2xl font-bold">V</div>
+                  <VimeoThumb videoId={v.url ?? v.id} titel={v.titel} />
                 )}
                 {v.platform === "local" && (
                   <video src={v.url} className="w-full h-full object-cover" preload="metadata" muted />
