@@ -65,7 +65,7 @@ export default function Page() {
           { name: "Home", href: "/" },
           { name: "Waalwijk", href: "/lessen/waalwijk" },
         ]}
-        bgImage="/images/training/training-2.jpg"
+        bgImage="/images/training/waalwijk-header.jpg"
       />
 
       <section className="bg-[color:var(--color-surface-2)] border-b border-[color:var(--color-border)]">

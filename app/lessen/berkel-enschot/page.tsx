@@ -66,7 +66,8 @@ export default function Page() {
           { name: "Home", href: "/" },
           { name: "Berkel-Enschot", href: "/lessen/berkel-enschot" },
         ]}
-        bgImage="/images/training/training-1.jpg"
+        bgImage="/images/training/berkel-enschot-header.jpg"
+        bgPosition="top"
       />
 
       <section className="bg-[color:var(--color-surface-2)] border-b border-[color:var(--color-border)]">

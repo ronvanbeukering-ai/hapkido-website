@@ -5,25 +5,41 @@ import { Play } from "lucide-react";
 
 type VideoItem = {
   vimeoId: string;
+  vimeoHash?: string;
+  thumbnail: string;
   title: string;
   description: string;
 };
 
 const trainingVideos: VideoItem[] = [
   {
+    vimeoId: "676750263",
+    vimeoHash: "8f32bee019",
+    thumbnail: "/images/training/training-4.jpg",
+    title: "Master Ron van Beukering – technieken demonstratie",
+    description:
+      "Master Ron van Beukering (6e Dan) demonstreert Hapkido Combinatie-technieken. Zelfverdediging op hoog niveau zoals geleerd en onderwezen door de grondlegger van Kwan Nyom Hapkido in Nederland.",
+  },
+  {
     vimeoId: "1199536635",
+    vimeoHash: "87f62c18bd",
+    thumbnail: "/images/training/training-1.jpg",
     title: "Hapkido training stand-up technieken",
     description:
       "Trainingsopname bij Hapkido Yong Berkel-Enschot. Werpen, klemmen en stand-up technieken zoals die elke les aan bod komen, voor beginners én gevorderden.",
   },
   {
     vimeoId: "1199526926",
+    vimeoHash: "7df3cf2241",
+    thumbnail: "/images/training/training-2.jpg",
     title: "Groepsles gemixte groep",
     description:
       "Sfeerimpressie van een gemixte groepsles. Alle leeftijden trainen samen: je leert van elkaar en het niveau wordt altijd aangepast aan de deelnemer.",
   },
   {
     vimeoId: "809686134",
+    vimeoHash: "ff39f90e59",
+    thumbnail: "/images/training/training-3.jpg",
     title: "Hapkido Combinatie technieken demonstratie",
     description:
       "Demonstratie van Hapkido Combinatie-technieken: zelfverdediging in de praktijk, de kracht van diverse vechtsporten gecombineerd in één stijl.",
@@ -38,8 +54,8 @@ function VideoCard({ video }: { video: VideoItem }) {
       <div className="relative aspect-video bg-stone-900">
         {active ? (
           <iframe
-            className="w-full h-full"
-            src={`https://player.vimeo.com/video/${video.vimeoId}?autoplay=1&color=c25a00`}
+            className="absolute inset-0 w-full h-full"
+            src={`https://player.vimeo.com/video/${video.vimeoId}?${video.vimeoHash ? `h=${video.vimeoHash}&` : ""}autoplay=1&color=c25a00`}
             title={video.title}
             allow="autoplay; fullscreen; picture-in-picture"
             allowFullScreen
@@ -48,15 +64,16 @@ function VideoCard({ video }: { video: VideoItem }) {
           <button
             type="button"
             onClick={() => setActive(true)}
-            className="w-full h-full flex items-center justify-center bg-stone-800 group cursor-pointer relative"
+            style={{ backgroundImage: `url(${video.thumbnail})`, backgroundSize: "cover", backgroundPosition: "center" }}
+            className="w-full h-full flex items-center justify-center group cursor-pointer relative"
             aria-label={`Speel ${video.title} af`}
           >
+            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-14 h-14 rounded-full bg-[#1ab7ea]/90 flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
-                <Play size={22} className="text-white ml-0.5" fill="currentColor" />
+              <div className="w-16 h-16 rounded-full bg-[#1ab7ea]/90 flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
+                <Play size={26} className="text-white ml-1" fill="currentColor" />
               </div>
             </div>
-            <span className="absolute bottom-3 left-3 text-xs text-white/60 font-medium">Vimeo</span>
           </button>
         )}
       </div>

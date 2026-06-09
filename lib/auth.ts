@@ -6,7 +6,7 @@
 export const SUPERADMIN_EMAIL =
   typeof window === "undefined"
     ? (process.env.ADMIN_EMAIL ?? "")
-    : "";
+    : (process.env.NEXT_PUBLIC_ADMIN_EMAIL ?? "");
 
 export function isSuperAdmin(email: string | null | undefined): boolean {
   if (!SUPERADMIN_EMAIL || !email) return false;

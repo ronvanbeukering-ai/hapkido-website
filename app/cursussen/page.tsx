@@ -44,7 +44,7 @@ const stats = [
   { icon: BookOpen, value: `${onlineLessen.length}`, label: "Online lessen" },
   { icon: Clock, value: `${totalDuur}m`, label: "Totale duur" },
   { icon: Star, value: "4.9", label: "Beoordeling" },
-  { icon: Lock, value: "€35", label: "Niet-leden (eenmalig)" },
+  { icon: Lock, value: "€7,50", label: "Niet-leden (per maand)" },
 ];
 
 export default function Page() {
@@ -102,7 +102,7 @@ export default function Page() {
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link href="/online-aanmelden" className="btn-primary">
-                  Eenmalig €35 — levenslange toegang
+                  Starten vanaf €7,50 per maand
                 </Link>
                 <Link href="/proefles" className="btn-ghost">
                   Liever naar de dojo?
@@ -203,7 +203,7 @@ export default function Page() {
 
       <CTABanner
         title="Toegang voor iedereen"
-        subtitle="Leden hebben automatisch toegang. Niet-lid? Eenmalig €35 voor levenslange toegang."
+        subtitle="Leden hebben automatisch toegang. Niet-lid? €7,50 per maand of €50 per jaar."
       />
     </>
   );

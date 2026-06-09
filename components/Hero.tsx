@@ -76,12 +76,14 @@ export function PageHero({
   eyebrow,
   breadcrumb,
   bgImage,
+  bgPosition = "center",
 }: {
   title: string;
   subtitle?: string;
   eyebrow?: string;
   breadcrumb?: { name: string; href: string }[];
   bgImage?: string;
+  bgPosition?: string;
 }) {
   return (
     <section className="dark-section relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
@@ -89,8 +91,8 @@ export function PageHero({
         {bgImage ? (
           <>
             <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url('${bgImage}')` }}
+              className="absolute inset-0 bg-cover"
+              style={{ backgroundImage: `url('${bgImage}')`, backgroundPosition: bgPosition }}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#0e0b08]/55 via-[#3d1a00]/45 to-[#a05000]/85" />
           </>

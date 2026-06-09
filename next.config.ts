@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 // Supabase project hostname for CSP – only the anon/public host is needed here
 const SUPABASE_HOST = "clvzytfjmoeimalozlck.supabase.co";
+const isDev = process.env.NODE_ENV === "development";
 
 const nextConfig: NextConfig = {
   trailingSlash: false,
@@ -26,8 +27,8 @@ const nextConfig: NextConfig = {
     // Adjust frame-src if you embed Vimeo or YouTube iframes directly.
     const csp = [
       "default-src 'self'",
-      // Scripts: self + Next.js needs 'unsafe-inline' for inline script tags it emits
-      "script-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com",
+      // Scripts: self + unsafe-inline (Next.js) + unsafe-eval only in dev (React Refresh needs it)
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.youtube.com https://s.ytimg.com`,
       // Styles: self + inline (Tailwind)
       "style-src 'self' 'unsafe-inline'",
       // Images: self + YouTube thumbnails + Vimeo CDN + data URIs (favicons)
