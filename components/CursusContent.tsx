@@ -6,7 +6,6 @@ import { Lock, ArrowRight, Crown, CheckCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { LessenLijst, VideoGalerij, type VideoItem } from "@/components/CursusPlayer";
 import type { Les } from "@/lib/cursussen";
-import { ledenLessen } from "@/lib/cursussen";
 import { isLidOfAdmin, isAdminOrSuperAdmin, isCursusAbonnee } from "@/lib/auth";
 
 type Profiel = {
@@ -47,9 +46,10 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
   const heeftCursustoegang = isCursus;
 
   const allVideos: VideoItem[] = staticVideos.map((v) => ({ ...v, platform: v.platform ?? "youtube" }));
-  const allLessen: Les[] = isLid ? ledenLessen : staticLessen;
   const publiekeVideos = allVideos.filter((v) => v.platform === "youtube");
-  const lessenVoorLid = heeftCursustoegang ? allLessen.map((l) => ({ ...l, gratis: true })) : allLessen;
+  const lessenVoorLid = heeftCursustoegang
+    ? staticLessen.map((l) => ({ ...l, gratis: true }))
+    : staticLessen;
 
   return (
     <>
@@ -100,7 +100,7 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
               <div className="flex justify-between">
                 <span className="text-[color:var(--color-muted)]">Lessen</span>
                 <span className="font-semibold">
-                  {allLessen.length} lessen · {allLessen.reduce((s, l) => s + parseInt(l.duur), 0)} min
+                  {lessenVoorLid.length} lessen · {lessenVoorLid.reduce((s, l) => s + parseInt(l.duur), 0)} min
                 </span>
               </div>
               <div className="flex justify-between">
@@ -147,7 +147,7 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
             <div className="card overflow-hidden">
               <div className="px-5 py-4 border-b border-[color:var(--color-border)] flex items-center justify-between">
                 <h3 className="font-[family-name:var(--font-display)] text-2xl">
-                  Lessen ({allLessen.length})
+                  Lessen ({lessenVoorLid.length})
                 </h3>
                 {heeftCursustoegang && (
                   <span className="text-xs font-semibold text-emerald-600 bg-emerald-100 border border-emerald-200 px-2 py-1 rounded">
