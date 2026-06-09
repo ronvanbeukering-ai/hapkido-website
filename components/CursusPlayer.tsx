@@ -14,9 +14,17 @@ export type VideoItem = {
   volgorde?: number;
 };
 
+// ─── helpers ──────────────────────────────────────────────────
+
+function extractYoutubeId(raw: string): string {
+  const m = raw.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : raw;
+}
+
 // ─── Platform embeds ──────────────────────────────────────────
 
-function YoutubeEmbed({ videoId, titel }: { videoId: string; titel: string }) {
+function YoutubeEmbed({ videoId: rawId, titel }: { videoId: string; titel: string }) {
+  const videoId = extractYoutubeId(rawId);
   const [active, setActive] = useState(false);
   if (active) {
     return (
@@ -38,7 +46,7 @@ function YoutubeEmbed({ videoId, titel }: { videoId: string; titel: string }) {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+        src={`https://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
         alt={titel}
         className="w-full h-full object-cover"
         loading="lazy"
