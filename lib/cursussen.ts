@@ -27,7 +27,7 @@ export type HapkidoVideo = {
 };
 
 export const onlineLessen: Les[] = [
-  { nr: 1, titel: "Basishoudingen & voetenwerk",       duur: "18m", categorie: "Houding", gratis: true,  belt: "white-green", video_url: "vimeo-1079900806/c9474baff1" },
+  { nr: 1, titel: "Basishoudingen & voetenwerk",       duur: "18m", categorie: "Houding", gratis: true,  belt: "white-green" },
   { nr: 2, titel: "Valbreken (ukemi)",                 duur: "22m", categorie: "Houding", gratis: true,  belt: "white-green", video_url: "vimeo-750019129" },
   { nr: 3, titel: "Stoten — basisreeks tot rode band", duur: "30m", categorie: "Stoten",  gratis: false, belt: "white-green" },
   { nr: 4, titel: "Trappen — basisreeks tot rode band",duur: "30m", categorie: "Trappen", gratis: false, belt: "green-red"   },
