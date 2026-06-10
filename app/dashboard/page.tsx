@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -38,20 +38,25 @@ function toast(msg: string, type: "ok" | "err" = "ok") {
 /* ─── main component ─────────────────────────────── */
 export default function Dashboard() {
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const [profiel, setProfiel] = useState<Profiel | null>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<Tab>("videos");
 
   useEffect(() => {
     (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { router.replace("/login"); return; }
-      const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
-      const p: Profiel = data ?? { id: user.id, email: user.email ?? "", rol: "geen", lid_geldig_tot: null };
-      if (!isAdminOrSuperAdmin(p.email, p.rol)) { router.replace("/"); return; }
-      setProfiel(p);
-      setLoading(false);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) { router.replace("/login"); return; }
+        const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+        const p: Profiel = data ?? { id: user.id, email: user.email ?? "", rol: "geen", lid_geldig_tot: null };
+        if (!isAdminOrSuperAdmin(p.email, p.rol)) { router.replace("/"); return; }
+        setProfiel(p);
+      } catch {
+        router.replace("/login");
+      } finally {
+        setLoading(false);
+      }
     })();
   }, [supabase, router]);
 
@@ -119,7 +124,7 @@ export default function Dashboard() {
    VIDEO'S BEHEER
 ══════════════════════════════════════════════════ */
 function VideosBeheer() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const fileRef = useRef<HTMLInputElement>(null);
   const [videos, setVideos] = useState<HKVideo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -286,7 +291,7 @@ function VideosBeheer() {
    LESSEN BEHEER
 ══════════════════════════════════════════════════ */
 function LessenBeheer() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const [lessen, setLessen] = useState<HKLes[]>([]);
   const [loading, setLoading] = useState(true);
   const [bewerkt, setBewerkt] = useState<HKLes | null>(null);
@@ -404,7 +409,7 @@ function LessenBeheer() {
    LEDEN BEHEER
 ══════════════════════════════════════════════════ */
 function LedenBeheer() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const [leden, setLeden] = useState<Profiel[]>([]);
   const [loading, setLoading] = useState(true);
   const [zoek, setZoek] = useState("");

@@ -73,7 +73,7 @@ export default function Page() {
                 Hapkido Combinatie is Hapkido gecombineerd met inzichten uit andere martial arts. Door het samenbrengen van verdedigingsstijlen en vooropleidingen ontstaat een methode waarbij je het maximum haalt uit praktische zelfverdediging.
               </p>
               <p>
-                <strong className="text-[color:var(--color-heading)] font-semibold">Hapkido Combinatie</strong> is een innovatieve, moderne zelfverdedigingsstijl die technieken combineert uit Hapkido, Jiu-Jitsu, Judo, Taekwondo, Systema, Boksen, Pencak Silat, Krav Maga en Braziliaans Jiu-Jitsu. Daarom wordt het ook wel <em>Koreaans MMA</em> genoemd.
+                <strong className="text-[color:var(--color-heading)] font-semibold">Hapkido Combinatie</strong> is een innovatieve, moderne zelfverdedigingsstijl die technieken combineert uit Hapkido, Jiu-Jitsu, Judo, Taekwondo, Systema, Boksen, Pencak Silat en Krav Maga. Daarom wordt het ook wel <em>Koreaans MMA</em> genoemd.
               </p>
               <p>
                 Kwan Nyom Hapkido is in 2006 door Master Ron van Beukering in Nederland geïntroduceerd. In oktober 2023 startte hij Hapkido Combinatie, een eigen, complete stijl die de beste elementen uit moderne vechtsporten samenbrengt.
