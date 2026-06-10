@@ -150,7 +150,7 @@ export const trainers: Trainer[] = [
     shortRank: "6e Dan",
     role: "Hoofdtrainer & Oprichter · 6e Dan",
     location: "Berkel-Enschot",
-    bio: "Ron van Beukering heeft 1e Dan Hapkido volgens Mung Jae Nam, 3e Dan Sin Moo Hapkido, 5e Dan Kwan Nyom Hapkido, 6e Dan Hapkido Combinatie, 1e Dan Dim Mak en is basis instructeur Knife Fighting. Verder heeft hij zich verdiept in Systema, Taekwondo (o.b.v. GM Harry Bottse), Dim Mak, diverse meditatie- en ontspanningstechnieken en agressiebeheersing. Hapkido Combinatie ontwikkelt zich door gesprekken, trainingen en bestudering van diverse methodieken. Een belangrijke klankbord hierin is Harry Bottse.",
+    bio: "Ron van Beukering heeft 1e Dan Hapkido volgens Mung Jae Nam, 3e Dan Sin Moo Hapkido, 5e Dan Kwan Nyom Hapkido, 6e Dan Hapkido Combinatie, 1e Dan Dim Mak en is basis instructeur Knife Fighting. Verder heeft hij zich verdiept in Systema, Taekwondo (o.b.v. GM Harry Bottse), Dim Mak, diverse meditatie- en ontspanningstechnieken en agressiebeheersing. Hapkido Combinatie ontwikkelt zich door gesprekken, trainingen en bestudering van diverse methodieken. Een belangrijk klankbord hierbij is GM. Harry Bottse.",
     knowsAbout: ["Hapkido Combinatie", "Kwan Nyom Hapkido", "Sin Moo Hapkido", "Taekwondo", "Systema", "Dim Mak", "Knife Fighting", "Agressiebeheersing", "Meditatie"],
     featured: true,
     photo: "/images/trainers/ron-van-beukering.jpg",
@@ -162,7 +162,7 @@ export const trainers: Trainer[] = [
     shortRank: "2e Dan",
     role: "Senior Instructor",
     location: "Waalwijk",
-    bio: "Senior Instructor met een sterke Pencak Silat-achtergrond. Al jaren actief als trainer Marietje Kessels-project en hoofdtrainer van de Waalwijkse locatie.",
+    bio: "Senior Instructor met een sterke Pencak Silat-achtergrond. Al jaren actief als trainer Marietje Kessels-project en Senior Instructor van de Waalwijkse locatie.",
     knowsAbout: ["Hapkido Combinatie", "Pencak Silat", "Weerbaarheidstraining"],
     featured: true,
     photo: "/images/trainers/marco-van-gulik.jpg",
@@ -170,7 +170,7 @@ export const trainers: Trainer[] = [
   {
     slug: "jamy-van-den-heuvel-toorop",
     name: "CGN Jamy van den Heuvel-Toorop",
-    rank: "2e Dan Senior Instructor",
+    rank: "2e Dan Senior Instructor · 2e Dan Taekwondo",
     shortRank: "2e Dan",
     role: "Senior Instructor",
     bio: "Senior Instructor met jarenlange ervaring in technische lessen en mentorschap.",
@@ -275,11 +275,11 @@ export const faq = [
   },
   {
     q: "Bij welke federatie is Hapkido Yong aangesloten?",
-    a: "Hapkido Yong is aangesloten bij de NBJJV (Nederlandse Brazilian Jiu-Jitsu en Mixed Martial Arts Vereniging). De bondsbijdrage bedraagt €25,00 per jaar, plus eenmalig €5,00 inschrijfgeld.",
+    a: "Hapkido Yong is aangesloten bij de NBJJV (Nederlandse Bond voor Judo, Jiu-Jitsu en Vormgeving). De bondsbijdrage bedraagt €25,00 per jaar.",
   },
   {
     q: "Leg ik examen af voor een band?",
-    a: "Ja. Bandexamens worden afgenomen via de NBJJV. Je trainer bepaalt wanneer je klaar bent om examen te doen.",
+    a: "Ja. Bandexamens worden afgenomen door de examencommissie van Hapkido Combinatie. Dan-examens worden afgenomen bij de NBJJV. Je trainer bepaalt wanneer je klaar bent om examen te doen.",
   },
 ] as const;
 

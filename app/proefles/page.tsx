@@ -56,7 +56,7 @@ export default function Page() {
       <PageHero
         eyebrow="Gratis proefles"
         title="Plan je eerste les"
-        subtitle="Gewoon meedoen, geen verplichting, geen kosten. Kies een locatie en een dag die jou uitkomt."
+        subtitle="Gewoon meedoen, geen verplichting, geen kosten. Kies een locatie en een dag die jou uitkomt. App of vul het formulier in. Twee gratis proeflessen."
         breadcrumb={[
           { name: "Home", href: "/" },
           { name: "Proefles", href: "/proefles" },

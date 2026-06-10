@@ -46,7 +46,7 @@ const plans = [
     features: [
       "Tot 2× per week trainen",
       "Aparte jeugdgroepen",
-      "Examens via NBJJV",
+      "Bondsexamens via NBJJV (zwarte band)",
       "Bondskosten apart (€25/jaar)",
     ],
   },
@@ -158,7 +158,7 @@ export default function Page() {
               <div className="card p-6">
                 <h3 className="font-[family-name:var(--font-display)] text-2xl mb-3">Bondskosten NBJJV</h3>
                 <p className="text-sm text-[color:var(--color-muted)] leading-relaxed">
-                  De NBJJV (Nederlandse bond voor jujitsu, judo en vormgeving) brengt jaarlijks €25,00 in rekening voor bondskosten. Verzekering en examens lopen via de NBJJV.
+                  De NBJJV (Nederlandse bond voor jujitsu, judo en vormgeving) brengt jaarlijks €25,00 in rekening voor bondskosten. Verzekering en zwarte band examens lopen via de NBJJV.
                 </p>
               </div>
               <div className="card p-6">

@@ -90,9 +90,6 @@ export default function Page() {
             </h2>
             <div className="space-y-5 text-[color:var(--color-text)] leading-relaxed">
               <p>{trainer.bio}</p>
-              <p>
-                Marco staat bekend om zijn relaxte lesstijl met humor en serieuze inhoud, technieken die op straat kloppen, niet alleen in een ring.
-              </p>
             </div>
           </Reveal>
         </div>

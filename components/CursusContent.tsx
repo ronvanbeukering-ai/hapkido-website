@@ -105,7 +105,7 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
               </div>
               <div className="flex justify-between">
                 <span className="text-[color:var(--color-muted)]">Toegang</span>
-                <span className={`font-semibold ${heeftCursustoegang ? "text-emerald-600" : "text-[color:var(--color-accent-700)]"}`}>
+                <span className={`font-semibold ${heeftCursustoegang ? "text-emerald-600" : "text-[color:var(--color-heading)]"}`}>
                   {isLid ? "✓ Volledige toegang" : heeftCursustoegang ? "✓ Cursusabonnement" : "Abonnement vereist"}
                 </span>
               </div>
@@ -127,7 +127,7 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
                   <>
                     <p className="text-sm text-[color:var(--color-accent-800)] leading-relaxed">
                       <strong>Lessen 1 &amp; 2 zijn gratis.</strong> Voor volledige toegang kun je lid worden
-                      of eenmalig <strong>€35</strong> betalen voor levenslange toegang.
+                      of een abonnement nemen vanaf <strong>€7,50/maand</strong> of <strong>€50/jaar</strong>.
                     </p>
                     <div className="flex flex-wrap gap-2">
                       <Link href="/login" className="btn-primary !py-2 !px-4 text-sm inline-flex">
