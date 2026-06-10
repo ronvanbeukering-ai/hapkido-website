@@ -146,11 +146,11 @@ export const trainers: Trainer[] = [
   {
     slug: "ron-van-beukering",
     name: "Master Ron van Beukering",
-    rank: "6e Dan Hapkido Combinatie · 5e Dan Kwan Nyom Hapkido · 1e Dan Sin Moo Hapkido · 1e Dan Dim Mak",
+    rank: "6e Dan Hapkido Combinatie · 5e Dan Kwan Nyom Hapkido · 3e Dan Sin Moo Hapkido · 1e Dan Dim Mak",
     shortRank: "6e Dan",
     role: "Hoofdtrainer & Oprichter · 6e Dan",
     location: "Berkel-Enschot",
-    bio: "Hapkido Combinatie is Hapkido gecombineerd met inzichten uit andere martial arts. Door het samenbrengen van verdedigingsstijlen en vooropleidingen in Fysiotherapie, Manueel therapie en Shiatsu therapie is er een methode ontstaan waarbij je het maximum haalt uit praktische zelfverdediging. Ron van Beukering heeft 1e Dan Hapkido volgens Mung Jae Nam, 1e Dan Sin Moo Hapkido, 5e Dan Kwan Nyom Hapkido, 6e Dan Hapkido Combinatie, 1e Dan Dim Mak en is basis instructeur Knife Fighting. Verder heeft hij zich verdiept in Systema, Taekwondo (o.b.v. GM Harry Bottse), Dim Mak, diverse meditatie- en ontspanningstechnieken en agressiebeheersing. Hapkido Combinatie ontwikkelt zich door gesprekken, trainingen en bestudering van diverse methodieken. Een belangrijke klankbord hierin is Harry Bottse.",
+    bio: "Ron van Beukering heeft 1e Dan Hapkido volgens Mung Jae Nam, 3e Dan Sin Moo Hapkido, 5e Dan Kwan Nyom Hapkido, 6e Dan Hapkido Combinatie, 1e Dan Dim Mak en is basis instructeur Knife Fighting. Verder heeft hij zich verdiept in Systema, Taekwondo (o.b.v. GM Harry Bottse), Dim Mak, diverse meditatie- en ontspanningstechnieken en agressiebeheersing. Hapkido Combinatie ontwikkelt zich door gesprekken, trainingen en bestudering van diverse methodieken. Een belangrijke klankbord hierin is Harry Bottse.",
     knowsAbout: ["Hapkido Combinatie", "Kwan Nyom Hapkido", "Sin Moo Hapkido", "Taekwondo", "Systema", "Dim Mak", "Knife Fighting", "Agressiebeheersing", "Meditatie"],
     featured: true,
     photo: "/images/trainers/ron-van-beukering.jpg",
