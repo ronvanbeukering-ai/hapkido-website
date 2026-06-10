@@ -18,7 +18,7 @@ const trainingVideos: VideoItem[] = [
     thumbnail: "/images/training/training-4.jpg",
     title: "Master Ron van Beukering – technieken demonstratie",
     description:
-      "Master Ron van Beukering (6e Dan) demonstreert Hapkido Combinatie-technieken. In Sevilla tijdens de Internationale trainings Seminair Kwan Nyom Hapkido.",
+      "Master Ron van Beukering (6e Dan) demonstreert Hapkido Combinatie-technieken. Zelfverdediging op hoog niveau zoals geleerd door G.M. Booth, de grondlegger van Kwan Nyom Hapkido.",
   },
   {
     vimeoId: "1199536635",
