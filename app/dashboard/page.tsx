@@ -250,7 +250,8 @@ function VideosBeheer() {
       {loading ? <div className="text-center py-12 text-[color:var(--color-muted)]">Laden…</div> : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {videos.map(v => (
-            <div key={v.id} className="card overflow-hidden group">
+            <div key={v.id} className="card overflow-hidden">
+              {/* Thumbnail */}
               <div className="aspect-video bg-stone-200 relative overflow-hidden">
                 {(v.platform === "youtube" || !v.platform) && (
                   <img src={`https://img.youtube.com/vi/${v.url ?? v.id}/hqdefault.jpg`} alt={v.titel} className="w-full h-full object-cover" loading="lazy" />
@@ -264,20 +265,27 @@ function VideosBeheer() {
                 {v.platform === "local" && (
                   <video src={v.url} className="w-full h-full object-cover" preload="metadata" muted />
                 )}
-                <div className="absolute inset-0 bg-[#0e0b08]/0 group-hover:bg-[#0e0b08]/20 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
-                  <button onClick={() => setForm({ ...v })} className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow hover:scale-105 transition-transform">
-                    <Pencil size={14} className="text-stone-700" />
-                  </button>
-                  <button onClick={() => verwijder(v.id)} className="w-9 h-9 bg-red-600 rounded-full flex items-center justify-center shadow hover:scale-105 transition-transform">
-                    <Trash2 size={14} className="text-white" />
-                  </button>
-                </div>
                 <span className="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-[#0e0b08]/60 text-white uppercase">{v.platform ?? "youtube"}</span>
               </div>
+              {/* Info + knoppen */}
               <div className="p-3">
                 <p className="text-sm font-semibold text-[color:var(--color-heading)] truncate">{v.titel}</p>
                 <p className="text-xs text-[color:var(--color-muted)] truncate mt-0.5">{v.beschrijving}</p>
                 <span className="text-[10px] text-[color:var(--color-muted)] mt-1 block">{catLabel[v.categorie] ?? v.categorie}</span>
+                <div className="flex gap-2 mt-3 pt-3 border-t border-[color:var(--color-border)]">
+                  <button
+                    onClick={() => setForm({ ...v })}
+                    className="flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold rounded-md bg-[color:var(--color-surface-2)] hover:bg-[color:var(--color-stone-200)] text-[color:var(--color-heading)] transition-colors border border-[color:var(--color-border)]"
+                  >
+                    <Pencil size={12} /> Bewerken
+                  </button>
+                  <button
+                    onClick={() => verwijder(v.id)}
+                    className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md bg-red-50 hover:bg-red-100 text-red-600 transition-colors border border-red-200"
+                  >
+                    <Trash2 size={12} /> Verwijder
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -295,6 +303,12 @@ function LessenBeheer() {
   const [lessen, setLessen] = useState<HKLes[]>([]);
   const [loading, setLoading] = useState(true);
   const [bewerkt, setBewerkt] = useState<HKLes | null>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+
+  function openBewerkt(l: HKLes) {
+    setBewerkt({ ...l });
+    setTimeout(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+  }
 
   const STANDAARD: HKLes[] = [
     { nr: 1, titel: "Basishoudingen & voetenwerk",        duur: "18m", categorie: "Houding", gratis: true  },
@@ -330,7 +344,7 @@ function LessenBeheer() {
       </div>
 
       {bewerkt && (
-        <div className="card p-6 mb-6 border-[color:var(--color-accent-300)]">
+        <div ref={formRef} className="card p-6 mb-6 border-[color:var(--color-accent-300)]">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-[family-name:var(--font-display)] text-2xl">Les {bewerkt.nr} bewerken</h2>
             <button onClick={() => setBewerkt(null)}><X size={20} /></button>
@@ -393,8 +407,8 @@ function LessenBeheer() {
                   ? <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 border border-emerald-200">Gratis</span>
                   : <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[color:var(--color-stone-100)] text-[color:var(--color-muted)] border border-[color:var(--color-border)]">Vergrendeld</span>
                 }
-                <button onClick={() => setBewerkt({ ...l })} className="w-8 h-8 rounded-md hover:bg-[color:var(--color-stone-200)] flex items-center justify-center text-[color:var(--color-muted)] hover:text-[color:var(--color-heading)] transition-colors">
-                  <Pencil size={14} />
+                <button onClick={() => openBewerkt(l)} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md bg-[color:var(--color-surface-2)] hover:bg-[color:var(--color-stone-200)] text-[color:var(--color-heading)] transition-colors border border-[color:var(--color-border)]">
+                  <Pencil size={12} /> Bewerken
                 </button>
               </div>
             </div>
