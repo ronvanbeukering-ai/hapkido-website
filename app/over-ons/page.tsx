@@ -85,7 +85,7 @@ export default function Page() {
               <div>
                 <div className="text-xs text-[color:var(--color-muted)] uppercase tracking-widest">Federatie</div>
                 <div className="mt-2 space-y-2 text-sm text-[color:var(--color-text)]">
-                  <div>NBJJV, Nederlandse Brazilian Jiu-Jitsu &amp; MMA Vereniging</div>
+                  <div>NBJJV, Nederlandse bond voor jujitsu, judo en vormgeving</div>
                 </div>
               </div>
               <div>

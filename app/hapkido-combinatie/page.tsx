@@ -109,7 +109,7 @@ export default function Page() {
             {[
               { y: "1948", t: "Hapkido opgericht", b: "Dojunim Choi Yong-sool legt in Korea de basis voor wat later Hapkido wordt." },
               { y: "1983", t: "Sin Moo Hapkido", b: "Dojunim Ji Han-Jae ontwikkelt Sin Moo Hapkido, een verfijnde tak met nadruk op spirituele en filosofische diepgang." },
-              { y: "1984", t: "Kwan Nyom Hapkido geboren", b: "Master G.M. Booth ontwikkelt een eigen tak waar Master Ron later mee traint." },
+              { y: "1984", t: "Kwan Nyom Hapkido geboren", b: "Master G.M. Booth ontwikkelt een eigen tak van het Hapkido in Amerika." },
               { y: "2006", t: "Introductie in Nederland", b: "Master Ron van Beukering brengt Kwan Nyom Hapkido naar Nederland." },
               { y: "2023", t: "Hapkido Combinatie", b: "Lancering van de moderne, gecombineerde stijl, Koreaans MMA." },
             ].map((step, i) => (
