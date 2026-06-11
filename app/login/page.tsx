@@ -3,13 +3,11 @@
 import Link from "next/link";
 import { ArrowRight, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useSearchParams } from "next/navigation";
 
 type State = "idle" | "loading" | "error";
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const authError = searchParams.get("error");
 
@@ -27,24 +25,22 @@ function LoginForm() {
     setState("loading");
     setErrorMsg("");
 
-    const supabase = createClient();
-    const timeout = new Promise<{ error: Error }>(resolve =>
-      setTimeout(() => resolve({ error: new Error("timeout") }), 30000)
-    );
-    const { error } = await Promise.race([
-      supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password }),
-      timeout,
-    ]);
-
-    if (error) {
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setState("error");
+        setErrorMsg(json.error ?? "E-mailadres of wachtwoord klopt niet.");
+      } else {
+        window.location.href = "/dashboard";
+      }
+    } catch {
       setState("error");
-      setErrorMsg(
-        error.message === "timeout"
-          ? "Verbinding te traag. Probeer het opnieuw."
-          : "E-mailadres of wachtwoord klopt niet."
-      );
-    } else {
-      window.location.href = "/dashboard";
+      setErrorMsg("Verbinding mislukt. Probeer het opnieuw.");
     }
   }
 
