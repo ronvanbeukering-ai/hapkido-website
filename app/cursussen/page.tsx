@@ -6,7 +6,7 @@ import { CTABanner } from "@/components/CTABanner";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema, courseSchema } from "@/lib/jsonld";
 import { CursusContent } from "@/components/CursusContent";
-import { onlineLessen, hapkidoVideos, totalDuur } from "@/lib/cursussen";
+import { onlineLessen, hapkidoVideos } from "@/lib/cursussen";
 import { site } from "@/lib/site";
 import { createClient } from "@/lib/supabase/server";
 
@@ -41,22 +41,26 @@ export const metadata: Metadata = {
   },
 };
 
-const stats = [
-  { icon: BookOpen, value: `${onlineLessen.length}`, label: "Online lessen" },
-  { icon: Clock, value: `${totalDuur}m`, label: "Totale duur" },
-  { icon: Star, value: "4.9", label: "Beoordeling" },
-  { icon: Lock, value: "€7,50", label: "Niet-leden (per maand)" },
-];
-
 export default async function Page() {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("hapkido_videos")
-    .select("url, titel, beschrijving, categorie, platform")
-    .order("volgorde", { ascending: true });
 
-  const videos = (data ?? hapkidoVideos.map(v => ({ url: v.id, titel: v.titel, beschrijving: v.beschrijving, categorie: v.categorie, platform: v.platform ?? "vimeo" })))
+  const [{ data: videosData }, { data: lessenData }] = await Promise.all([
+    supabase.from("hapkido_videos").select("url, titel, beschrijving, categorie, platform").order("volgorde", { ascending: true }),
+    supabase.from("hapkido_lessen").select("*").order("nr", { ascending: true }),
+  ]);
+
+  const videos = (videosData ?? hapkidoVideos.map(v => ({ url: v.id, titel: v.titel, beschrijving: v.beschrijving, categorie: v.categorie, platform: v.platform ?? "vimeo" })))
     .map(v => ({ id: v.url ?? "", titel: v.titel, beschrijving: v.beschrijving, categorie: v.categorie, platform: v.platform as "youtube" | "vimeo" | "local" | undefined }));
+
+  const lessen = (lessenData && lessenData.length > 0 ? lessenData : onlineLessen) as typeof onlineLessen;
+
+  const stats = [
+    { icon: BookOpen, value: `${lessen.length}`, label: "Online lessen" },
+    { icon: Clock, value: `${lessen.reduce((s, l) => s + parseInt(l.duur), 0)}m`, label: "Totale duur" },
+    { icon: Star, value: "4.9", label: "Beoordeling" },
+    { icon: Lock, value: "€7,50", label: "Niet-leden (per maand)" },
+  ];
+
   return (
     <>
       <JsonLd
@@ -208,7 +212,7 @@ export default async function Page() {
       </section>
 
       {/* Auth-aware content (client component) */}
-      <CursusContent lessen={onlineLessen} videos={videos} />
+      <CursusContent lessen={lessen} videos={videos} />
 
       <CTABanner
         title="Toegang voor iedereen"
