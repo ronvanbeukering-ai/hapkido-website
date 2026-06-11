@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useId } from "react";
 import { Play, Lock, Film, ChevronDown } from "lucide-react";
 import type { Les } from "@/lib/cursussen";
 import { categorieLabelMap } from "@/lib/cursussen";
@@ -63,15 +63,39 @@ function YoutubeEmbed({ videoId: rawId, titel }: { videoId: string; titel: strin
 
 function VimeoEmbed({ videoId, titel }: { videoId: string; titel: string }) {
   const [active, setActive] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const playerId = useId().replace(/:/g, "");
   const raw = videoId.replace(/^vimeo-/, "");
   const [vid, hash] = raw.split("/");
-  const embedSrc = hash
-    ? `https://player.vimeo.com/video/${vid}?h=${hash}&autoplay=1&color=c25a00`
-    : `https://player.vimeo.com/video/${vid}?autoplay=1&color=c25a00`;
+  const base = hash
+    ? `https://player.vimeo.com/video/${vid}?h=${hash}`
+    : `https://player.vimeo.com/video/${vid}?`;
+  const embedSrc = `${base}&autoplay=1&color=c25a00&api=1&player_id=${playerId}`;
+
+  useEffect(() => {
+    if (!active) return;
+    const onMessage = (e: MessageEvent) => {
+      if (e.origin !== "https://player.vimeo.com") return;
+      try {
+        const d = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
+        if (d.player_id !== playerId) return;
+        if (d.event === "ready") {
+          iframeRef.current?.contentWindow?.postMessage(
+            JSON.stringify({ method: "addEventListener", value: "finish", player_id: playerId }),
+            "https://player.vimeo.com"
+          );
+        }
+        if (d.event === "finish") setActive(false);
+      } catch { /* ignore malformed messages */ }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [active, playerId]);
 
   if (active) {
     return (
       <iframe
+        ref={iframeRef}
         className="w-full h-full"
         src={embedSrc}
         title={titel}

@@ -37,8 +37,7 @@ function LoginForm() {
       setState("error");
       setErrorMsg("E-mailadres of wachtwoord klopt niet.");
     } else {
-      router.push("/dashboard");
-      router.refresh();
+      window.location.href = "/dashboard";
     }
   }
 

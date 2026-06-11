@@ -158,7 +158,7 @@ export const trainers: Trainer[] = [
   {
     slug: "marco-van-gulik",
     name: "CGN Marco van Gulik",
-    rank: "2e Dan Hapkido Combinatie · Senior Instructor",
+    rank: "2e Dan Hapkido Combinatie · Senior Instructor · 1e Dan Kwan Nyom Hapkido",
     shortRank: "2e Dan",
     role: "Senior Instructor",
     location: "Waalwijk",
@@ -170,7 +170,7 @@ export const trainers: Trainer[] = [
   {
     slug: "jamy-van-den-heuvel-toorop",
     name: "CGN Jamy van den Heuvel-Toorop",
-    rank: "2e Dan Senior Instructor · 2e Dan Taekwondo",
+    rank: "2e Dan Senior Instructor · 2e Dan Taekwondo · 1e Dan Kwan Nyom Hapkido",
     shortRank: "2e Dan",
     role: "Senior Instructor",
     bio: "Senior Instructor met jarenlange ervaring in technische lessen en mentorschap.",
@@ -180,7 +180,7 @@ export const trainers: Trainer[] = [
   {
     slug: "jesse-van-mierlo",
     name: "KSN Jesse van Mierlo",
-    rank: "2e Dan",
+    rank: "2e Dan · 1e Dan Kwan Nyom Hapkido",
     shortRank: "2e Dan",
     role: "2e Dan",
     bio: "Instructor met focus op techniek en jeugdtraining.",
@@ -245,6 +245,7 @@ export const trainers: Trainer[] = [
     role: "1e Dan",
     bio: "Instructor met focus op stand-up technieken en sparring.",
     knowsAbout: ["Hapkido Combinatie", "Sparring"],
+    photo: "/images/trainers/michiel.jpg",
   },
 ];
 
