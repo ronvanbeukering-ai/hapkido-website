@@ -44,6 +44,27 @@ export const metadata: Metadata = {
 export default async function Page() {
   const supabase = await createClient();
 
+  // Server-side auth check — fast and reliable (no client-side hanging)
+  const { data: { session } } = await supabase.auth.getSession();
+  let heeftToegang = false, isAdminUser = false, isLidUser = false;
+
+  if (session?.user) {
+    const adminEmail = (process.env.ADMIN_EMAIL ?? "").toLowerCase();
+    const userEmail  = (session.user.email ?? "").toLowerCase();
+    if (adminEmail && userEmail === adminEmail) {
+      heeftToegang = true; isAdminUser = true; isLidUser = true;
+    } else {
+      const { data: profile } = await supabase
+        .from("profiles").select("rol,lid_geldig_tot").eq("id", session.user.id).single();
+      if (profile) {
+        isAdminUser  = profile.rol === "admin";
+        const geldig = !profile.lid_geldig_tot || new Date(profile.lid_geldig_tot) > new Date();
+        isLidUser    = isAdminUser || (profile.rol === "lid" && geldig);
+        heeftToegang = isLidUser  || (profile.rol === "cursus" && geldig);
+      }
+    }
+  }
+
   const [{ data: videosData }, { data: lessenData }] = await Promise.all([
     supabase.from("hapkido_videos").select("url, titel, beschrijving, categorie, platform").order("volgorde", { ascending: true }),
     supabase.from("hapkido_lessen").select("*").order("nr", { ascending: true }),
@@ -212,7 +233,14 @@ export default async function Page() {
       </section>
 
       {/* Auth-aware content (client component) */}
-      <CursusContent lessen={lessen} videos={videos} />
+      <CursusContent
+        lessen={lessen}
+        videos={videos}
+        heeftToegang={heeftToegang}
+        isAdmin={isAdminUser}
+        isLid={isLidUser}
+        isIngelogd={!!session?.user}
+      />
 
       <CTABanner
         title="Toegang voor iedereen"

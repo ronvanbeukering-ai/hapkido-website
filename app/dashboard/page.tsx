@@ -14,9 +14,7 @@ import { isSuperAdmin, isAdminOrSuperAdmin } from "@/lib/auth";
 /* ─── types ─────────────────────────────────────── */
 type Profiel = { id: string; email: string; rol: "admin" | "lid" | "cursus" | "geen"; lid_geldig_tot: string | null };
 type HKVideo = { id: string; titel: string; beschrijving: string; categorie: string; platform?: string; url?: string; volgorde?: number };
-type HKLes  = { nr: number; titel: string; duur: string; categorie: string; gratis: boolean; beschrijving?: string; video_url?: string };
-const SB_URL  = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SB_KEY  = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+type HKLes  = { nr: number; titel: string; duur: string; categorie: string; gratis: boolean; beschrijving?: string; video_url?: string; belt?: string };
 
 const TABS = [
   { id: "videos",  label: "Video's",  icon: Video },
@@ -33,6 +31,12 @@ function toast(msg: string, type: "ok" | "err" = "ok") {
   el.className = `fixed bottom-6 right-6 z-[200] px-5 py-3 rounded-lg text-white text-sm font-semibold shadow-xl transition-all ${type === "err" ? "bg-red-600" : "bg-emerald-600"}`;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 3000);
+}
+
+async function apiFetch(url: string, options?: RequestInit) {
+  const res = await fetch(url, options);
+  const json = await res.json().catch(() => ({}));
+  return { ok: res.ok, data: json.data, error: json.error as string | undefined };
 }
 
 /* ─── main component ─────────────────────────────── */
@@ -124,42 +128,51 @@ export default function Dashboard() {
    VIDEO'S BEHEER
 ══════════════════════════════════════════════════ */
 function VideosBeheer() {
-  const supabase = useMemo(() => createClient(), []);
   const fileRef = useRef<HTMLInputElement>(null);
+  const supabase = useMemo(() => createClient(), []);
   const [videos, setVideos] = useState<HKVideo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<Partial<HKVideo> | null>(null);
   const [uploading, setUploading] = useState(false);
 
   const laad = useCallback(async () => {
-    const { data } = await supabase.from("hapkido_videos").select("*").order("volgorde", { ascending: true });
+    const { ok, data, error } = await apiFetch("/api/admin/videos");
+    if (!ok) { toast("Laden mislukt: " + error, "err"); return; }
     setVideos(data ?? []);
     setLoading(false);
-  }, [supabase]);
+  }, []);
 
   useEffect(() => { laad(); }, [laad]);
 
   async function opslaan() {
     if (!form?.titel) return;
-    const rec = {
-      id: form.id ?? crypto.randomUUID(),
-      titel: form.titel,
+    setSaving(true);
+    const rec: HKVideo = {
+      id:          form.id ?? crypto.randomUUID(),
+      titel:       form.titel,
       beschrijving: form.beschrijving ?? "",
-      categorie: form.categorie ?? "kwan-nyom",
-      platform: form.platform ?? "youtube",
-      url: form.url ?? form.id ?? "",
-      volgorde: form.volgorde ?? videos.length + 1,
+      categorie:   form.categorie ?? "kwan-nyom",
+      platform:    form.platform ?? "youtube",
+      url:         form.url ?? form.id ?? "",
+      volgorde:    form.volgorde ?? videos.length + 1,
     };
-    const { error } = await supabase.from("hapkido_videos").upsert(rec);
-    if (error) { toast("Fout: " + error.message, "err"); return; }
-    toast(form.id ? "Video bijgewerkt!" : "Video toegevoegd!");
+    const { ok, error } = await apiFetch("/api/admin/videos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(rec),
+    });
+    setSaving(false);
+    if (!ok) { toast("Fout: " + (error ?? "onbekend"), "err"); return; }
+    toast("Video opgeslagen!");
     setForm(null);
     laad();
   }
 
   async function verwijder(id: string) {
     if (!confirm("Video verwijderen?")) return;
-    await supabase.from("hapkido_videos").delete().eq("id", id);
+    const { ok, error } = await apiFetch(`/api/admin/videos?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+    if (!ok) { toast("Fout: " + (error ?? "onbekend"), "err"); return; }
     toast("Video verwijderd");
     laad();
   }
@@ -196,7 +209,7 @@ function VideosBeheer() {
       {form !== null && (
         <div className="card p-6 mb-6 border-[color:var(--color-accent-300)]">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-[family-name:var(--font-display)] text-2xl">{form.titel ? `Bewerk: ${form.titel}` : "Nieuwe video"}</h2>
+            <h2 className="font-[family-name:var(--font-display)] text-2xl">{form.id ? `Bewerk: ${form.titel}` : "Nieuwe video"}</h2>
             <button onClick={() => setForm(null)} className="text-[color:var(--color-muted)] hover:text-[color:var(--color-heading)]"><X size={20} /></button>
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
@@ -220,9 +233,14 @@ function VideosBeheer() {
             </div>
             <div>
               <label className="label">
-                {form.platform === "youtube" ? "YouTube video-ID of URL" : form.platform === "vimeo" ? "Vimeo video-ID of URL" : "Video URL (na upload)"}
+                {form.platform === "youtube" ? "YouTube video-ID of URL" : form.platform === "vimeo" ? "Vimeo video-ID (bijv. vimeo-1234567)" : "Video URL (na upload)"}
               </label>
-              <input className="input" value={form.url ?? form.id ?? ""} onChange={e => setForm(f => ({ ...f, url: e.target.value, id: e.target.value }))} placeholder={form.platform === "youtube" ? "bijv. dQw4w9WgXcQ" : "URL"} />
+              <input
+                className="input"
+                value={form.url ?? form.id ?? ""}
+                onChange={e => setForm(f => ({ ...f, url: e.target.value, id: e.target.value }))}
+                placeholder={form.platform === "youtube" ? "bijv. dQw4w9WgXcQ" : form.platform === "vimeo" ? "vimeo-1234567" : "URL"}
+              />
             </div>
             <div className="sm:col-span-2">
               <label className="label">Beschrijving</label>
@@ -240,7 +258,10 @@ function VideosBeheer() {
             )}
           </div>
           <div className="flex gap-3 mt-4">
-            <button onClick={opslaan} className="btn-primary !py-2"><Save size={16} /> Opslaan</button>
+            <button onClick={opslaan} disabled={saving} className="btn-primary !py-2 disabled:opacity-60">
+              {saving ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Save size={16} />}
+              {saving ? "Bezig…" : "Opslaan"}
+            </button>
             <button onClick={() => setForm(null)} className="btn-secondary !py-2">Annuleer</button>
           </div>
         </div>
@@ -299,9 +320,9 @@ function VideosBeheer() {
    LESSEN BEHEER
 ══════════════════════════════════════════════════ */
 function LessenBeheer() {
-  const supabase = useMemo(() => createClient(), []);
   const [lessen, setLessen] = useState<HKLes[]>([]);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [bewerkt, setBewerkt] = useState<HKLes | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -310,31 +331,30 @@ function LessenBeheer() {
     setTimeout(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
   }
 
-  const STANDAARD: HKLes[] = [
-    { nr: 1, titel: "Basishoudingen & voetenwerk",        duur: "18m", categorie: "Houding", gratis: true  },
-    { nr: 2, titel: "Valbreken (ukemi)",                  duur: "22m", categorie: "Houding", gratis: true  },
-    { nr: 3, titel: "Stoten — basisreeks tot rode band",  duur: "30m", categorie: "Stoten",  gratis: false },
-    { nr: 4, titel: "Trappen — basisreeks tot rode band", duur: "30m", categorie: "Trappen", gratis: false },
-    { nr: 5, titel: "Locks — uitleg en demonstratie",     duur: "35m", categorie: "Locks",   gratis: false },
-  ];
-
   const laad = useCallback(async () => {
-    const { data } = await supabase.from("hapkido_lessen").select("*").order("nr");
-    setLessen(data && data.length > 0 ? data : STANDAARD);
+    const { ok, data, error } = await apiFetch("/api/admin/lessen");
+    if (!ok) { toast("Laden mislukt: " + error, "err"); return; }
+    setLessen(data ?? []);
     setLoading(false);
-  }, [supabase]);
+  }, []);
 
   useEffect(() => { laad(); }, [laad]);
 
   async function slaOp(les: HKLes) {
-    const { error } = await supabase.from("hapkido_lessen").upsert(les);
-    if (error) { toast("Fout: " + error.message, "err"); return; }
+    setSaving(true);
+    const { ok, error } = await apiFetch("/api/admin/lessen", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(les),
+    });
+    setSaving(false);
+    if (!ok) { toast("Fout: " + (error ?? "onbekend"), "err"); return; }
     toast(`Les ${les.nr} opgeslagen!`);
     setBewerkt(null);
     laad();
   }
 
-  const cats = ["Basis", "Grepen", "Slagen", "Werpingen", "Locks", "Verweer", "Wapens"];
+  const cats = ["Basis", "Grepen", "Slagen", "Werpingen", "Locks", "Verweer", "Wapens", "Houding", "Stoten", "Trappen"];
 
   return (
     <div>
@@ -373,8 +393,9 @@ function LessenBeheer() {
               <span className="text-sm text-[color:var(--color-muted)]">{bewerkt.gratis ? "Ja" : "Nee"}</span>
             </div>
             <div className="sm:col-span-2">
-              <label className="label">Video URL (YouTube, Vimeo of lokaal)</label>
-              <input className="input" value={bewerkt.video_url ?? ""} onChange={e => setBewerkt(b => b && ({ ...b, video_url: e.target.value }))} placeholder="https://youtube.com/watch?v=…" />
+              <label className="label">Video URL (vimeo-ID, YouTube-ID of URL)</label>
+              <input className="input" value={bewerkt.video_url ?? ""} onChange={e => setBewerkt(b => b && ({ ...b, video_url: e.target.value }))} placeholder="bijv. vimeo-1198905757 of dQw4w9WgXcQ" />
+              <p className="text-xs text-[color:var(--color-muted)] mt-1">Vimeo: gebruik formaat <code className="bg-stone-100 px-1 rounded">vimeo-1234567</code> · YouTube: alleen het video-ID</p>
             </div>
             <div className="sm:col-span-2">
               <label className="label">Beschrijving</label>
@@ -382,7 +403,10 @@ function LessenBeheer() {
             </div>
           </div>
           <div className="flex gap-3 mt-4">
-            <button onClick={() => slaOp(bewerkt)} className="btn-primary !py-2"><Save size={16} /> Opslaan</button>
+            <button onClick={() => slaOp(bewerkt)} disabled={saving} className="btn-primary !py-2 disabled:opacity-60">
+              {saving ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Save size={16} />}
+              {saving ? "Bezig…" : "Opslaan"}
+            </button>
             <button onClick={() => setBewerkt(null)} className="btn-secondary !py-2">Annuleer</button>
           </div>
         </div>
@@ -423,34 +447,42 @@ function LessenBeheer() {
    LEDEN BEHEER
 ══════════════════════════════════════════════════ */
 function LedenBeheer() {
-  const supabase = useMemo(() => createClient(), []);
   const [leden, setLeden] = useState<Profiel[]>([]);
   const [loading, setLoading] = useState(true);
   const [zoek, setZoek] = useState("");
   const [geldigTot, setGeldigTot] = useState<Record<string, string>>({});
 
   const laad = useCallback(async () => {
-    const { data } = await supabase.from("profiles").select("*").order("email");
+    const { ok, data, error } = await apiFetch("/api/admin/leden");
+    if (!ok) { toast("Laden mislukt: " + error, "err"); return; }
     setLeden(data ?? []);
     setLoading(false);
-  }, [supabase]);
+  }, []);
 
   useEffect(() => { laad(); }, [laad]);
 
+  async function updateLid(id: string, update: Record<string, unknown>) {
+    const { ok, error } = await apiFetch("/api/admin/leden", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, ...update }),
+    });
+    if (!ok) { toast("Fout: " + (error ?? "onbekend"), "err"); return; }
+    laad();
+  }
+
   async function setRol(id: string, rol: "lid" | "geen") {
     const tot = geldigTot[id] || null;
-    await supabase.from("profiles").update({ rol, lid_geldig_tot: rol === "lid" ? tot : null }).eq("id", id);
+    await updateLid(id, { rol, lid_geldig_tot: rol === "lid" ? tot : null });
     toast(rol === "lid" ? "Lid gemaakt!" : "Toegang ingetrokken");
-    laad();
   }
 
   async function activeerCursus(id: string) {
     const over30 = new Date();
     over30.setDate(over30.getDate() + 30);
     const tot = over30.toISOString().slice(0, 10);
-    await supabase.from("profiles").update({ rol: "cursus", lid_geldig_tot: tot }).eq("id", id);
+    await updateLid(id, { rol: "cursus", lid_geldig_tot: tot });
     toast("Cursus abonnement geactiveerd (30 dagen)!");
-    laad();
   }
 
   async function verlengCursus(id: string) {
@@ -460,14 +492,21 @@ function LedenBeheer() {
       : new Date();
     basis.setDate(basis.getDate() + 30);
     const tot = basis.toISOString().slice(0, 10);
-    await supabase.from("profiles").update({ lid_geldig_tot: tot }).eq("id", id);
+    await updateLid(id, { lid_geldig_tot: tot });
     toast("Cursus verlengd met 30 dagen!");
-    laad();
   }
 
   async function setAdmin(id: string) {
-    await supabase.from("profiles").update({ rol: "admin" }).eq("id", id);
+    await updateLid(id, { rol: "admin" });
     toast("Admin toegang gegeven!");
+  }
+
+  async function setGeldigTotDatum(id: string, datum: string) {
+    await apiFetch("/api/admin/leden", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, lid_geldig_tot: datum || null }),
+    });
     laad();
   }
 
@@ -528,7 +567,7 @@ function LedenBeheer() {
                       <input type="date" className="input !py-1 !px-2 text-xs w-36"
                         value={geldigTot[l.id] ?? l.lid_geldig_tot?.slice(0, 10) ?? ""}
                         onChange={e => setGeldigTot(g => ({ ...g, [l.id]: e.target.value }))}
-                        onBlur={() => supabase.from("profiles").update({ lid_geldig_tot: geldigTot[l.id] || null }).eq("id", l.id).then(() => laad())}
+                        onBlur={() => setGeldigTotDatum(l.id, geldigTot[l.id] ?? l.lid_geldig_tot?.slice(0, 10) ?? "")}
                       />
                     ) : (
                       <span className="text-[color:var(--color-muted)] text-xs">—</span>

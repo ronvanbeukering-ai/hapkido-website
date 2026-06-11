@@ -1,49 +1,21 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Lock, ArrowRight, Crown, CheckCircle } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
 import { LessenLijst, VideoGalerij, type VideoItem } from "@/components/CursusPlayer";
 import type { Les } from "@/lib/cursussen";
-import { isLidOfAdmin, isAdminOrSuperAdmin, isCursusAbonnee } from "@/lib/auth";
-
-type Profiel = {
-  id: string;
-  email: string;
-  rol: "admin" | "lid" | "cursus" | "geen";
-  lid_geldig_tot: string | null;
-};
 
 type Props = {
   lessen: Les[];
   videos: { id: string; titel: string; beschrijving: string; categorie: string; platform?: string }[];
+  heeftToegang: boolean;
+  isAdmin: boolean;
+  isLid: boolean;
+  isIngelogd: boolean;
 };
 
-export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Props) {
-  const [profiel, setProfiel] = useState<Profiel | null>(null);
-  const supabase = useMemo(() => createClient(), []);
-
-  useEffect(() => {
-    async function checkAuth() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        const { data } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", session.user.id)
-          .single();
-        if (data) setProfiel(data);
-      }
-    }
-    checkAuth();
-  }, [supabase]);
-
-  const isLid = isLidOfAdmin(profiel?.email, profiel?.rol, profiel?.lid_geldig_tot);
-  const isCursus = isCursusAbonnee(profiel?.email, profiel?.rol, profiel?.lid_geldig_tot);
-  const isAdmin = isAdminOrSuperAdmin(profiel?.email, profiel?.rol);
-  const isIngelogd = !!profiel;
-  const heeftCursustoegang = isCursus;
+export function CursusContent({ lessen: staticLessen, videos: staticVideos, heeftToegang, isAdmin, isLid, isIngelogd }: Props) {
+  const heeftCursustoegang = heeftToegang;
 
   const allVideos: VideoItem[] = staticVideos.map((v) => ({ ...v, platform: v.platform ?? "youtube" }));
   const publiekeVideos = allVideos.filter((v) => v.platform === "youtube");

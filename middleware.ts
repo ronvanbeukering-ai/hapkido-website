@@ -24,6 +24,9 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith("/dashboard")) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
+    if (pathname.startsWith("/api/admin")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     return NextResponse.next({ request });
   }
 
@@ -46,6 +49,14 @@ export async function middleware(request: NextRequest) {
   // Token refresh happens automatically in the browser client.
   const { data: { session } } = await supabase.auth.getSession();
   const user = session?.user ?? null;
+
+  // API admin routes: reject unauthenticated requests at edge
+  if (pathname.startsWith("/api/admin")) {
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    return supabaseResponse;
+  }
 
   if (pathname.startsWith("/dashboard")) {
     if (!user) {
@@ -73,5 +84,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/migrate"],
+  matcher: ["/dashboard/:path*", "/api/migrate", "/api/admin/:path*"],
 };
