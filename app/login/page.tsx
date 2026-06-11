@@ -28,14 +28,21 @@ function LoginForm() {
     setErrorMsg("");
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email.trim().toLowerCase(),
-      password,
-    });
+    const timeout = new Promise<{ error: Error }>(resolve =>
+      setTimeout(() => resolve({ error: new Error("timeout") }), 10000)
+    );
+    const { error } = await Promise.race([
+      supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password }),
+      timeout,
+    ]);
 
     if (error) {
       setState("error");
-      setErrorMsg("E-mailadres of wachtwoord klopt niet.");
+      setErrorMsg(
+        error.message === "timeout"
+          ? "Verbinding te traag. Probeer het opnieuw."
+          : "E-mailadres of wachtwoord klopt niet."
+      );
     } else {
       window.location.href = "/dashboard";
     }
