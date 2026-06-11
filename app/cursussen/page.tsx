@@ -139,13 +139,13 @@ export default async function Page() {
                   Starten vanaf €7,50 per maand
                 </Link>
                 <Link href="/proefles" className="btn-ghost">
-                  Liever naar de dojo?
+                  Liever naar de dojang?
                 </Link>
               </div>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {[
-                { icon: Home,      t: "Thuis trainen",        b: "Geen dojo nodig. Oefen in je woonkamer, garage of tuin op het moment dat jou uitkomt." },
+                { icon: Home,      t: "Thuis trainen",        b: "Geen dojang nodig. Oefen in je woonkamer, garage of tuin op het moment dat jou uitkomt." },
                 { icon: Play,      t: "Solo trainbaar",          b: "Basishoudingen, valbreken, stoten, trappen en locks. Alles wat je zelfstandig kunt oefenen." },
                 { icon: CalendarX, t: "Geen verplichting",    b: "Maandelijks opzegbaar. Geen kwartaalcontract, geen inschrijfgeld, geen bondskosten." },
               ].map(({ icon: Icon, t, b }) => (
@@ -174,7 +174,7 @@ export default async function Page() {
               </div>
               <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-tight leading-tight">
                 Thuis oefen je de beweging.<br />
-                <span className="text-[color:var(--color-gold-400)]">In de dojo maak je hem echt.</span>
+                <span className="text-[color:var(--color-gold-400)]">In de dojang maak je hem echt.</span>
               </h2>
               <p className="mt-5 text-white/70 leading-relaxed max-w-lg">
                 De online cursus geeft je een stevige technische basis die je zelfstandig kunt opbouwen.

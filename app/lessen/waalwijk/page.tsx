@@ -133,7 +133,7 @@ export default function Page() {
             </h2>
             <div className="mt-6 space-y-4 text-[color:var(--color-text)] leading-relaxed">
               <p>
-                Marco geeft les met humor én serieuze inhoud. Je leert technieken die op straat kloppen, niet alleen in een ring. Tijdens je proefles draai je rustig mee in de groep.
+                Tijdens een proefles draai je rustig mee in de groep. Je leert technieken die op straat kloppen, niet alleen in een ring. Geen toetsen, geen verplichtingen.
               </p>
               <ul className="list-disc pl-5 text-[color:var(--color-muted)] space-y-1.5">
                 <li>Sportkleding</li>
@@ -141,11 +141,6 @@ export default function Page() {
                 <li>Handdoek</li>
               </ul>
               <p className="text-sm text-[color:var(--color-muted)]">Een pak heb je voor de proefles niet nodig.</p>
-            </div>
-            <div className="mt-8">
-              <Link href={`/trainers/${loc.trainerSlug}`} className="btn-ghost">
-                Maak kennis met {loc.trainerName} <ArrowRight size={16} />
-              </Link>
             </div>
           </Reveal>
           <Reveal delay={150} id="proefles">

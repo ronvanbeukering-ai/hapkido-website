@@ -28,7 +28,7 @@ export type HapkidoVideo = {
 
 export const onlineLessen: Les[] = [
   { nr: 1, titel: "Basishoudingen & voetenwerk",       duur: "18m", categorie: "Houding", gratis: true,  belt: "white-green", video_url: "vimeo-1198905757" },
-  { nr: 2, titel: "De Jab — eerste stootstechniek",    duur: "12m", categorie: "Stoten",  gratis: true,  belt: "white-green", video_url: "vimeo-1198905933/d8a5cceac4" },
+  { nr: 2, titel: "Inward Elbow",                       duur: "12m", categorie: "Stoten",  gratis: true,  belt: "white-green", video_url: "vimeo-1198905564" },
   { nr: 3, titel: "Stoten — basisreeks tot rode band", duur: "30m", categorie: "Stoten",  gratis: false, belt: "white-green" },
   { nr: 4, titel: "Trappen — basisreeks tot rode band",duur: "30m", categorie: "Trappen", gratis: false, belt: "green-red"   },
   { nr: 5, titel: "Locks — uitleg en demonstratie",    duur: "35m", categorie: "Locks",   gratis: false, belt: "green-red"   },

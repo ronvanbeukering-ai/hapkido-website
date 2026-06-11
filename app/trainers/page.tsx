@@ -102,8 +102,12 @@ export default function Page() {
             <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-5xl tracking-tight mb-4">
               De elitegroep van Hapkido Combinatie
             </h2>
-            <p className="text-[color:var(--color-muted)] leading-relaxed mb-8 max-w-2xl">
+            <p className="text-[color:var(--color-muted)] leading-relaxed mb-4 max-w-2xl">
               Een speciale groep buiten de Kwan Nyom Hapkido. Destijds opgericht als gesloten groep — alles zwart, geen Dan zichtbaar. Marcel Dohmen, Toon van Gils en Ron van Beukering.
+            </p>
+            <p className="text-[color:var(--color-muted)] leading-relaxed mb-8 max-w-2xl">
+              <span className="text-[color:var(--color-gold-400)] font-semibold">Ere-lid:</span>{" "}
+              GM H. Bottse — als ere-lid verbonden aan de elitegroep van Hapkido Combinatie.
             </p>
           </Reveal>
           <Reveal delay={100}>

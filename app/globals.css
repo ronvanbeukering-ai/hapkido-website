@@ -51,11 +51,11 @@
   --color-surface: rgba(255 255 255 / 0.06);
   --color-surface-2: rgba(255 255 255 / 0.04);
   --color-surface-3: rgba(255 255 255 / 0.08);
-  --color-border: rgba(255 255 255 / 0.12);
-  --color-muted: var(--color-stone-400);
-  --color-text: var(--color-stone-300);
-  --color-text-strong: var(--color-stone-200);
-  --color-heading: #f4efe7;
+  --color-border: rgba(255 255 255 / 0.16);
+  --color-muted: var(--color-stone-300);
+  --color-text: var(--color-stone-200);
+  --color-text-strong: var(--color-stone-100);
+  --color-heading: #f9f5ef;
   --color-primary: var(--color-accent-600);
   --color-primary-hover: var(--color-accent-500);
   --color-gold: var(--color-gold-400);

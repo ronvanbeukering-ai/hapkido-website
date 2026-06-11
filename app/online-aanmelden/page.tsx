@@ -218,7 +218,7 @@ export default function OnlineAanmeldenPage() {
             Hapkido thuis trainen<br />€7,50 per maand of €50 per jaar
           </h1>
           <p className="mt-4 text-[color:var(--color-muted)] max-w-xl mx-auto leading-relaxed">
-            Geen vaste trainingstijden, geen dojo nodig. Volg de online cursus van Master Ron van Beukering en oefen wanneer het jou uitkomt.
+            Geen vaste trainingstijden, geen dojang nodig. Volg de online cursus van Master Ron van Beukering en oefen wanneer het jou uitkomt.
           </p>
         </div>
 

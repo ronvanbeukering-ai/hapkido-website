@@ -4,7 +4,6 @@ import Image from "next/image";
 import { ArrowRight, Shield, Heart, Brain, Zap, Users, Flame, Play } from "lucide-react";
 import { HomeHero } from "@/components/Hero";
 import { LocationCard } from "@/components/LocationCard";
-import { TrainerCard } from "@/components/TrainerCard";
 import { Testimonials } from "@/components/Testimonials";
 import { CTABanner } from "@/components/CTABanner";
 import { FAQ } from "@/components/FAQ";
@@ -12,7 +11,7 @@ import { Reveal } from "@/components/Reveal";
 import { JsonLd } from "@/components/JsonLd";
 import { VideoGallery } from "@/components/VideoGallery";
 import { videoSchema } from "@/lib/jsonld";
-import { locations, trainers, benefits, faq, site } from "@/lib/site";
+import { locations, benefits, faq, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Hapkido Yong Hapkido Combinatie in Berkel-Enschot & Waalwijk",
@@ -75,8 +74,8 @@ const trainingPhotos = [
   },
   {
     src: "/images/training/training-4.jpg",
-    alt: "Hapkido Yong dojo in Berkel-Enschot trainingsruimte Kerkstraat 9B",
-    caption: "Dojo Berkel-Enschot",
+    alt: "Hapkido Yong dojang in Berkel-Enschot trainingsruimte Kerkstraat 9B",
+    caption: "Dojang Berkel-Enschot",
   },
 ];
 
@@ -115,7 +114,7 @@ export default function Home() {
               Bekijk de lessen van Hapkido Yong
             </h2>
             <p className="mt-4 text-white/70 max-w-2xl">
-              Echte trainingsopnames uit de dojo&apos;s in Berkel-Enschot en Waalwijk. Geen toneelstukken, gewoon de mat.
+              Echte trainingsopnames uit de dojang&apos;s in Berkel-Enschot en Waalwijk. Geen toneelstukken, gewoon de mat.
             </p>
           </Reveal>
           <div className="mt-10">
@@ -128,7 +127,7 @@ export default function Home() {
       <section className="section">
         <div className="container-x">
           <Reveal>
-            <div className="badge-red mb-4">In de dojo</div>
+            <div className="badge-red mb-4">In de dojang</div>
             <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-6xl tracking-tight leading-tight">
               Op de mat in Brabant
             </h2>
@@ -159,7 +158,7 @@ export default function Home() {
           <Reveal>
             <div className="badge-red mb-4">Locaties</div>
             <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-6xl tracking-tight leading-tight">
-              Twee dojo&apos;s in Noord-Brabant
+              Twee dojang&apos;s in Noord-Brabant
             </h2>
             <p className="mt-4 text-[color:var(--color-muted)] max-w-2xl">
               Kies de locatie die het beste bij je past. Beide met ervaren trainers, een sterke groep en een gratis proefles.
@@ -230,6 +229,23 @@ export default function Home() {
       <section className="section">
         <div className="container-x">
           <Reveal>
+            <div className="badge-red mb-4">Het team</div>
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl tracking-tight leading-tight mb-6">
+              Gediplomeerde trainers in Noord-Brabant
+            </h2>
+            <p className="text-[color:var(--color-muted)] leading-relaxed max-w-2xl mb-6">
+              Hapkido Yong staat onder leiding van ervaren, gediplomeerde instructeurs in Berkel-Enschot en Waalwijk. Allen opgeleid binnen Hapkido Combinatie.
+            </p>
+            <Link href="/trainers" className="btn-ghost">
+              Bekijk het volledige team <ArrowRight size={16} />
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container-x">
+          <Reveal>
             <div className="badge-red mb-4">Verhalen van leden</div>
             <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-6xl tracking-tight leading-tight">
               Wat onze leden zeggen
@@ -237,42 +253,6 @@ export default function Home() {
           </Reveal>
           <div className="mt-10">
             <Testimonials />
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container-x">
-          <Reveal className="mb-10">
-            <div className="badge-red mb-4">Het team</div>
-            <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-6xl tracking-tight leading-tight">
-              Onder leiding van<br />Master Ron van Beukering
-            </h2>
-          </Reveal>
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {(() => {
-              const ron = trainers.find((t) => t.slug === "ron-van-beukering")!;
-              return (
-                <Reveal className="lg:col-span-5">
-                  <div className="max-w-sm mx-auto lg:mx-0">
-                    <TrainerCard t={ron} />
-                  </div>
-                </Reveal>
-              );
-            })()}
-            <Reveal delay={150} className="lg:col-span-7">
-              <p className="text-lg leading-relaxed text-[color:var(--color-text)] max-w-xl">
-                Ron van Beukering heeft 1e Dan Hapkido volgens Mung Jae Nam, 3e Dan Sin Moo Hapkido, 5e Dan Kwan Nyom Hapkido, 6e Dan Hapkido Combinatie, 1e Dan Dim Mak en is basis instructeur Knife Fighting. Verder heeft hij zich verdiept in Systema, Taekwondo (o.b.v. GM Harry Bottse), Dim Mak, diverse meditatie- en ontspanningstechnieken en agressiebeheersing. Hapkido Combinatie ontwikkelt zich door gesprekken, trainingen en bestudering van diverse methodieken. Een belangrijk klankbord hierbij is GM. Harry Bottse.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/trainers/ron-van-beukering" className="btn-primary">
-                  Bekijk profiel
-                </Link>
-                <Link href="/trainers" className="btn-secondary">
-                  Bekijk alle trainers <ArrowRight size={16} />
-                </Link>
-              </div>
-            </Reveal>
           </div>
         </div>
       </section>

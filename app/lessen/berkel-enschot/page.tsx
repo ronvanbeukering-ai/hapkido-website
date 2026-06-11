@@ -35,7 +35,7 @@ export const metadata: Metadata = {
       "Hapkido Combinatie in Berkel-Enschot onder leiding van Master Ron van Beukering. Lessen voor jeugd en volwassenen. Maandag, woensdag en zaterdag.",
     locale: "nl_NL",
     type: "website",
-    images: [{ url: "/images/training/training-4.jpg", width: 1200, height: 630, alt: "Hapkido Yong dojo Berkel-Enschot Kerkstraat 9B" }],
+    images: [{ url: "/images/training/training-4.jpg", width: 1200, height: 630, alt: "Hapkido Yong dojang Berkel-Enschot Kerkstraat 9B" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -144,11 +144,6 @@ export default function Page() {
                 <li>Een handdoek</li>
               </ul>
               <p className="text-sm text-[color:var(--color-muted)]">Een hapkidopak is niet nodig, dat krijg je pas als je lid wordt.</p>
-            </div>
-            <div className="mt-8">
-              <Link href={`/trainers/${loc.trainerSlug}`} className="btn-ghost">
-                Maak kennis met {loc.trainerName} <ArrowRight size={16} />
-              </Link>
             </div>
           </Reveal>
           <Reveal delay={150} id="proefles">

@@ -179,7 +179,7 @@ export const trainers: Trainer[] = [
   },
   {
     slug: "jesse-van-mierlo",
-    name: "KSN Jesse van Mierlo",
+    name: "Jesse van Mierlo",
     rank: "2e Dan · 1e Dan Kwan Nyom Hapkido",
     shortRank: "2e Dan",
     role: "2e Dan",
