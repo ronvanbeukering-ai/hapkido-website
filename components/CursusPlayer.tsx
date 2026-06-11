@@ -152,7 +152,15 @@ function LocalEmbed({ videoId, titel }: { videoId: string; titel: string }) {
     );
   }
   return (
-    <video controls preload="metadata" className="w-full h-full object-contain bg-black" title={titel}>
+    <video
+      controls
+      preload="metadata"
+      className="w-full h-full object-contain bg-black"
+      title={titel}
+      controlsList="nodownload"
+      disablePictureInPicture
+      onContextMenu={(e) => e.preventDefault()}
+    >
       <source src={url} type="video/mp4" />
       Je browser ondersteunt geen video.
     </video>
@@ -183,11 +191,15 @@ function GdriveEmbed({ videoId, titel }: { videoId: string; titel: string }) {
 
 function VideoEmbed({ video }: { video: VideoItem }) {
   const p = video.platform;
-  if (p === "youtube") return <YoutubeEmbed videoId={video.id} titel={video.titel} />;
-  if (p === "vimeo") return <VimeoEmbed videoId={video.id} titel={video.titel} />;
-  if (p === "local") return <LocalEmbed videoId={video.id} titel={video.titel} />;
-  if (p === "gdrive") return <GdriveEmbed videoId={video.id} titel={video.titel} />;
-  return <YoutubeEmbed videoId={video.id} titel={video.titel} />;
+  return (
+    <div className="relative w-full h-full" onContextMenu={(e) => e.preventDefault()}>
+      {p === "youtube" && <YoutubeEmbed videoId={video.id} titel={video.titel} />}
+      {p === "vimeo"   && <VimeoEmbed   videoId={video.id} titel={video.titel} />}
+      {p === "local"   && <LocalEmbed   videoId={video.id} titel={video.titel} />}
+      {p === "gdrive"  && <GdriveEmbed  videoId={video.id} titel={video.titel} />}
+      {!["youtube","vimeo","local","gdrive"].includes(p ?? "") && <YoutubeEmbed videoId={video.id} titel={video.titel} />}
+    </div>
+  );
 }
 
 // ─── LessenLijst ──────────────────────────────────────────────
@@ -298,15 +310,10 @@ export function VideoGalerij({ videos }: { videos: VideoItem[] }) {
     return acc;
   }, {});
 
-  const catOrder = ["uitleg", "stoten", "elleboog", "hammerslag", "palm", "trappen", "ground", "eigen", "kwan-nyom", "hapkido-nederland"];
-  const sortedEntries = Object.entries(byCategorie).sort(([a], [b]) => {
-    const ia = catOrder.indexOf(a);
-    const ib = catOrder.indexOf(b);
-    if (ia === -1 && ib === -1) return a.localeCompare(b);
-    if (ia === -1) return 1;
-    if (ib === -1) return -1;
-    return ia - ib;
-  });
+  const catOrder = ["uitleg", "stoten", "elleboog", "hammerslag", "palm", "trappen", "ground", "eigen"];
+  const sortedEntries = Object.entries(byCategorie)
+    .filter(([cat]) => catOrder.includes(cat))
+    .sort(([a], [b]) => catOrder.indexOf(a) - catOrder.indexOf(b));
 
   return (
     <div className="space-y-10">
