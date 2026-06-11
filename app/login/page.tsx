@@ -29,7 +29,7 @@ function LoginForm() {
 
     const supabase = createClient();
     const timeout = new Promise<{ error: Error }>(resolve =>
-      setTimeout(() => resolve({ error: new Error("timeout") }), 10000)
+      setTimeout(() => resolve({ error: new Error("timeout") }), 30000)
     );
     const { error } = await Promise.race([
       supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password }),

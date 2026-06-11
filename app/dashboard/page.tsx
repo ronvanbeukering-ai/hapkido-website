@@ -46,10 +46,10 @@ export default function Dashboard() {
   useEffect(() => {
     (async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) { router.replace("/login"); return; }
-        const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
-        const p: Profiel = data ?? { id: user.id, email: user.email ?? "", rol: "geen", lid_geldig_tot: null };
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) { router.replace("/login"); return; }
+        const { data } = await supabase.from("profiles").select("*").eq("id", session.user.id).single();
+        const p: Profiel = data ?? { id: session.user.id, email: session.user.email ?? "", rol: "geen", lid_geldig_tot: null };
         if (!isAdminOrSuperAdmin(p.email, p.rol)) { router.replace("/"); return; }
         setProfiel(p);
       } catch {
