@@ -24,9 +24,9 @@ const trainingVideos: VideoItem[] = [
     vimeoId: "1199536635",
     vimeoHash: "87f62c18bd",
     thumbnail: "/images/training/training-1.jpg",
-    title: "Hapkido training stand-up technieken",
+    title: "Hapkido training trappen en stoten",
     description:
-      "Trainingsopname bij Hapkido Yong Berkel-Enschot. Werpen, klemmen en stand-up technieken zoals die elke les aan bod komen, voor beginners én gevorderden.",
+      "Trainingsopname bij Hapkido Yong Berkel-Enschot. Werpen, klemmen en trappen en stoten zoals die elke les aan bod komen, voor beginners én gevorderden.",
   },
   {
     vimeoId: "1199526926",

@@ -243,7 +243,7 @@ export const trainers: Trainer[] = [
     rank: "1e Dan",
     shortRank: "1e Dan",
     role: "1e Dan",
-    bio: "Instructor met focus op stand-up technieken en sparring.",
+    bio: "Instructor met focus op trappen, stoten en sparring.",
     knowsAbout: ["Hapkido Combinatie", "Sparring"],
     photo: "/images/trainers/michiel.jpg",
   },

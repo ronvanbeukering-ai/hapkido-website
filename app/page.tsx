@@ -59,8 +59,8 @@ const benefitIcons = [Shield, Zap, Heart, Brain, Flame, Users];
 const trainingPhotos = [
   {
     src: "/images/training/training-1.jpg",
-    alt: "Hapkido training stand-up technieken bij Hapkido Yong Berkel-Enschot",
-    caption: "Stand-up technieken",
+    alt: "Hapkido training trappen en stoten bij Hapkido Yong Berkel-Enschot",
+    caption: "Trappen en stoten",
   },
   {
     src: "/images/training/training-2.jpg",

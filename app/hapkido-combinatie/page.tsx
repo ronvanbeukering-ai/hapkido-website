@@ -88,7 +88,7 @@ export default function Page() {
             <div className="card p-6 md:p-8">
               <h3 className="font-[family-name:var(--font-display)] text-3xl mb-5">In het kort</h3>
               <ul className="space-y-3 text-sm text-[color:var(--color-text)]">
-                <li className="flex gap-3"><Sword size={16} className="text-[color:var(--color-accent-500)] shrink-0 mt-1" /><span>Stand-up, klemmen, worpen, grondtechnieken</span></li>
+                <li className="flex gap-3"><Sword size={16} className="text-[color:var(--color-accent-500)] shrink-0 mt-1" /><span>Trappen en stoten, klemmen, worpen, grondtechnieken</span></li>
                 <li className="flex gap-3"><Target size={16} className="text-[color:var(--color-accent-500)] shrink-0 mt-1" /><span>Praktische zelfverdediging, voor de straat, niet de ring</span></li>
                 <li className="flex gap-3"><History size={16} className="text-[color:var(--color-accent-500)] shrink-0 mt-1" /><span>Sinds 2006 in Nederland · sinds 2023 als Hapkido Combinatie</span></li>
               </ul>
