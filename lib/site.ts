@@ -32,6 +32,15 @@ export const siteKeywords = [
   "ron van beukering",
   "master ron",
   "ron van beukering-bin ghoni",
+  // Doelgroep specifiek
+  "hapkido voor kinderen",
+  "hapkido voor beginners",
+  "hapkido voor vrouwen",
+  "hapkido voor 50 plus",
+  "gratis proefles hapkido",
+  "hapkido proefles",
+  "zelfverdediging beginners",
+  "zelfverdediging voor vrouwen",
   // Lokaal
   "hapkido berkel-enschot",
   "hapkido waalwijk",

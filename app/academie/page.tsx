@@ -8,7 +8,7 @@ import { breadcrumbSchema } from "@/lib/jsonld";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Hapkido Combinatie Academie Zwarte-bandtraining Noord-Brabant",
+  title: "Hapkido Combinatie Academie Zwarte-bandtraining",
   description:
     "De Hapkido Combinatie Academie biedt maandelijkse zwarte-bandtrainingen voor gevorderden (vanaf bruine band) in Noord-Brabant. Geavanceerde hapkido-technieken.",
   keywords: [

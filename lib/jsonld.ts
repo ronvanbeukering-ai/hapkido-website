@@ -44,6 +44,11 @@ export const organizationSchema = {
     postalCode: "5056 AE",
     addressCountry: "NL",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 51.5741,
+    longitude: 5.1564,
+  },
   memberOf: [
     { "@type": "Organization", name: "NBJJV", url: "https://www.nbjjv.nl" },
   ],

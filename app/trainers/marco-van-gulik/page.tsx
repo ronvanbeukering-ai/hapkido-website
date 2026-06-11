@@ -11,7 +11,7 @@ import { site, trainers } from "@/lib/site";
 const trainer = trainers.find((t) => t.slug === "marco-van-gulik")!;
 
 export const metadata: Metadata = {
-  title: "Marco van Gulik Hapkido Combinatie, Senior Instructor Waalwijk",
+  title: "Marco van Gulik Senior Instructor Hapkido Waalwijk",
   description:
     "CGN Marco van Gulik (2e Dan Hapkido Combinatie) is Senior Instructor bij Hapkido Yong Waalwijk. Specialist Pencak Silat en weerbaarheidstraining. Plan een gratis proefles.",
   keywords: [
