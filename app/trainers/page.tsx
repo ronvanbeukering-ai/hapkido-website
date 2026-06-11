@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { PageHero } from "@/components/Hero";
 import { TrainerCard } from "@/components/TrainerCard";
 import { CTABanner } from "@/components/CTABanner";
@@ -91,6 +92,34 @@ export default function Page() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container-x">
+          <Reveal>
+            <div className="badge-red mb-4">Elitegroep</div>
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-5xl tracking-tight mb-4">
+              De elitegroep van Hapkido Combinatie
+            </h2>
+            <p className="text-[color:var(--color-muted)] leading-relaxed mb-8 max-w-2xl">
+              Een speciale groep buiten de Kwan Nyom Hapkido. Destijds opgericht als gesloten groep — alles zwart, geen Dan zichtbaar. Marcel Dohmen, Toon van Gils en Ron van Beukering.
+            </p>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="relative overflow-hidden rounded-2xl max-w-md">
+              <Image
+                src="/images/trainers/elitegroep.jpg"
+                alt="Elitegroep Hapkido Combinatie — Marcel Dohmen, Toon van Gils en Ron van Beukering"
+                width={600}
+                height={750}
+                className="object-cover w-full"
+              />
+              <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-[#0e0b08]/80 to-transparent">
+                <p className="text-white text-sm font-medium">Marcel Dohmen · Toon van Gils · Ron van Beukering</p>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
