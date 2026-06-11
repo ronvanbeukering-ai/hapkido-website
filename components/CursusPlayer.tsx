@@ -96,7 +96,7 @@ function VimeoEmbed({ videoId, titel }: { videoId: string; titel: string }) {
     return (
       <iframe
         ref={iframeRef}
-        className="w-full h-full"
+        className="absolute inset-0 w-full h-full"
         src={embedSrc}
         title={titel}
         allow="autoplay; fullscreen; picture-in-picture"
@@ -108,13 +108,11 @@ function VimeoEmbed({ videoId, titel }: { videoId: string; titel: string }) {
     <button
       type="button"
       onClick={() => setActive(true)}
-      className="relative w-full h-full flex items-center justify-center bg-stone-800 group cursor-pointer"
+      className="absolute inset-0 flex items-center justify-center bg-stone-800 group cursor-pointer"
       aria-label={`Speel ${titel} af`}
     >
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-14 h-14 rounded-full bg-[#1ab7ea]/90 flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
-          <Play size={22} className="text-white ml-0.5" fill="currentColor" />
-        </div>
+      <div className="w-14 h-14 rounded-full bg-[#1ab7ea]/90 flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
+        <Play size={22} className="text-white ml-0.5" fill="currentColor" />
       </div>
       <span className="absolute bottom-3 left-3 text-xs text-white/60 font-medium">Vimeo</span>
     </button>
@@ -277,7 +275,7 @@ export function LessenLijst({ lessen }: { lessen: Les[] }) {
 
               {isOpen && videoItem && (
                 <div className="border-t border-[color:var(--color-border)] bg-black">
-                  <div className="aspect-video">
+                  <div className="aspect-video relative overflow-hidden">
                     <VideoEmbed video={videoItem} />
                   </div>
                 </div>
@@ -322,7 +320,7 @@ export function VideoGalerij({ videos }: { videos: VideoItem[] }) {
                 key={v.id}
                 className="group rounded-xl overflow-hidden border border-[color:var(--color-border)] bg-[color:var(--color-surface)] shadow-sm hover:shadow-md transition-shadow"
               >
-                <div className="aspect-video bg-stone-900">
+                <div className="aspect-video bg-stone-900 relative overflow-hidden">
                   <VideoEmbed video={v} />
                 </div>
                 <div className="p-4">

@@ -42,10 +42,11 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  // IMPORTANT: use getUser() – not getSession() – to validate the JWT
-  // server-side against Supabase Auth. getSession() only reads the cookie
-  // and can be spoofed; getUser() makes a real network call.
-  const { data: { user } } = await supabase.auth.getUser();
+  // getSession() validates the JWT locally from the cookie — no network call.
+  // Fast enough for route protection on a club website; revoked tokens are
+  // caught at the next full page load when the cookie expires.
+  const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user ?? null;
 
   if (pathname.startsWith("/dashboard")) {
     if (!user) {

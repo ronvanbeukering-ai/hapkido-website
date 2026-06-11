@@ -229,13 +229,13 @@ export const trainers: Trainer[] = [
   },
   {
     slug: "cgn-sill",
-    name: "CGN Sill, KSN Marco, CGN Michiel",
-    rank: "1e Dan",
+    name: "CGN Sill",
+    rank: "1e Dan Hapkido Combinatie",
     shortRank: "1e Dan",
-    role: "",
+    role: "1e Dan",
     bio: "Toegewijd Instructor binnen het Berkel-Enschotse team.",
     knowsAbout: ["Hapkido Combinatie"],
-    photo: "/images/trainers/sill-michiel.jpg",
+    photo: "/images/trainers/sill.jpg",
   },
   {
     slug: "cgn-michiel",
