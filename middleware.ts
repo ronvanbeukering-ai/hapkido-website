@@ -42,7 +42,10 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  const { data: { user } } = await supabase.auth.getUser();
+  // getSession() reads cookies locally — no network call, no hang.
+  // Token refresh happens automatically in the browser client.
+  const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user ?? null;
 
   if (pathname.startsWith("/dashboard")) {
     if (!user) {
@@ -51,12 +54,10 @@ export async function middleware(request: NextRequest) {
 
     const superadminEmail = process.env.ADMIN_EMAIL ?? "";
 
-    // Super admin: skip the extra DB call — email match is enough
     if (superadminEmail && user.email?.toLowerCase() === superadminEmail.toLowerCase()) {
       return supabaseResponse;
     }
 
-    // For other users: check profile role in DB
     const { data: profile } = await supabase
       .from("profiles")
       .select("rol")

@@ -30,10 +30,10 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
 
   useEffect(() => {
     async function loadUser() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { setNavUser(null); return; }
-      const { data: profile } = await supabase.from("profiles").select("rol").eq("id", user.id).single();
-      const email = user.email ?? "";
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) { setNavUser(null); return; }
+      const email = session.user.email ?? "";
+      const { data: profile } = await supabase.from("profiles").select("rol").eq("id", session.user.id).single();
       setNavUser({ email, isAdmin: profile?.rol === "admin" || isSuperAdmin(email) });
     }
     loadUser();
