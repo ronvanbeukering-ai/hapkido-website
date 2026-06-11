@@ -26,12 +26,12 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos }: Pr
 
   useEffect(() => {
     async function checkAuth() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
         const { data } = await supabase
           .from("profiles")
           .select("*")
-          .eq("id", user.id)
+          .eq("id", session.user.id)
           .single();
         if (data) setProfiel(data);
       }
