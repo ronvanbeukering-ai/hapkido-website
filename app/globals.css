@@ -24,18 +24,18 @@
   --color-bordeaux-800: #6b3200;
   --color-bordeaux-700: #a05000;
 
-  /* Orange accent */
-  --color-accent-50: #fff8f0;
-  --color-accent-100: #ffedd5;
-  --color-accent-200: #fed7aa;
-  --color-accent-300: #fb923c;
-  --color-accent-400: #f97316;
-  --color-accent-500: #ea6500;
-  --color-accent-600: #c25a00;
-  --color-accent-700: #9a4700;
-  --color-accent-800: #7a3700;
-  --color-accent-900: #5c2900;
-  --color-accent-950: #301500;
+  /* Burnt orange accent (iets gedempter dan pure oranje) */
+  --color-accent-50: #fef6ee;
+  --color-accent-100: #fde8cc;
+  --color-accent-200: #fbcf9a;
+  --color-accent-300: #e07840;
+  --color-accent-400: #cb6018;
+  --color-accent-500: #b05200;
+  --color-accent-600: #924400;
+  --color-accent-700: #753600;
+  --color-accent-800: #5c2a00;
+  --color-accent-900: #421e00;
+  --color-accent-950: #251000;
 
   /* Warm gold */
   --color-gold-50: #fdf9ee;
