@@ -108,13 +108,14 @@ function VimeoEmbed({ videoId, titel }: { videoId: string; titel: string }) {
     <button
       type="button"
       onClick={() => setActive(true)}
-      className="absolute inset-0 flex items-center justify-center bg-stone-800 group cursor-pointer"
+      className="absolute inset-0 flex flex-col items-center justify-center bg-stone-700 group cursor-pointer gap-3"
       aria-label={`Speel ${titel} af`}
     >
-      <div className="w-14 h-14 rounded-full bg-[#1ab7ea]/90 flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
-        <Play size={22} className="text-white ml-0.5" fill="currentColor" />
+      <div className="w-16 h-16 rounded-full bg-[#1ab7ea] flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
+        <Play size={26} className="text-white ml-1" fill="currentColor" />
       </div>
-      <span className="absolute bottom-3 left-3 text-xs text-white/60 font-medium">Vimeo</span>
+      <span className="text-white font-semibold text-sm text-center px-4 leading-snug drop-shadow">{titel}</span>
+      <span className="absolute bottom-3 right-3 text-[11px] text-white/50 font-medium">Vimeo</span>
     </button>
   );
 }
@@ -253,11 +254,11 @@ export function LessenLijst({ lessen }: { lessen: Les[] }) {
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-[color:var(--color-heading)] truncate">{l.titel}</div>
+                  <div className="text-base font-semibold text-[color:var(--color-heading)] truncate">{l.titel}</div>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <span className="text-xs text-[color:var(--color-muted)]">{l.categorie}</span>
-                    <span className="text-xs text-[color:var(--color-muted)]">·</span>
-                    <span className="text-xs text-[color:var(--color-muted)]">{l.duur}</span>
+                    <span className="text-sm text-[color:var(--color-text)]">{l.categorie}</span>
+                    <span className="text-sm text-[color:var(--color-muted)]">·</span>
+                    <span className="text-sm text-[color:var(--color-text)]">{l.duur}</span>
                   </div>
                 </div>
                 {l.gratis && (
@@ -324,9 +325,9 @@ export function VideoGalerij({ videos }: { videos: VideoItem[] }) {
                   <VideoEmbed video={v} />
                 </div>
                 <div className="p-4">
-                  <h4 className="font-semibold text-sm text-[color:var(--color-heading)] leading-snug">{v.titel}</h4>
+                  <h4 className="font-semibold text-base text-[color:var(--color-heading)] leading-snug">{v.titel}</h4>
                   {v.beschrijving && (
-                    <p className="mt-1 text-xs text-[color:var(--color-muted)] leading-relaxed">{v.beschrijving}</p>
+                    <p className="mt-1.5 text-sm text-[color:var(--color-text)] leading-relaxed">{v.beschrijving}</p>
                   )}
                 </div>
               </article>
