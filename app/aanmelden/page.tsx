@@ -4,7 +4,7 @@ import { site } from "@/lib/site";
 import { AanmeldenForm } from "./AanmeldenForm";
 
 export const metadata: Metadata = {
-  title: "Aanmelden als lid — Hapkido Yong",
+  title: "Aanmelden als lid",
   description:
     "Maak een account aan als lid van Hapkido Yong. Na activering door je trainer krijg je toegang tot de videobibliotheek.",
   alternates: { canonical: `${site.url}/aanmelden` },

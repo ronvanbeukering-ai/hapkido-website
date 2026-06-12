@@ -9,7 +9,7 @@ import { breadcrumbSchema } from "@/lib/jsonld";
 import { site, locations } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Contact Hapkido Yong Berkel-Enschot & Waalwijk",
+  title: "Contact — Berkel-Enschot & Waalwijk",
   description:
     "Neem contact op met Hapkido Yong. Bel of WhatsApp +31 6 46 55 55 55, mail hapkidonederland@gmail.com. Dojang in Berkel-Enschot (Tilburg) en Waalwijk.",
   keywords: [

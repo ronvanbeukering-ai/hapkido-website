@@ -14,7 +14,7 @@ import { videoSchema } from "@/lib/jsonld";
 import { locations, benefits, faq, site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Hapkido Yong Hapkido Combinatie in Berkel-Enschot & Waalwijk",
+  title: { absolute: "Hapkido Yong — Hapkido Combinatie in Berkel-Enschot & Waalwijk" },
   description:
     "Hapkido Combinatie (Koreaans MMA) bij Hapkido Yong in Berkel-Enschot en Waalwijk. Zelfverdediging voor alle leeftijden onder leiding van Master Ron van Beukering. Gratis proefles.",
   keywords: [

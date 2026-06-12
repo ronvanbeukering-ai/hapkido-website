@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Privacyverklaring Hapkido Yong",
+  title: "Privacyverklaring",
   description: "Hoe Hapkido Yong omgaat met persoonsgegevens van leden, cursisten en bezoekers.",
   robots: { index: true, follow: true },
 };

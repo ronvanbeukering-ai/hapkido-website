@@ -8,7 +8,7 @@ import { breadcrumbSchema } from "@/lib/jsonld";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Hapkido Contributie & Tarieven Hapkido Yong Noord-Brabant",
+  title: "Hapkido Contributie & Tarieven Noord-Brabant",
   description:
     "Hapkido Yong contributie: jeugd €75/kwartaal, volwassenen €90/kwartaal, strippenkaart €75 per 10 lessen. Eerlijke tarieven in Berkel-Enschot en Waalwijk.",
   keywords: [
