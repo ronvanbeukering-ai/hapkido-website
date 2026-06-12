@@ -24,5 +24,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/trainers/marco-van-gulik`, lastModified, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/academie`, lastModified, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/over-ons`, lastModified, changeFrequency: "monthly", priority: 0.6 },
+    // /aanmelden is no-index, but include for completeness
   ];
 }
