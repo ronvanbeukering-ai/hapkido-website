@@ -138,7 +138,7 @@ export default async function Page() {
                 <Link href="/online-aanmelden" className="btn-primary">
                   Starten vanaf €7,50 per maand
                 </Link>
-                <Link href="/proefles" className="btn-ghost">
+                <Link href="/proefles" className="btn-secondary">
                   Liever naar de dojang?
                 </Link>
               </div>
