@@ -148,8 +148,6 @@ export async function POST(req: Request) {
     } catch (err) {
       console.error("[proefles] e-mail mislukt:", err);
     }
-  } else {
-    console.log("[proefles aanvraag]", new Date().toISOString(), { locatie, dag: dag ?? "", voor: voor ?? "" });
   }
 
   return NextResponse.json({ ok: true });
