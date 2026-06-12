@@ -144,7 +144,7 @@ export default function Page() {
             </div>
           </Reveal>
           <Reveal delay={150} id="proefles">
-            <ProeflesForm />
+            <ProeflesForm locatie="Waalwijk" />
           </Reveal>
         </div>
       </section>

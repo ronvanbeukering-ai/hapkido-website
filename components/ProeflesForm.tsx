@@ -6,10 +6,16 @@ import { locations } from "@/lib/site";
 
 type State = "idle" | "submitting" | "success" | "error";
 
-export function ProeflesForm({ compact = false }: { compact?: boolean }) {
+const dagPerLocatie: Record<string, string[]> = {
+  "Berkel-Enschot": ["Maandag", "Woensdag", "Zaterdag"],
+  "Waalwijk": ["Maandag", "Zaterdag"],
+};
+
+export function ProeflesForm({ compact = false, locatie }: { compact?: boolean; locatie?: string }) {
   const [state, setState] = useState<State>("idle");
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [forKid, setForKid] = useState(false);
+  const dagen = locatie ? (dagPerLocatie[locatie] ?? ["Maandag", "Woensdag", "Zaterdag"]) : ["Maandag", "Woensdag", "Zaterdag"];
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -81,29 +87,31 @@ export function ProeflesForm({ compact = false }: { compact?: boolean }) {
         </div>
       </fieldset>
 
-      <fieldset className="mt-5">
-        <legend className="label">Locatie *</legend>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {locations.map((l) => (
-            <label key={l.slug} className="cursor-pointer border border-[color:var(--color-border)] hover:border-[color:var(--color-stone-300)] rounded-md px-4 py-3 text-sm text-[color:var(--color-text)] has-[:checked]:border-[color:var(--color-accent-600)] has-[:checked]:bg-[color:var(--color-accent-600)]/10 has-[:checked]:transition-colors">
-              <input type="radio" name="locatie" value={l.city} required className="sr-only" />
-              {l.city}
+      {locatie ? (
+        <input type="hidden" name="locatie" value={locatie} />
+      ) : (
+        <fieldset className="mt-5">
+          <legend className="label">Locatie *</legend>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {locations.map((l) => (
+              <label key={l.slug} className="cursor-pointer border border-[color:var(--color-border)] hover:border-[color:var(--color-stone-300)] rounded-md px-4 py-3 text-sm text-[color:var(--color-text)] has-[:checked]:border-[color:var(--color-accent-600)] has-[:checked]:bg-[color:var(--color-accent-600)]/10 has-[:checked]:transition-colors">
+                <input type="radio" name="locatie" value={l.city} required className="sr-only" />
+                {l.city}
+              </label>
+            ))}
+            <label className="cursor-pointer border border-[color:var(--color-border)] hover:border-[color:var(--color-stone-300)] rounded-md px-4 py-3 text-sm text-[color:var(--color-text)] has-[:checked]:border-[color:var(--color-accent-600)] has-[:checked]:bg-[color:var(--color-accent-600)]/10 has-[:checked]:transition-colors">
+              <input type="radio" name="locatie" value="onbekend" className="sr-only" />
+              Maakt niet uit
             </label>
-          ))}
-          <label className="cursor-pointer border border-[color:var(--color-border)] hover:border-[color:var(--color-stone-300)] rounded-md px-4 py-3 text-sm text-[color:var(--color-text)] has-[:checked]:border-[color:var(--color-accent-600)] has-[:checked]:bg-[color:var(--color-accent-600)]/10 has-[:checked]:transition-colors">
-            <input type="radio" name="locatie" value="onbekend" className="sr-only" />
-            Maakt niet uit
-          </label>
-        </div>
-      </fieldset>
+          </div>
+        </fieldset>
+      )}
 
       <div className="mt-5">
         <label htmlFor="dag" className="label">Voorkeursdag</label>
         <select id="dag" name="dag" className="input" defaultValue="">
           <option value="">Kies een dag</option>
-          <option>Maandag</option>
-          <option>Woensdag</option>
-          <option>Zaterdag</option>
+          {dagen.map((d) => <option key={d}>{d}</option>)}
           <option>Maakt niet uit</option>
         </select>
       </div>
