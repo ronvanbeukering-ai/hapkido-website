@@ -4,12 +4,20 @@ import Script from "next/script";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFab } from "@/components/WhatsAppFab";
+import { CookieBanner } from "@/components/CookieBanner";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationSchema } from "@/lib/jsonld";
 import { site, siteKeywords } from "@/lib/site";
 import "./globals.css";
 
 const GA_ID = "G-WJK9Q2Y9RW";
+
+declare global {
+  interface Window {
+    gtag: (...args: unknown[]) => void;
+    dataLayer: unknown[];
+  }
+}
 
 const displayFont = Bebas_Neue({
   weight: "400",
@@ -94,10 +102,13 @@ export default function RootLayout({
         <main id="main">{children}</main>
         <Footer />
         <WhatsAppFab />
+        <CookieBanner />
+        {/* GA laadt altijd, maar analytics_storage staat standaard op 'denied' (Consent Mode v2) */}
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
         <Script id="gtag-init" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
+          gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied' });
           gtag('js', new Date());
           gtag('config', '${GA_ID}');
         `}</Script>
