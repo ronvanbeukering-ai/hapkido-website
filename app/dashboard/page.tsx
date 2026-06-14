@@ -450,6 +450,10 @@ function LedenBeheer() {
   const [leden, setLeden] = useState<Profiel[]>([]);
   const [loading, setLoading] = useState(true);
   const [zoek, setZoek] = useState("");
+  const [nieuwForm, setNieuwForm] = useState(false);
+  const [nieuwNaam, setNieuwNaam] = useState("");
+  const [nieuwEmail, setNieuwEmail] = useState("");
+  const [uitnodigBusy, setUitnodigBusy] = useState(false);
 
   const laad = useCallback(async () => {
     const { ok, data, error } = await apiFetch("/api/admin/leden");
@@ -493,6 +497,21 @@ function LedenBeheer() {
     toast("Toegang ingetrokken");
   }
 
+  async function uitnodigen() {
+    if (!nieuwEmail.trim()) return;
+    setUitnodigBusy(true);
+    const { ok, error } = await apiFetch("/api/admin/leden", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ naam: nieuwNaam.trim(), email: nieuwEmail.trim() }),
+    });
+    setUitnodigBusy(false);
+    if (!ok) { toast("Fout: " + (error ?? "onbekend"), "err"); return; }
+    toast("Uitnodiging verstuurd naar " + nieuwEmail.trim());
+    setNieuwNaam(""); setNieuwEmail(""); setNieuwForm(false);
+    laad();
+  }
+
   async function verwijderLid(id: string, email: string) {
     if (!confirm(`Account van ${email} definitief verwijderen? Dit kan niet ongedaan worden gemaakt.`)) return;
     const { ok, error } = await apiFetch(`/api/admin/leden?id=${encodeURIComponent(id)}`, { method: "DELETE" });
@@ -526,7 +545,46 @@ function LedenBeheer() {
           <h1 className="font-[family-name:var(--font-display)] text-3xl text-[color:var(--color-heading)]">Leden beheren</h1>
           <p className="text-sm text-[color:var(--color-muted)] mt-1">{leden.length} gebruikers geregistreerd</p>
         </div>
+        <button onClick={() => setNieuwForm(v => !v)} className="btn-primary !py-2">
+          <Plus size={16} /> Nieuw lid toevoegen
+        </button>
       </div>
+
+      {/* Formulier: nieuw lid uitnodigen */}
+      {nieuwForm && (
+        <div className="card p-6 mb-6 border-[color:var(--color-accent-300)]">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-[family-name:var(--font-display)] text-xl text-[color:var(--color-heading)]">Nieuw lid uitnodigen</h2>
+            <button onClick={() => setNieuwForm(false)} className="text-[color:var(--color-muted)] hover:text-[color:var(--color-heading)]"><X size={20} /></button>
+          </div>
+          <p className="text-sm text-[color:var(--color-muted)] mb-4">
+            Het lid ontvangt een e-mail met een link om een wachtwoord in te stellen. Na het instellen is het account direct actief als <strong>lid</strong>.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="label">Naam</label>
+              <input className="input" placeholder="Voor- en achternaam" value={nieuwNaam} onChange={e => setNieuwNaam(e.target.value)} />
+            </div>
+            <div>
+              <label className="label">E-mailadres *</label>
+              <input className="input" type="email" placeholder="klant@email.nl" value={nieuwEmail} onChange={e => setNieuwEmail(e.target.value)} />
+            </div>
+          </div>
+          <div className="flex gap-3 mt-4">
+            <button
+              onClick={uitnodigen}
+              disabled={uitnodigBusy || !nieuwEmail.trim()}
+              className="btn-primary !py-2 disabled:opacity-60"
+            >
+              {uitnodigBusy
+                ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                : <Plus size={16} />}
+              {uitnodigBusy ? "Bezig…" : "Uitnodiging versturen"}
+            </button>
+            <button onClick={() => setNieuwForm(false)} className="btn-secondary !py-2">Annuleer</button>
+          </div>
+        </div>
+      )}
 
       {/* Legenda */}
       <div className="card p-4 mb-4 bg-[color:var(--color-stone-50)] text-xs text-[color:var(--color-muted)] flex flex-wrap gap-4">

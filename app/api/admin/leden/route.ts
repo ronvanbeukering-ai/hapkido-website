@@ -120,6 +120,31 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ ok: true });
 }
 
+export async function PUT(req: NextRequest) {
+  if (!await checkAdmin()) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { email, naam } = await req.json() as { email: string; naam?: string };
+  if (!email) return NextResponse.json({ error: "Missing email" }, { status: 400 });
+
+  const db = createServiceClient();
+  const { data, error } = await db.auth.admin.inviteUserByEmail(email.trim().toLowerCase(), {
+    data: { naam: naam?.trim() ?? "" },
+    redirectTo: "https://hapkidonederland.nl/login",
+  });
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  if (data.user) {
+    await db.from("profiles").upsert({
+      id: data.user.id,
+      email: email.trim().toLowerCase(),
+      rol: "lid",
+      lid_geldig_tot: null,
+    });
+  }
+
+  return NextResponse.json({ ok: true });
+}
+
 export async function DELETE(req: NextRequest) {
   if (!await checkAdmin()) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const id = new URL(req.url).searchParams.get("id");
