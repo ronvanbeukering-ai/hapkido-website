@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   Video, BookOpen, Users, LogOut, Plus, Trash2, Pencil,
   Save, X, Upload, Crown, CheckCircle, XCircle, ArrowLeft,
-  Youtube, Eye, EyeOff,
+  Youtube, Library,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { isSuperAdmin, isAdminOrSuperAdmin } from "@/lib/auth";
@@ -450,7 +450,6 @@ function LedenBeheer() {
   const [leden, setLeden] = useState<Profiel[]>([]);
   const [loading, setLoading] = useState(true);
   const [zoek, setZoek] = useState("");
-  const [geldigTot, setGeldigTot] = useState<Record<string, string>>({});
 
   const laad = useCallback(async () => {
     const { ok, data, error } = await apiFetch("/api/admin/leden");
@@ -471,42 +470,34 @@ function LedenBeheer() {
     laad();
   }
 
-  async function setRol(id: string, rol: "lid" | "geen") {
-    const tot = geldigTot[id] || null;
-    await updateLid(id, { rol, lid_geldig_tot: rol === "lid" ? tot : null });
-    toast(rol === "lid" ? "Lid gemaakt!" : "Toegang ingetrokken");
+  async function maakLid(id: string) {
+    await updateLid(id, { rol: "lid", lid_geldig_tot: null });
+    toast("Lid gemaakt!");
   }
 
-  async function activeerCursus(id: string) {
-    const over30 = new Date();
-    over30.setDate(over30.getDate() + 30);
-    const tot = over30.toISOString().slice(0, 10);
-    await updateLid(id, { rol: "cursus", lid_geldig_tot: tot });
-    toast("Cursus abonnement geactiveerd (30 dagen)!");
-  }
-
-  async function verlengCursus(id: string) {
+  async function geefBibliotheek(id: string) {
     const huidig = leden.find(l => l.id === id);
     const basis = huidig?.lid_geldig_tot && new Date(huidig.lid_geldig_tot) > new Date()
       ? new Date(huidig.lid_geldig_tot)
       : new Date();
-    basis.setDate(basis.getDate() + 30);
+    basis.setFullYear(basis.getFullYear() + 1);
     const tot = basis.toISOString().slice(0, 10);
-    await updateLid(id, { lid_geldig_tot: tot });
-    toast("Cursus verlengd met 30 dagen!");
+    const update: Record<string, unknown> = { lid_geldig_tot: tot };
+    if (huidig?.rol === "geen") update.rol = "lid";
+    await updateLid(id, update);
+    toast("Bibliotheek toegang: geldig t/m " + tot);
   }
 
-  async function setAdmin(id: string) {
-    await updateLid(id, { rol: "admin" });
-    toast("Admin toegang gegeven!");
+  async function intrekken(id: string) {
+    await updateLid(id, { rol: "geen", lid_geldig_tot: null });
+    toast("Toegang ingetrokken");
   }
 
-  async function setGeldigTotDatum(id: string, datum: string) {
-    await apiFetch("/api/admin/leden", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, lid_geldig_tot: datum || null }),
-    });
+  async function verwijderLid(id: string, email: string) {
+    if (!confirm(`Account van ${email} definitief verwijderen? Dit kan niet ongedaan worden gemaakt.`)) return;
+    const { ok, error } = await apiFetch(`/api/admin/leden?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+    if (!ok) { toast("Fout: " + (error ?? "onbekend"), "err"); return; }
+    toast("Account verwijderd");
     laad();
   }
 
@@ -519,12 +510,14 @@ function LedenBeheer() {
     geen:   "bg-[color:var(--color-stone-100)] text-[color:var(--color-muted)] border-[color:var(--color-border)]",
   };
 
-  const rolLabel: Record<string, string> = {
-    admin:  "ADMIN",
-    lid:    "LID",
-    cursus: "CURSUS",
-    geen:   "GEEN",
-  };
+  const rolLabel: Record<string, string> = { admin: "ADMIN", lid: "LID", cursus: "CURSUS", geen: "GEEN" };
+
+  function bibliotheekStatus(l: Profiel): string {
+    if (!l.lid_geldig_tot) return l.rol === "lid" ? "onbeperkt" : "—";
+    const datum = new Date(l.lid_geldig_tot);
+    const verlopen = datum < new Date();
+    return (verlopen ? "verlopen " : "t/m ") + datum.toLocaleDateString("nl-NL", { day: "numeric", month: "short", year: "numeric" });
+  }
 
   return (
     <div>
@@ -533,6 +526,14 @@ function LedenBeheer() {
           <h1 className="font-[family-name:var(--font-display)] text-3xl text-[color:var(--color-heading)]">Leden beheren</h1>
           <p className="text-sm text-[color:var(--color-muted)] mt-1">{leden.length} gebruikers geregistreerd</p>
         </div>
+      </div>
+
+      {/* Legenda */}
+      <div className="card p-4 mb-4 bg-[color:var(--color-stone-50)] text-xs text-[color:var(--color-muted)] flex flex-wrap gap-4">
+        <span><strong className="text-emerald-700">✓ Lid maken</strong> → toegang als fysiek lid (geen verloopdatum)</span>
+        <span><strong className="text-blue-700">📚 Bibliotheek +1 jaar</strong> → online videobibliotheek, verlengbaar</span>
+        <span><strong className="text-red-600">✗ Intrekken</strong> → verwijdert alle toegang</span>
+        <span><strong className="text-red-700">🗑 Verwijder</strong> → verwijdert het account definitief</span>
       </div>
 
       <div className="mb-4">
@@ -546,7 +547,7 @@ function LedenBeheer() {
               <tr className="border-b border-[color:var(--color-border)] bg-[color:var(--color-stone-50)]">
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">E-mail</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Rol</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Geldig tot</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Bibliotheek</th>
                 <th className="text-right px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Acties</th>
               </tr>
             </thead>
@@ -562,42 +563,33 @@ function LedenBeheer() {
                       {rolLabel[l.rol] ?? l.rol.toUpperCase()}
                     </span>
                   </td>
-                  <td className="px-5 py-4">
-                    {(l.rol === "lid" || l.rol === "cursus") ? (
-                      <input type="date" className="input !py-1 !px-2 text-xs w-36"
-                        value={geldigTot[l.id] ?? l.lid_geldig_tot?.slice(0, 10) ?? ""}
-                        onChange={e => setGeldigTot(g => ({ ...g, [l.id]: e.target.value }))}
-                        onBlur={() => setGeldigTotDatum(l.id, geldigTot[l.id] ?? l.lid_geldig_tot?.slice(0, 10) ?? "")}
-                      />
-                    ) : (
-                      <span className="text-[color:var(--color-muted)] text-xs">—</span>
-                    )}
+                  <td className="px-5 py-4 text-xs text-[color:var(--color-muted)]">
+                    {bibliotheekStatus(l)}
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-2 flex-wrap">
+                      {/* Lid maken — voor iedereen zonder lid/admin rol */}
                       {l.rol !== "lid" && l.rol !== "admin" && (
-                        <button onClick={() => setRol(l.id, "lid")} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors font-semibold">
+                        <button onClick={() => maakLid(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors font-semibold">
                           <CheckCircle size={12} /> Lid maken
                         </button>
                       )}
-                      {l.rol === "geen" && (
-                        <button onClick={() => activeerCursus(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-semibold">
-                          <Video size={12} /> Cursus activeren
+                      {/* Bibliotheek — voor alle niet-admin gebruikers */}
+                      {l.rol !== "admin" && (
+                        <button onClick={() => geefBibliotheek(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-semibold">
+                          <Library size={12} /> Bibliotheek +1 jaar
                         </button>
                       )}
-                      {l.rol === "cursus" && (
-                        <button onClick={() => verlengCursus(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors font-semibold">
-                          <CheckCircle size={12} /> Verleng 30 dagen
-                        </button>
-                      )}
+                      {/* Toegang intrekken */}
                       {(l.rol === "lid" || l.rol === "cursus") && (
-                        <button onClick={() => setRol(l.id, "geen")} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition-colors font-semibold">
+                        <button onClick={() => intrekken(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-orange-100 text-orange-700 hover:bg-orange-200 transition-colors font-semibold">
                           <XCircle size={12} /> Intrekken
                         </button>
                       )}
-                      {l.rol !== "admin" && !isSuperAdmin(l.email) && (
-                        <button onClick={() => setAdmin(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-[color:var(--color-gold-100)] text-[color:var(--color-gold-600)] hover:bg-[color:var(--color-gold-200)] transition-colors font-semibold">
-                          <Crown size={12} /> Admin
+                      {/* Account verwijderen */}
+                      {!isSuperAdmin(l.email) && (
+                        <button onClick={() => verwijderLid(l.id, l.email)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition-colors font-semibold">
+                          <Trash2 size={12} /> Verwijder
                         </button>
                       )}
                     </div>
