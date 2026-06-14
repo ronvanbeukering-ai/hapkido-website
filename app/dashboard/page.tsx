@@ -471,8 +471,8 @@ function LedenBeheer() {
   }
 
   async function maakLid(id: string) {
-    await updateLid(id, { rol: "lid", lid_geldig_tot: null });
-    toast("Lid gemaakt!");
+    await updateLid(id, { rol: "lid", lid_geldig_tot: null, emailVersturen: "lid" });
+    toast("Lid gemaakt! Welkomstmail verstuurd.");
   }
 
   async function geefBibliotheek(id: string) {
@@ -482,10 +482,10 @@ function LedenBeheer() {
       : new Date();
     basis.setFullYear(basis.getFullYear() + 1);
     const tot = basis.toISOString().slice(0, 10);
-    const update: Record<string, unknown> = { lid_geldig_tot: tot };
+    const update: Record<string, unknown> = { lid_geldig_tot: tot, emailVersturen: "bibliotheek" };
     if (huidig?.rol === "geen") update.rol = "lid";
     await updateLid(id, update);
-    toast("Bibliotheek toegang: geldig t/m " + tot);
+    toast("Bibliotheek actief t/m " + tot + " — mail verstuurd.");
   }
 
   async function intrekken(id: string) {
