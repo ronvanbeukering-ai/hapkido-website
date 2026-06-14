@@ -80,7 +80,7 @@ export function Footer() {
         <div className="container-x py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-3 text-xs text-white/55">
             <span className="uppercase tracking-widest text-white/70">Aangesloten bij</span>
-            <span className="px-3 py-1 rounded border border-white/15 text-white/80">NBJJV</span>
+            <a href="https://nbjjv.nl" target="_blank" rel="noopener noreferrer" className="px-3 py-1 rounded border border-white/15 text-white/80 hover:border-white/40 hover:text-white transition-colors">NBJJV</a>
           </div>
           <div className="text-xs text-white/55 flex flex-wrap items-center gap-x-4 gap-y-1">
             <span>© {new Date().getFullYear()} Hapkido Yong</span>

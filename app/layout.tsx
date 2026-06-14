@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Inter } from "next/font/google";
+import Script from "next/script";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFab } from "@/components/WhatsAppFab";
@@ -7,6 +8,8 @@ import { JsonLd } from "@/components/JsonLd";
 import { organizationSchema } from "@/lib/jsonld";
 import { site, siteKeywords } from "@/lib/site";
 import "./globals.css";
+
+const GA_ID = "G-WJK9Q2Y9RW";
 
 const displayFont = Bebas_Neue({
   weight: "400",
@@ -91,6 +94,13 @@ export default function RootLayout({
         <main id="main">{children}</main>
         <Footer />
         <WhatsAppFab />
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+        <Script id="gtag-init" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_ID}');
+        `}</Script>
       </body>
     </html>
   );
