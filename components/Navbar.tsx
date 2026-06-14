@@ -32,9 +32,14 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
     async function loadUser() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) { setNavUser(null); return; }
-      const email = session.user.email ?? "";
-      const { data: profile } = await supabase.from("profiles").select("rol").eq("id", session.user.id).single();
-      setNavUser({ email, isAdmin: profile?.rol === "admin" || isSuperAdmin(email) });
+      try {
+        const res = await fetch("/api/auth/me");
+        const json = await res.json();
+        setNavUser(json.email ? { email: json.email, isAdmin: json.isAdmin } : null);
+      } catch {
+        const email = session.user.email ?? "";
+        setNavUser({ email, isAdmin: isSuperAdmin(email) });
+      }
     }
     loadUser();
     const { data: { subscription } } = supabase.auth.onAuthStateChange(() => loadUser());

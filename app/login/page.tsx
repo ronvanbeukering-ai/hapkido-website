@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Eye, EyeOff, AlertCircle } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, AlertCircle, CheckCircle } from "lucide-react";
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 type State = "idle" | "loading" | "error";
 
@@ -18,6 +19,9 @@ function LoginForm() {
   const [errorMsg, setErrorMsg] = useState(
     authError === "auth_failed" ? "De inloglink is verlopen of ongeldig. Probeer opnieuw." : ""
   );
+  const [resetModus, setResetModus] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetState, setResetState] = useState<"idle" | "loading" | "verstuurd" | "error">("idle");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -44,6 +48,64 @@ function LoginForm() {
     }
   }
 
+  async function handleReset(e: React.FormEvent) {
+    e.preventDefault();
+    if (!resetEmail.trim()) return;
+    setResetState("loading");
+    const supabase = createClient();
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail.trim().toLowerCase(), {
+      redirectTo: `${window.location.origin}/auth/callback?next=/nieuw-wachtwoord`,
+    });
+    setResetState(error ? "error" : "verstuurd");
+  }
+
+  if (resetModus) {
+    return (
+      <div className="card p-8 space-y-5">
+        <div>
+          <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)]">Wachtwoord vergeten</h2>
+          <p className="text-sm text-[color:var(--color-muted)] mt-1">Vul je e-mailadres in en we sturen een reset-link.</p>
+        </div>
+
+        {resetState === "verstuurd" ? (
+          <div className="flex items-start gap-2 text-emerald-700 bg-emerald-50 rounded-lg p-4 text-sm">
+            <CheckCircle size={16} className="shrink-0 mt-0.5" />
+            <span>Reset-link verstuurd naar <strong>{resetEmail}</strong>. Controleer ook je spam.</span>
+          </div>
+        ) : (
+          <form onSubmit={handleReset} className="space-y-4">
+            <div>
+              <label htmlFor="reset-email" className="block text-sm font-medium text-[color:var(--color-text-strong)] mb-1.5">E-mailadres</label>
+              <input
+                id="reset-email" type="email" required
+                value={resetEmail} onChange={e => setResetEmail(e.target.value)}
+                placeholder="jouw@email.nl"
+                className="w-full px-4 py-3 rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-text)] placeholder:text-[color:var(--color-muted)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-accent-600)] transition"
+                disabled={resetState === "loading"}
+              />
+            </div>
+            {resetState === "error" && (
+              <div className="flex items-start gap-2 text-red-600 bg-red-50 rounded-lg p-3 text-sm">
+                <AlertCircle size={16} className="shrink-0 mt-0.5" />
+                <span>Er ging iets mis. Probeer het opnieuw.</span>
+              </div>
+            )}
+            <button type="submit" disabled={resetState === "loading" || !resetEmail.trim()}
+              className="btn-primary w-full inline-flex items-center justify-center gap-2 disabled:opacity-50">
+              {resetState === "loading"
+                ? <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                : "Reset-link versturen"}
+            </button>
+          </form>
+        )}
+
+        <button onClick={() => setResetModus(false)} className="text-xs text-[color:var(--color-muted)] hover:underline w-full text-center">
+          ← Terug naar inloggen
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="card p-8 space-y-6">
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -65,9 +127,15 @@ function LoginForm() {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-[color:var(--color-text-strong)] mb-1.5">
-            Wachtwoord
-          </label>
+          <div className="flex items-center justify-between mb-1.5">
+            <label htmlFor="password" className="block text-sm font-medium text-[color:var(--color-text-strong)]">
+              Wachtwoord
+            </label>
+            <button type="button" onClick={() => setResetModus(true)}
+              className="text-xs text-[color:var(--color-accent-400)] hover:underline">
+              Wachtwoord vergeten?
+            </button>
+          </div>
           <div className="relative">
             <input
               id="password"

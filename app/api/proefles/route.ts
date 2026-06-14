@@ -128,6 +128,8 @@ export async function POST(req: Request) {
         service: "gmail",
         auth: { user: gmailUser, pass: gmailPass },
       });
+
+      // Mail naar admin
       await transporter.sendMail({
         from: `Hapkido Yong <${gmailUser}>`,
         to: toEmail,
@@ -143,6 +145,28 @@ export async function POST(req: Request) {
           `Opmerking: ${opmerking ?? "—"}`,
           "",
           `Ontvangen op: ${new Date().toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}`,
+        ].join("\n"),
+      });
+
+      // Bevestigingsmail naar de aanvrager
+      await transporter.sendMail({
+        from: `Hapkido Yong <${gmailUser}>`,
+        to: email,
+        subject: "Je proeflesaanvraag bij Hapkido Yong is ontvangen",
+        text: [
+          `Hallo ${naam},`,
+          "",
+          `Bedankt voor je aanvraag! We hebben je aanmelding voor een proefles in ${locatie} in goede orde ontvangen.`,
+          "",
+          "We nemen zo snel mogelijk contact met je op om een datum en tijd af te spreken.",
+          "",
+          "Heb je vragen? Bel of WhatsApp ons gerust:",
+          "Tel: 06-19073256",
+          "WhatsApp: https://wa.me/message/GBCYDJPCHVCCA1",
+          "",
+          "Met sportieve groet,",
+          "Master Ron van Beukering",
+          "Hapkido Yong — hapkidonederland.nl",
         ].join("\n"),
       });
     } catch (err) {
