@@ -112,7 +112,7 @@ export default function Dashboard() {
       </aside>
 
       {/* Main */}
-      <main className="flex-1 overflow-auto bg-[color:var(--color-stone-50)] text-[color:var(--color-text)]">
+      <main className="light-panel flex-1 overflow-auto bg-[color:var(--color-stone-50)] text-[color:var(--color-text)]">
         <div className="p-8">
           {tab === "videos" && <VideosBeheer />}
           {tab === "lessen" && <LessenBeheer />}

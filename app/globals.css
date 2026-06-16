@@ -209,6 +209,21 @@
     color: var(--color-dark-heading);
   }
 
+  /* Admin panel wrapper: rest of the site sits on a permanent dark
+     gradient (see html background above), so --color-surface/--color-heading
+     etc. default to near-white-on-dark. This panel has a light background,
+     so the same tokens need to flip to dark-on-light here. */
+  .light-panel {
+    --color-surface: #ffffff;
+    --color-surface-2: var(--color-stone-100);
+    --color-surface-3: var(--color-stone-150);
+    --color-border: var(--color-stone-200);
+    --color-muted: var(--color-stone-500);
+    --color-text: var(--color-stone-700);
+    --color-text-strong: var(--color-stone-800);
+    --color-heading: var(--color-stone-900);
+  }
+
   .btn-primary {
     display: inline-flex;
     align-items: center;

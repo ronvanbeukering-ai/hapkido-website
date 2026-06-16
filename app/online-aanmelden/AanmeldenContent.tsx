@@ -42,14 +42,8 @@ function AanmeldenForm() {
       return;
     }
 
-    if (data.user) {
-      await supabase.from("profiles").upsert({
-        id: data.user.id,
-        email: email.trim().toLowerCase(),
-        rol: "geen",
-        lid_geldig_tot: null,
-      });
-    }
+    // Profile row is created automatically by the handle_new_user() trigger
+    // (SECURITY DEFINER) — no client-side DB write needed here.
 
     setLaden(false);
     setStap("bevestigd");
