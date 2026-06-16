@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
 import { site } from "@/lib/site";
 
@@ -9,13 +10,15 @@ export function HomeHero() {
     <section className="dark-section relative min-h-[100svh] flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
         {/* Hero background photo zoomed in */}
-        <img
+        <Image
           src="/images/training/ron-hapkido-strand.jpg"
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
           style={{ transform: "scale(1.12)", transformOrigin: "center center" }}
-          fetchPriority="high"
         />
         {/* Dark overlay for readability */}
         <div className="absolute inset-0 bg-[#0e0b08]/65" />
