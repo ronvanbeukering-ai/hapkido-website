@@ -6,8 +6,26 @@ import { NextResponse, type NextRequest } from "next/server";
 // edge layer adds an extra layer of protection.
 const BLOCKED_IN_PRODUCTION = ["/api/migrate"];
 
+// Domains that must permanently redirect to the canonical domain.
+// completeselfdefence.nl is an alias; www.* is a common duplicate.
+const CANONICAL_HOST = "hapkidonederland.nl";
+const REDIRECT_HOSTS = new Set([
+  "completeselfdefence.nl",
+  "www.completeselfdefence.nl",
+  "www.hapkidonederland.nl",
+]);
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // 301 redirect alias domains to the canonical domain (SEO + deduplication)
+  const host = request.headers.get("host") ?? "";
+  if (REDIRECT_HOSTS.has(host)) {
+    const url = request.nextUrl.clone();
+    url.host = CANONICAL_HOST;
+    url.protocol = "https:";
+    return NextResponse.redirect(url, { status: 301 });
+  }
 
   // Block the migration endpoint unless we're in local development
   if (BLOCKED_IN_PRODUCTION.some((p) => pathname.startsWith(p))) {
@@ -84,5 +102,8 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/migrate", "/api/admin/:path*"],
+  matcher: [
+    // Run on every request so alias-domain redirects fire for all paths
+    "/(.*)",
+  ],
 };
