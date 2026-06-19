@@ -15,16 +15,21 @@ export default function NieuwWachtwoord() {
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
+    // PKCE flow: session is al gezet door /auth/callback — haal hem direct op
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) setStatus("gereed");
+    });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") {
+      if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") {
         setStatus("gereed");
       }
     });
 
-    // Fallback: als na 4 seconden geen recovery-event → link verlopen
+    // Fallback: als na 8 seconden nog geen sessie → link verlopen
     const timer = setTimeout(() => {
       setStatus(s => s === "wachten" ? "verlopen" : s);
-    }, 4000);
+    }, 8000);
 
     return () => {
       subscription.unsubscribe();
