@@ -54,7 +54,7 @@ function LoginForm() {
     setResetState("loading");
     const supabase = createClient();
     const { error } = await supabase.auth.resetPasswordForEmail(resetEmail.trim().toLowerCase(), {
-      redirectTo: `${window.location.origin}/auth/callback?next=/nieuw-wachtwoord`,
+      redirectTo: `${window.location.origin}/nieuw-wachtwoord`,
     });
     setResetState(error ? "error" : "verstuurd");
   }

@@ -15,18 +15,38 @@ export default function NieuwWachtwoord() {
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    // PKCE flow: session is al gezet door /auth/callback — haal hem direct op
+    if (typeof window === "undefined") return;
+
+    // Flow A: implicit — Supabase zet #access_token=xxx&type=recovery in de hash
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    const access_token = hashParams.get("access_token");
+    const refresh_token = hashParams.get("refresh_token") ?? "";
+    if (access_token && hashParams.get("type") === "recovery") {
+      supabase.auth.setSession({ access_token, refresh_token })
+        .then(({ error }) => setStatus(error ? "verlopen" : "gereed"));
+      return;
+    }
+
+    // Flow B: PKCE — Supabase zet ?code=xxx in de query string
+    const code = new URLSearchParams(window.location.search).get("code");
+    if (code) {
+      supabase.auth.exchangeCodeForSession(code)
+        .then(({ error }) => setStatus(error ? "verlopen" : "gereed"));
+      return;
+    }
+
+    // Flow C: sessie al gezet via /auth/callback (token_hash flow)
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setStatus("gereed");
+      if (session) setStatus(s => s === "wachten" ? "gereed" : s);
     });
 
+    // Flow D: event-gebaseerd (PASSWORD_RECOVERY of SIGNED_IN)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") {
-        setStatus("gereed");
+        setStatus(s => s === "wachten" ? "gereed" : s);
       }
     });
 
-    // Fallback: als na 8 seconden nog geen sessie → link verlopen
     const timer = setTimeout(() => {
       setStatus(s => s === "wachten" ? "verlopen" : s);
     }, 8000);
