@@ -1,10 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Inter } from "next/font/google";
 import Script from "next/script";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { WhatsAppFab } from "@/components/WhatsAppFab";
-import { CookieBanner } from "@/components/CookieBanner";
+import { SiteChrome } from "@/components/SiteChrome";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationSchema } from "@/lib/jsonld";
 import { site, siteKeywords } from "@/lib/site";
@@ -98,11 +95,7 @@ export default function RootLayout({
         >
           Skip naar content
         </a>
-        <Navbar transparent />
-        <main id="main">{children}</main>
-        <Footer />
-        <WhatsAppFab />
-        <CookieBanner />
+        <SiteChrome>{children}</SiteChrome>
         {/* GA laadt altijd, maar analytics_storage staat standaard op 'denied' (Consent Mode v2) */}
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
         <Script id="gtag-init" strategy="afterInteractive">{`

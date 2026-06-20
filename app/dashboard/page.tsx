@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   Video, BookOpen, Users, LogOut, Plus, Trash2, Pencil,
   Save, X, Upload, Crown, CheckCircle, XCircle, ArrowLeft,
-  Youtube, Library,
+  Youtube, Library, Play,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { isSuperAdmin, isAdminOrSuperAdmin } from "@/lib/auth";
@@ -37,6 +37,62 @@ async function apiFetch(url: string, options?: RequestInit) {
   const res = await fetch(url, options);
   const json = await res.json().catch(() => ({}));
   return { ok: res.ok, data: json.data, error: json.error as string | undefined };
+}
+
+function extractYoutubeId(raw: string): string {
+  const m = raw.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : raw;
+}
+
+function vimeoEmbedSrc(raw: string): string {
+  const clean = raw.replace(/^vimeo-/, "");
+  const [vid, hash] = clean.split("/");
+  return hash
+    ? `https://player.vimeo.com/video/${vid}?h=${hash}&autoplay=1&color=c25a00`
+    : `https://player.vimeo.com/video/${vid}?autoplay=1&color=c25a00`;
+}
+
+/* Modal die een video afspeelt op basis van platform (youtube/vimeo/local) */
+function VideoPreviewModal({ video, onClose }: { video: HKVideo; onClose: () => void }) {
+  const raw = video.url ?? video.id;
+  return (
+    <div
+      className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-3xl aspect-video bg-black rounded-lg overflow-hidden shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          aria-label="Sluiten"
+          className="absolute top-2 right-2 z-10 w-9 h-9 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 transition-colors"
+        >
+          <X size={18} />
+        </button>
+        {video.platform === "local" ? (
+          <video src={video.url} controls autoPlay className="w-full h-full" />
+        ) : video.platform === "vimeo" ? (
+          <iframe
+            className="w-full h-full"
+            src={vimeoEmbedSrc(raw)}
+            title={video.titel}
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <iframe
+            className="w-full h-full"
+            src={`https://www.youtube.com/embed/${extractYoutubeId(raw)}?autoplay=1&rel=0&modestbranding=1`}
+            title={video.titel}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        )}
+      </div>
+    </div>
+  );
 }
 
 /* ─── main component ─────────────────────────────── */
@@ -135,6 +191,7 @@ function VideosBeheer() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<Partial<HKVideo> | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [preview, setPreview] = useState<HKVideo | null>(null);
 
   const laad = useCallback(async () => {
     const { ok, data, error } = await apiFetch("/api/admin/videos");
@@ -273,7 +330,12 @@ function VideosBeheer() {
           {videos.map(v => (
             <div key={v.id} className="card overflow-hidden">
               {/* Thumbnail */}
-              <div className="aspect-video bg-stone-200 relative overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setPreview(v)}
+                aria-label={`Speel ${v.titel} af`}
+                className="block w-full aspect-video bg-stone-200 relative overflow-hidden group cursor-pointer"
+              >
                 {(v.platform === "youtube" || !v.platform) && (
                   <img src={`https://img.youtube.com/vi/${v.url ?? v.id}/hqdefault.jpg`} alt={v.titel} className="w-full h-full object-cover" loading="lazy" />
                 )}
@@ -286,14 +348,25 @@ function VideosBeheer() {
                 {v.platform === "local" && (
                   <video src={v.url} className="w-full h-full object-cover" preload="metadata" muted />
                 )}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-white/0 group-hover:bg-white/95 flex items-center justify-center transition-all scale-90 group-hover:scale-100">
+                    <Play size={20} className="text-stone-900 ml-0.5 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" />
+                  </div>
+                </div>
                 <span className="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-[#0e0b08]/60 text-white uppercase">{v.platform ?? "youtube"}</span>
-              </div>
+              </button>
               {/* Info + knoppen */}
               <div className="p-3">
                 <p className="text-sm font-semibold text-[color:var(--color-heading)] truncate">{v.titel}</p>
                 <p className="text-xs text-[color:var(--color-muted)] truncate mt-0.5">{v.beschrijving}</p>
                 <span className="text-[10px] text-[color:var(--color-muted)] mt-1 block">{catLabel[v.categorie] ?? v.categorie}</span>
                 <div className="flex gap-2 mt-3 pt-3 border-t border-[color:var(--color-border)]">
+                  <button
+                    onClick={() => setPreview(v)}
+                    className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md bg-[color:var(--color-surface-2)] hover:bg-[color:var(--color-stone-200)] text-[color:var(--color-heading)] transition-colors border border-[color:var(--color-border)]"
+                  >
+                    <Play size={12} /> Afspelen
+                  </button>
                   <button
                     onClick={() => setForm({ ...v })}
                     className="flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold rounded-md bg-[color:var(--color-surface-2)] hover:bg-[color:var(--color-stone-200)] text-[color:var(--color-heading)] transition-colors border border-[color:var(--color-border)]"
@@ -312,6 +385,7 @@ function VideosBeheer() {
           ))}
         </div>
       )}
+      {preview && <VideoPreviewModal video={preview} onClose={() => setPreview(null)} />}
     </div>
   );
 }
