@@ -5,12 +5,12 @@ import { createServiceClient } from "@/lib/supabase/service";
 
 async function checkAdmin(): Promise<boolean> {
   const supabase = await createServerClient();
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session?.user) return false;
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return false;
   const adminEmail = (process.env.ADMIN_EMAIL ?? "").toLowerCase();
-  if (adminEmail && session.user.email?.toLowerCase() === adminEmail) return true;
+  if (adminEmail && user.email?.toLowerCase() === adminEmail) return true;
   const { data: profile } = await supabase
-    .from("profiles").select("rol").eq("id", session.user.id).single();
+    .from("profiles").select("rol").eq("id", user.id).single();
   return profile?.rol === "admin";
 }
 

@@ -28,15 +28,15 @@ const nextConfig: NextConfig = {
     const csp = [
       "default-src 'self'",
       // Scripts: self + unsafe-inline (Next.js) + unsafe-eval only in dev (React Refresh needs it)
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.youtube.com https://s.ytimg.com`,
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.youtube.com https://s.ytimg.com https://www.googletagmanager.com`,
       // Styles: self + inline (Tailwind)
       "style-src 'self' 'unsafe-inline'",
       // Images: self + YouTube thumbnails + Vimeo CDN + data URIs (favicons)
-      "img-src 'self' data: https://img.youtube.com https://i.ytimg.com https://i.vimeocdn.com https://vumbnail.com",
+      "img-src 'self' data: https://img.youtube.com https://i.ytimg.com https://i.vimeocdn.com https://vumbnail.com https://www.google-analytics.com",
       // Fonts: self only
       "font-src 'self'",
       // Connect: self + Supabase (auth, DB) + Vimeo API
-      `connect-src 'self' https://${SUPABASE_HOST} https://api.supabase.com wss://${SUPABASE_HOST}`,
+      `connect-src 'self' https://${SUPABASE_HOST} https://api.supabase.com wss://${SUPABASE_HOST} https://www.google-analytics.com https://www.googletagmanager.com`,
       // Frames: YouTube & Vimeo embeds + Google Maps
       "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://www.google.com",
       // Media: self + Supabase storage (video uploads)
