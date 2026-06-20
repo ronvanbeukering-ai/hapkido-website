@@ -17,39 +17,41 @@ export default function NieuwWachtwoord() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Flow A: implicit — Supabase zet #access_token=xxx&type=recovery in de hash
+    let settled = false;
+    const resolve = (next: "gereed" | "verlopen") => {
+      if (!settled) { settled = true; setStatus(next); }
+    };
+
+    // Flow A: implicit — #access_token=xxx&type=recovery in hash
     const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
     const access_token = hashParams.get("access_token");
     const refresh_token = hashParams.get("refresh_token") ?? "";
     if (access_token && hashParams.get("type") === "recovery") {
       supabase.auth.setSession({ access_token, refresh_token })
-        .then(({ error }) => setStatus(error ? "verlopen" : "gereed"));
-      return;
+        .then(({ error }) => resolve(error ? "verlopen" : "gereed"));
     }
 
-    // Flow B: PKCE — Supabase zet ?code=xxx in de query string
+    // Flow B: PKCE — ?code=xxx in query string
     const code = new URLSearchParams(window.location.search).get("code");
-    if (code) {
+    if (!access_token && code) {
       supabase.auth.exchangeCodeForSession(code)
-        .then(({ error }) => setStatus(error ? "verlopen" : "gereed"));
-      return;
+        .then(({ error }) => resolve(error ? "verlopen" : "gereed"));
     }
 
-    // Flow C: sessie al gezet via /auth/callback (token_hash flow)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setStatus(s => s === "wachten" ? "gereed" : s);
-    });
+    // Flow C: sessie al in cookies via /auth/callback
+    if (!access_token && !code) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) resolve("gereed");
+      });
+    }
 
-    // Flow D: event-gebaseerd (PASSWORD_RECOVERY of SIGNED_IN)
+    // Flow D: event-gebaseerd fallback
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") {
-        setStatus(s => s === "wachten" ? "gereed" : s);
-      }
+      if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") resolve("gereed");
     });
 
-    const timer = setTimeout(() => {
-      setStatus(s => s === "wachten" ? "verlopen" : s);
-    }, 8000);
+    // Altijd een timer — ook als een flow hierboven hangt
+    const timer = setTimeout(() => resolve("verlopen"), 10000);
 
     return () => {
       subscription.unsubscribe();
