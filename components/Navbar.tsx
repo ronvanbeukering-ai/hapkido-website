@@ -110,12 +110,40 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
               <Phone size={20} />
             </a>
 
+            {/* Inloggen-icoon: altijd zichtbaar op elk schermformaat, ook de
+                kleinste telefoons — zelfde patroon als de telefoonknop
+                hierboven, zodat je niet eerst het menu hoeft te openen. */}
+            {navUser === null && (
+              <Link
+                href="/login"
+                className={cn(
+                  "sm:hidden inline-flex items-center justify-center w-11 h-11 rounded-md",
+                  solid ? "text-[color:var(--color-text-strong)] hover:bg-white/10" : "text-white hover:bg-white/10"
+                )}
+                aria-label="Inloggen"
+              >
+                <LogIn size={20} />
+              </Link>
+            )}
+            {navUser != null && (
+              <Link
+                href={navUser.isAdmin ? "/dashboard" : "/cursussen"}
+                className={cn(
+                  "sm:hidden inline-flex items-center justify-center w-11 h-11 rounded-md",
+                  solid ? "text-[color:var(--color-text-strong)] hover:bg-white/10" : "text-white hover:bg-white/10"
+                )}
+                aria-label={navUser.isAdmin ? "Dashboard" : "Mijn cursussen"}
+              >
+                {navUser.isAdmin ? <LayoutDashboard size={20} /> : <User size={20} />}
+              </Link>
+            )}
+
             {/* Auth buttons desktop */}
             {navUser === null ? (
               <Link
                 href="/login"
                 className={cn(
-                  "hidden lg:inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-md transition-colors",
+                  "hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-md transition-colors",
                   solid
                     ? "text-[color:var(--color-text-strong)] hover:bg-white/10"
                     : "text-white/85 hover:text-white hover:bg-white/10"
@@ -124,7 +152,7 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
                 <LogIn size={15} /> Inloggen
               </Link>
             ) : navUser != null ? (
-              <div className="hidden lg:flex items-center gap-1">
+              <div className="hidden sm:flex items-center gap-1">
                 {navUser.isAdmin && (
                   <Link
                     href="/dashboard"
@@ -195,6 +223,25 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
                 <X size={22} />
               </button>
             </div>
+            {/* Inloggen staat bovenaan, direct zichtbaar bij openen van het menu */}
+            <div className="p-5 border-b border-[color:var(--color-border)] space-y-3">
+              {navUser === null ? (
+                <Link href="/login" onClick={() => setOpen(false)} className="btn-primary w-full">
+                  <LogIn size={16} /> Inloggen
+                </Link>
+              ) : navUser != null ? (
+                <>
+                  {navUser.isAdmin && (
+                    <Link href="/dashboard" onClick={() => setOpen(false)} className="btn-primary w-full">
+                      <LayoutDashboard size={16} /> Dashboard
+                    </Link>
+                  )}
+                  <button type="button" onClick={() => { setOpen(false); handleLogout(); }} className="btn-secondary w-full">
+                    <LogOut size={16} /> Uitloggen
+                  </button>
+                </>
+              ) : null}
+            </div>
             <nav className="flex-1 overflow-y-auto py-2" aria-label="Mobiele navigatie">
               {navLinks.map((l) => (
                 <Link
@@ -211,22 +258,6 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
               <Link href="/proefles" onClick={() => setOpen(false)} className="btn-primary w-full">
                 Plan gratis proefles
               </Link>
-              {navUser === null ? (
-                <Link href="/login" onClick={() => setOpen(false)} className="btn-secondary w-full">
-                  <LogIn size={16} /> Inloggen
-                </Link>
-              ) : navUser != null ? (
-                <>
-                  {navUser.isAdmin && (
-                    <Link href="/dashboard" onClick={() => setOpen(false)} className="btn-secondary w-full">
-                      <LayoutDashboard size={16} /> Dashboard
-                    </Link>
-                  )}
-                  <button type="button" onClick={() => { setOpen(false); handleLogout(); }} className="btn-secondary w-full">
-                    <LogOut size={16} /> Uitloggen
-                  </button>
-                </>
-              ) : null}
               <a href={`tel:${site.phoneRaw}`} className="btn-secondary w-full">
                 <Phone size={16} /> {site.phone}
               </a>
