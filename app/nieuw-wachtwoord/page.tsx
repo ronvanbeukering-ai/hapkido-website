@@ -65,24 +65,30 @@ export default function NieuwWachtwoord() {
     setStatus("loading");
     setErrorMsg("");
 
-    const timeoutPromise = new Promise<{ timedOut: true }>((resolve) =>
-      setTimeout(() => resolve({ timedOut: true }), 10000)
-    );
-    const result = await Promise.race([
-      supabase.auth.updateUser({ password }),
-      timeoutPromise,
-    ]);
+    // Wachtwoord opslaan gaat server-side (browser→Supabase direct was
+    // hier onbetrouwbaar/bleef hangen — zelfde reden als /api/auth/login).
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
 
-    if ("timedOut" in result) {
-      setErrorMsg("Het opslaan duurt te lang. Probeer het opnieuw.");
-      setStatus("gereed");
-      return;
-    }
-    if (result.error) {
-      setErrorMsg("Er ging iets mis. Vraag een nieuwe reset-link aan.");
-      setStatus("gereed");
-    } else {
+    try {
+      const res = await fetch("/api/auth/set-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+        signal: controller.signal,
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setErrorMsg(json.error ?? "Er ging iets mis. Vraag een nieuwe reset-link aan.");
+        setStatus("gereed");
+        return;
+      }
       setStatus("klaar");
+    } catch {
+      setErrorMsg("Het opslaan duurt te lang of is mislukt. Probeer het opnieuw.");
+      setStatus("gereed");
+    } finally {
+      clearTimeout(timer);
     }
   }
 
