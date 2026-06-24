@@ -41,13 +41,9 @@ export function AanmeldenForm() {
       return;
     }
 
+    // Profile row is created automatically by de handle_new_user() trigger
+    // (SECURITY DEFINER) — geen client-side DB write nodig hier.
     if (data.user) {
-      await supabase.from("profiles").upsert({
-        id: data.user.id,
-        email: email.trim().toLowerCase(),
-        rol: "geen",
-        lid_geldig_tot: null,
-      });
       await fetch("/api/aanmelden", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

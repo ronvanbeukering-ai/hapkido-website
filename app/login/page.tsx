@@ -180,10 +180,10 @@ function LoginForm() {
       </form>
 
       <div className="border-t border-[color:var(--color-border)] pt-4 space-y-2">
-        <p className="text-xs text-[color:var(--color-muted)] text-center">
+        <h2 className="font-[family-name:var(--font-display)] text-xl text-[color:var(--color-heading)] text-center">
           Nog geen account?
-        </p>
-        <Link href="/contributie" className="btn-secondary w-full inline-flex items-center justify-center gap-2 text-sm">
+        </h2>
+        <Link href="/aanmelden" className="btn-secondary w-full inline-flex items-center justify-center gap-2 text-sm">
           Lid worden (mat-training) <ArrowRight size={15} />
         </Link>
         <Link href="/online-aanmelden" className="btn-secondary w-full inline-flex items-center justify-center gap-2 text-sm !border-[color:var(--color-gold-500)] !text-[color:var(--color-gold-300)] hover:!bg-[color:var(--color-gold-600)]/10">
