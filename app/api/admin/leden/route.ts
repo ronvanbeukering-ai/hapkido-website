@@ -16,7 +16,7 @@ async function checkAdmin(): Promise<boolean> {
 
 async function stuurActivatieEmail(
   naarEmail: string,
-  type: "lid" | "bibliotheek",
+  type: "lid" | "bibliotheek" | "zwarte-band",
   geldigTot?: string | null,
 ) {
   const gmailUser = process.env.GMAIL_USER;
@@ -28,22 +28,40 @@ async function stuurActivatieEmail(
     auth: { user: gmailUser, pass: gmailPass },
   });
 
-  const isLid = type === "lid";
   const datumTekst = geldigTot
     ? new Date(geldigTot).toLocaleDateString("nl-NL", { day: "numeric", month: "long", year: "numeric" })
     : null;
 
-  const subject = isLid
+  const subject = type === "lid"
     ? "Welkom als lid bij Hapkido Yong!"
+    : type === "zwarte-band"
+    ? "Toegang tot de zwarte band bibliotheek is geactiveerd"
     : "Jouw toegang tot de online videobibliotheek is actief";
 
-  const body = isLid
+  const body = type === "lid"
     ? `Hallo,
 
 Goed nieuws! Je bent ingeschreven als lid bij Hapkido Yong.
 
 Je kunt nu inloggen op onze website om jouw account te bekijken:
 https://hapkidonederland.nl/login
+
+Heb je vragen? Stuur ons een bericht via info@hapkidonederland.nl of WhatsApp.
+
+Met sportieve groet,
+Master Ron van Beukering
+Hapkido Yong — hapkidonederland.nl`
+    : type === "zwarte-band"
+    ? `Hallo,
+
+Goed nieuws! Je hebt speciale toestemming gekregen voor de exclusieve zwarte band bibliotheek van Hapkido Yong.${
+  datumTekst ? `\nJe toegang is geldig tot en met ${datumTekst}.` : ""
+}
+
+Log in en bekijk de zwarte band technieken:
+https://hapkidonederland.nl/login
+
+Na het inloggen vind je deze video's onder "Cursussen".
 
 Heb je vragen? Stuur ons een bericht via info@hapkidonederland.nl of WhatsApp.
 
@@ -87,7 +105,7 @@ export async function POST(req: NextRequest) {
   if (!await checkAdmin()) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id, emailVersturen, ...update } = await req.json() as {
     id: string;
-    emailVersturen?: "lid" | "bibliotheek";
+    emailVersturen?: "lid" | "bibliotheek" | "zwarte-band";
     [key: string]: unknown;
   };
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
@@ -110,7 +128,7 @@ export async function POST(req: NextRequest) {
       await stuurActivatieEmail(
         memberEmail,
         emailVersturen,
-        update.lid_geldig_tot as string | null,
+        (emailVersturen === "zwarte-band" ? update.zwarte_band_geldig_tot : update.lid_geldig_tot) as string | null,
       );
     } catch (mailErr) {
       console.error("[leden] activatiemail mislukt:", mailErr);

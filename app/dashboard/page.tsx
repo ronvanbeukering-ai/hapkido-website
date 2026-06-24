@@ -12,7 +12,7 @@ import { createClient } from "@/lib/supabase/client";
 import { isSuperAdmin, isAdminOrSuperAdmin } from "@/lib/auth";
 
 /* ─── types ─────────────────────────────────────── */
-type Profiel = { id: string; email: string; rol: "admin" | "lid" | "cursus" | "geen"; lid_geldig_tot: string | null };
+type Profiel = { id: string; email: string; rol: "admin" | "lid" | "cursus" | "geen"; lid_geldig_tot: string | null; zwarte_band_geldig_tot: string | null };
 type HKVideo = { id: string; titel: string; beschrijving: string; categorie: string; platform?: string; url?: string; volgorde?: number };
 type HKLes  = { nr: number; titel: string; duur: string; categorie: string; gratis: boolean; beschrijving?: string; video_url?: string; belt?: string };
 
@@ -247,8 +247,8 @@ function VideosBeheer() {
     setUploading(false);
   }
 
-  const categorieen = ["kwan-nyom", "hapkido-nederland", "eigen"];
-  const catLabel: Record<string, string> = { "kwan-nyom": "Kwan Nyom Hapkido", "hapkido-nederland": "Hapkido Nederland", "eigen": "Eigen video's" };
+  const categorieen = ["kwan-nyom", "hapkido-nederland", "eigen", "zwarte-band"];
+  const catLabel: Record<string, string> = { "kwan-nyom": "Kwan Nyom Hapkido", "hapkido-nederland": "Hapkido Nederland", "eigen": "Eigen video's", "zwarte-band": "Zwarte band technieken" };
 
   return (
     <div>
@@ -571,6 +571,22 @@ function LedenBeheer() {
     toast("Toegang ingetrokken");
   }
 
+  async function geefZwarteBand(id: string) {
+    const huidig = leden.find(l => l.id === id);
+    const basis = huidig?.zwarte_band_geldig_tot && new Date(huidig.zwarte_band_geldig_tot) > new Date()
+      ? new Date(huidig.zwarte_band_geldig_tot)
+      : new Date();
+    basis.setFullYear(basis.getFullYear() + 1);
+    const tot = basis.toISOString().slice(0, 10);
+    await updateLid(id, { zwarte_band_geldig_tot: tot, emailVersturen: "zwarte-band" });
+    toast("Zwarte band bibliotheek actief t/m " + tot + " — mail verstuurd.");
+  }
+
+  async function trekZwarteBandIn(id: string) {
+    await updateLid(id, { zwarte_band_geldig_tot: null });
+    toast("Toegang zwarte band bibliotheek ingetrokken");
+  }
+
   async function uitnodigen() {
     if (!nieuwEmail.trim()) return;
     setUitnodigBusy(true);
@@ -610,6 +626,17 @@ function LedenBeheer() {
     const datum = new Date(l.lid_geldig_tot);
     const verlopen = datum < new Date();
     return (verlopen ? "verlopen " : "t/m ") + datum.toLocaleDateString("nl-NL", { day: "numeric", month: "short", year: "numeric" });
+  }
+
+  function zwarteBandStatus(l: Profiel): string {
+    if (!l.zwarte_band_geldig_tot) return "—";
+    const datum = new Date(l.zwarte_band_geldig_tot);
+    const verlopen = datum < new Date();
+    return (verlopen ? "verlopen " : "t/m ") + datum.toLocaleDateString("nl-NL", { day: "numeric", month: "short", year: "numeric" });
+  }
+
+  function heeftActieveZwarteBand(l: Profiel): boolean {
+    return !!l.zwarte_band_geldig_tot && new Date(l.zwarte_band_geldig_tot) > new Date();
   }
 
   return (
@@ -665,6 +692,7 @@ function LedenBeheer() {
         <span><strong className="text-emerald-700">✓ Lid maken</strong> → toegang als fysiek lid (geen verloopdatum)</span>
         <span><strong className="text-blue-700">📚 Bibliotheek +1 jaar</strong> → online videobibliotheek, verlengbaar</span>
         <span><strong className="text-red-600">✗ Intrekken</strong> → verwijdert alle toegang</span>
+        <span><strong className="text-[color:var(--color-gold-600)]">♛ Zwarte band +1 jaar</strong> → exclusieve zwarte band bibliotheek, verlengbaar</span>
         <span><strong className="text-red-700">🗑 Verwijder</strong> → verwijdert het account definitief</span>
       </div>
 
@@ -680,6 +708,7 @@ function LedenBeheer() {
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">E-mail</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Rol</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Bibliotheek</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Zwarte band</th>
                 <th className="text-right px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Acties</th>
               </tr>
             </thead>
@@ -697,6 +726,9 @@ function LedenBeheer() {
                   </td>
                   <td className="px-5 py-4 text-xs text-[color:var(--color-muted)]">
                     {bibliotheekStatus(l)}
+                  </td>
+                  <td className="px-5 py-4 text-xs text-[color:var(--color-muted)]">
+                    {zwarteBandStatus(l)}
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-2 flex-wrap">
@@ -718,6 +750,17 @@ function LedenBeheer() {
                           <XCircle size={12} /> Intrekken
                         </button>
                       )}
+                      {/* Zwarte band bibliotheek — voor alle niet-admin gebruikers */}
+                      {l.rol !== "admin" && (
+                        <button onClick={() => geefZwarteBand(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-[color:var(--color-gold-100)] text-[color:var(--color-gold-600)] hover:bg-[color:var(--color-gold-200)] transition-colors font-semibold">
+                          <Crown size={12} /> Zwarte band +1 jaar
+                        </button>
+                      )}
+                      {heeftActieveZwarteBand(l) && (
+                        <button onClick={() => trekZwarteBandIn(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-orange-100 text-orange-700 hover:bg-orange-200 transition-colors font-semibold">
+                          <XCircle size={12} /> Zwarte band intrekken
+                        </button>
+                      )}
                       {/* Account verwijderen */}
                       {!isSuperAdmin(l.email) && (
                         <button onClick={() => verwijderLid(l.id, l.email)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition-colors font-semibold">
@@ -729,7 +772,7 @@ function LedenBeheer() {
                 </tr>
               ))}
               {gefilterd.length === 0 && (
-                <tr><td colSpan={4} className="px-5 py-8 text-center text-[color:var(--color-muted)]">Geen gebruikers gevonden</td></tr>
+                <tr><td colSpan={5} className="px-5 py-8 text-center text-[color:var(--color-muted)]">Geen gebruikers gevonden</td></tr>
               )}
             </tbody>
           </table>

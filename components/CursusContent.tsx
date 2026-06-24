@@ -12,13 +12,16 @@ type Props = {
   isAdmin: boolean;
   isLid: boolean;
   isIngelogd: boolean;
+  heeftZwarteBandToegang: boolean;
 };
 
-export function CursusContent({ lessen: staticLessen, videos: staticVideos, heeftToegang, isAdmin, isLid, isIngelogd }: Props) {
+export function CursusContent({ lessen: staticLessen, videos: staticVideos, heeftToegang, isAdmin, isLid, isIngelogd, heeftZwarteBandToegang }: Props) {
   const heeftCursustoegang = heeftToegang;
 
   const allVideos: VideoItem[] = staticVideos.map((v) => ({ ...v, platform: v.platform ?? "youtube" }));
-  const publiekeVideos = allVideos.filter((v) => v.platform === "youtube");
+  const regulierVideos = allVideos.filter((v) => v.categorie !== "zwarte-band");
+  const zwarteBandVideos = allVideos.filter((v) => v.categorie === "zwarte-band");
+  const publiekeVideos = regulierVideos.filter((v) => v.platform === "youtube");
   const lessenVoorLid = heeftCursustoegang
     ? staticLessen.map((l) => ({ ...l, gratis: true }))
     : staticLessen;
@@ -193,10 +196,74 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos, heef
               Demonstraties, trainingsopnames en eigen video&apos;s klik om af te spelen.
             </p>
             <div className="mt-10">
-              <VideoGalerij videos={allVideos} />
+              <VideoGalerij videos={regulierVideos} />
             </div>
           </div>
         </section>
+      )}
+
+      {/* Zwarte band bibliotheek — exclusieve tier, los van reguliere toegang */}
+      {zwarteBandVideos.length > 0 && (
+        heeftZwarteBandToegang ? (
+          <section className="section bg-[color:var(--color-stone-950)] border-y border-[color:var(--color-gold-600)]/30">
+            <div className="container-x">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[color:var(--color-gold-600)]/15 border border-[color:var(--color-gold-600)]/40 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-gold-400)] mb-4">
+                <Crown size={13} /> Zwarte band bibliotheek
+              </div>
+              <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-tight text-white">
+                Zwarte band technieken
+              </h2>
+              <p className="mt-4 text-white/60 max-w-2xl">
+                Exclusieve video&apos;s op hoger niveau — alleen toegankelijk met speciale toestemming.
+              </p>
+              <div className="mt-10">
+                <VideoGalerij videos={zwarteBandVideos} />
+              </div>
+            </div>
+          </section>
+        ) : (
+          <section className="section bg-[color:var(--color-stone-950)] border-y border-[color:var(--color-gold-600)]/30">
+            <div className="container-x">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[color:var(--color-gold-600)]/15 border border-[color:var(--color-gold-600)]/40 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-gold-400)] mb-4">
+                <Crown size={13} /> Zwarte band bibliotheek
+              </div>
+              <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-tight text-white">
+                Zwarte band technieken
+              </h2>
+              <p className="mt-4 text-white/60 max-w-2xl">
+                Exclusieve video&apos;s op hoger niveau, alleen voor leden met speciale toestemming van hun trainer.
+              </p>
+              <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {zwarteBandVideos.slice(0, 3).map((v) => (
+                  <div
+                    key={v.id}
+                    className="group rounded-xl overflow-hidden border border-[color:var(--color-gold-600)]/30 bg-white/5 relative"
+                  >
+                    <div className="aspect-video relative overflow-hidden bg-black/40 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-[#0e0b08]/70 flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-full bg-white/10 border border-[color:var(--color-gold-600)]/50 flex items-center justify-center">
+                          <Lock size={20} className="text-[color:var(--color-gold-400)]" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <h4 className="font-semibold text-sm text-white truncate">{v.titel}</h4>
+                      <p className="mt-1 text-xs text-[color:var(--color-gold-400)]">Alleen met speciale toestemming</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-8 text-sm text-white/60 max-w-xl">
+                Deze bibliotheek is niet via een abonnement te activeren — neem contact op met je trainer als je denkt in aanmerking te komen.
+              </p>
+              <div className="mt-4 flex gap-3">
+                <Link href="/contact" className="btn-secondary !border-[color:var(--color-gold-600)] !text-[color:var(--color-gold-400)] hover:!bg-[color:var(--color-gold-600)]/10">
+                  Neem contact op
+                </Link>
+              </div>
+            </div>
+          </section>
+        )
       )}
     </>
   );

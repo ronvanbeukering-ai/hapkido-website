@@ -310,7 +310,7 @@ export function VideoGalerij({ videos }: { videos: VideoItem[] }) {
     return acc;
   }, {});
 
-  const catOrder = ["uitleg", "stoten", "elleboog", "hammerslag", "palm", "trappen", "ground", "eigen"];
+  const catOrder = ["uitleg", "stoten", "elleboog", "hammerslag", "palm", "trappen", "ground", "eigen", "zwarte-band"];
   const sortedEntries = Object.entries(byCategorie)
     .filter(([cat]) => catOrder.includes(cat))
     .sort(([a], [b]) => catOrder.indexOf(a) - catOrder.indexOf(b));

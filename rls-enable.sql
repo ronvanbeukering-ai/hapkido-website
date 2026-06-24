@@ -9,6 +9,9 @@
 -- ─── 1. profiles (RLS al aan, policies versterken) ───────────
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
+-- Zwarte band bibliotheek: aparte, additieve toegang los van rol/lid_geldig_tot
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS zwarte_band_geldig_tot timestamptz;
+
 DROP POLICY IF EXISTS "Eigen profiel lezen"                 ON public.profiles;
 DROP POLICY IF EXISTS "Eigen profiel bijwerken"             ON public.profiles;
 DROP POLICY IF EXISTS "Admin kan alle profielen lezen"      ON public.profiles;
@@ -58,7 +61,18 @@ DROP POLICY IF EXISTS "Videos publiek leesbaar"      ON public.hapkido_videos;
 DROP POLICY IF EXISTS "Admin beheert videos"         ON public.hapkido_videos;
 
 CREATE POLICY "Videos publiek leesbaar"
-  ON public.hapkido_videos FOR SELECT USING (true);
+  ON public.hapkido_videos FOR SELECT
+  USING (
+    categorie != 'zwarte-band'
+    OR auth.email() = 'ronvanbeukering@gmail.com'
+    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
+    OR EXISTS (
+      SELECT 1 FROM public.profiles p
+      WHERE p.id = auth.uid()
+        AND p.zwarte_band_geldig_tot IS NOT NULL
+        AND p.zwarte_band_geldig_tot > now()
+    )
+  );
 
 CREATE POLICY "Admin beheert videos"
   ON public.hapkido_videos FOR ALL

@@ -22,7 +22,8 @@ export type HapkidoVideo = {
     | "ground"
     | "kwan-nyom"
     | "hapkido-nederland"
-    | "eigen";
+    | "eigen"
+    | "zwarte-band";
   platform?: "youtube" | "vimeo" | "local";
 };
 
@@ -161,6 +162,7 @@ export const categorieLabelMap: Record<string, string> = {
   "kwan-nyom":        "Kwan Nyom Hapkido",
   "hapkido-nederland":"Hapkido Nederland",
   "eigen":            "Overige video's",
+  "zwarte-band":      "Zwarte band technieken",
 };
 
 export const totalDuur = hapkidoLessen.reduce(

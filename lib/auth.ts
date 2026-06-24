@@ -46,3 +46,13 @@ export function isCursusAbonnee(
   }
   return false;
 }
+
+export function heeftZwarteBandToegang(
+  email: string | null | undefined,
+  rol: string | null | undefined,
+  zwarte_band_geldig_tot: string | null | undefined
+): boolean {
+  if (isSuperAdmin(email) || rol === "admin") return true;
+  if (!zwarte_band_geldig_tot) return false;
+  return new Date(zwarte_band_geldig_tot) > new Date();
+}

@@ -9,6 +9,7 @@ import { CursusContent } from "@/components/CursusContent";
 import { onlineLessen, hapkidoVideos } from "@/lib/cursussen";
 import { site } from "@/lib/site";
 import { createClient } from "@/lib/supabase/server";
+import { heeftZwarteBandToegang as berekenZwarteBandToegang } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "Hapkido Online Cursus Lessen van Ron van Beukering",
@@ -46,21 +47,22 @@ export default async function Page() {
 
   // Server-side auth check — fast and reliable (no client-side hanging)
   const { data: { session } } = await supabase.auth.getSession();
-  let heeftToegang = false, isAdminUser = false, isLidUser = false;
+  let heeftToegang = false, isAdminUser = false, isLidUser = false, heeftZwarteBandToegang = false;
 
   if (session?.user) {
     const adminEmail = (process.env.ADMIN_EMAIL ?? "").toLowerCase();
     const userEmail  = (session.user.email ?? "").toLowerCase();
     if (adminEmail && userEmail === adminEmail) {
-      heeftToegang = true; isAdminUser = true; isLidUser = true;
+      heeftToegang = true; isAdminUser = true; isLidUser = true; heeftZwarteBandToegang = true;
     } else {
       const { data: profile } = await supabase
-        .from("profiles").select("rol,lid_geldig_tot").eq("id", session.user.id).single();
+        .from("profiles").select("rol,lid_geldig_tot,zwarte_band_geldig_tot").eq("id", session.user.id).single();
       if (profile) {
         isAdminUser  = profile.rol === "admin";
         const geldig = !profile.lid_geldig_tot || new Date(profile.lid_geldig_tot) > new Date();
         isLidUser    = isAdminUser || (profile.rol === "lid" && geldig);
         heeftToegang = isLidUser  || (profile.rol === "cursus" && geldig);
+        heeftZwarteBandToegang = berekenZwarteBandToegang(session.user.email, profile.rol, profile.zwarte_band_geldig_tot);
       }
     }
   }
@@ -240,6 +242,7 @@ export default async function Page() {
         isAdmin={isAdminUser}
         isLid={isLidUser}
         isIngelogd={!!session?.user}
+        heeftZwarteBandToegang={heeftZwarteBandToegang}
       />
 
       <CTABanner
