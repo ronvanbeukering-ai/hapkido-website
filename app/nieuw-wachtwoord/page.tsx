@@ -64,8 +64,21 @@ export default function NieuwWachtwoord() {
     if (password.length < 8) return;
     setStatus("loading");
     setErrorMsg("");
-    const { error } = await supabase.auth.updateUser({ password });
-    if (error) {
+
+    const timeoutPromise = new Promise<{ timedOut: true }>((resolve) =>
+      setTimeout(() => resolve({ timedOut: true }), 10000)
+    );
+    const result = await Promise.race([
+      supabase.auth.updateUser({ password }),
+      timeoutPromise,
+    ]);
+
+    if ("timedOut" in result) {
+      setErrorMsg("Het opslaan duurt te lang. Probeer het opnieuw.");
+      setStatus("gereed");
+      return;
+    }
+    if (result.error) {
       setErrorMsg("Er ging iets mis. Vraag een nieuwe reset-link aan.");
       setStatus("gereed");
     } else {
