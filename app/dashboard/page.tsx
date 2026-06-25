@@ -9,7 +9,7 @@ import {
   Youtube, Library, Play,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { isSuperAdmin, isAdminOrSuperAdmin } from "@/lib/auth";
+import { isSuperAdmin } from "@/lib/auth";
 import { categorieLabelMap } from "@/lib/cursussen";
 
 /* ─── types ─────────────────────────────────────── */
@@ -105,24 +105,31 @@ export default function Dashboard() {
   const [tab, setTab] = useState<Tab>("videos");
 
   useEffect(() => {
+    // Server-side check (zelfde route als de Navbar gebruikt) — voorkomt dat
+    // deze pagina blijft hangen op een directe browser→Supabase aanroep.
+    // Middleware heeft toegang al gecheckt; dit is alleen voor de UI (e-mail
+    // tonen + nette redirect als iemand de check via middleware omzeilt).
     (async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session?.user) { router.replace("/login"); return; }
-        const { data } = await supabase.from("profiles").select("*").eq("id", session.user.id).single();
-        const p: Profiel = data ?? { id: session.user.id, email: session.user.email ?? "", rol: "geen", lid_geldig_tot: null };
-        if (!isAdminOrSuperAdmin(p.email, p.rol)) { router.replace("/"); return; }
-        setProfiel(p);
+        const res = await fetch("/api/auth/me");
+        const json = await res.json();
+        if (!json.email) { router.replace("/login"); return; }
+        if (!json.isAdmin) { router.replace("/"); return; }
+        setProfiel({ id: "", email: json.email, rol: "admin", lid_geldig_tot: null, zwarte_band_geldig_tot: null });
       } catch {
         router.replace("/login");
       } finally {
         setLoading(false);
       }
     })();
-  }, [supabase, router]);
+  }, [router]);
 
   async function uitloggen() {
-    await supabase.auth.signOut();
+    // Niet eindeloos wachten als de browser→Supabase aanroep blijft hangen.
+    await Promise.race([
+      supabase.auth.signOut().catch(() => {}),
+      new Promise((resolve) => setTimeout(resolve, 4000)),
+    ]);
     router.push("/");
   }
 

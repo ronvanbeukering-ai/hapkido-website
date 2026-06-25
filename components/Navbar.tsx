@@ -47,7 +47,12 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
   }, [supabase]);
 
   async function handleLogout() {
-    await supabase.auth.signOut();
+    // Niet eindeloos wachten als de browser→Supabase aanroep blijft hangen —
+    // lokale state opruimen en wegnavigeren gebeurt hierna toch altijd.
+    await Promise.race([
+      supabase.auth.signOut().catch(() => {}),
+      new Promise((resolve) => setTimeout(resolve, 4000)),
+    ]);
     setNavUser(null);
     window.location.href = "/";
   }

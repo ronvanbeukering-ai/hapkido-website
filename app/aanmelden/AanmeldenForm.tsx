@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, AlertCircle, CheckCircle } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
 import { site } from "@/lib/site";
 
 type Stap = "form" | "bevestigd" | "error";
@@ -23,36 +22,41 @@ export function AanmeldenForm() {
     setLaden(true);
     setErrorMsg("");
 
-    const supabase = createClient();
-    const { data, error } = await supabase.auth.signUp({
-      email: email.trim().toLowerCase(),
-      password,
-      options: { data: { naam: naam.trim() } },
-    });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ naam: naam.trim(), email: email.trim().toLowerCase(), password }),
+        signal: controller.signal,
+      });
+      const json = await res.json().catch(() => ({}));
 
-    if (error) {
-      setErrorMsg(
-        error.message.includes("already registered")
-          ? "Dit e-mailadres is al geregistreerd. Ga naar de inlogpagina."
-          : "Er is iets misgegaan. Probeer het opnieuw."
-      );
-      setStap("error");
-      setLaden(false);
-      return;
-    }
+      if (!res.ok) {
+        setErrorMsg(
+          json.error === "already_registered"
+            ? "Dit e-mailadres is al geregistreerd. Ga naar de inlogpagina."
+            : "Er is iets misgegaan. Probeer het opnieuw."
+        );
+        setStap("error");
+        return;
+      }
 
-    // Profile row is created automatically by de handle_new_user() trigger
-    // (SECURITY DEFINER) — geen client-side DB write nodig hier.
-    if (data.user) {
       await fetch("/api/aanmelden", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ naam: naam.trim(), email: email.trim().toLowerCase() }),
       });
-    }
 
-    setLaden(false);
-    setStap("bevestigd");
+      setStap("bevestigd");
+    } catch {
+      setErrorMsg("Het aanmaken duurt te lang of is mislukt. Probeer het opnieuw.");
+      setStap("error");
+    } finally {
+      clearTimeout(timer);
+      setLaden(false);
+    }
   }
 
   if (stap === "bevestigd") {

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowRight, Eye, EyeOff, AlertCircle, CheckCircle } from "lucide-react";
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 
 type State = "idle" | "loading" | "error";
 
@@ -52,11 +51,22 @@ function LoginForm() {
     e.preventDefault();
     if (!resetEmail.trim()) return;
     setResetState("loading");
-    const supabase = createClient();
-    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail.trim().toLowerCase(), {
-      redirectTo: `${window.location.origin}/nieuw-wachtwoord`,
-    });
-    setResetState(error ? "error" : "verstuurd");
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    try {
+      const res = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: resetEmail.trim().toLowerCase() }),
+        signal: controller.signal,
+      });
+      setResetState(res.ok ? "verstuurd" : "error");
+    } catch {
+      setResetState("error");
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   if (resetModus) {

@@ -3,7 +3,6 @@
 import { useState, Suspense } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, AlertCircle, CheckCircle, BookOpen, Video, Clock, ArrowRight } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
 import { site } from "@/lib/site";
 
 type Stap = "form" | "bevestigd" | "error";
@@ -23,30 +22,37 @@ function AanmeldenForm() {
     setLaden(true);
     setErrorMsg("");
 
-    const supabase = createClient();
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ naam: naam.trim(), email: email.trim().toLowerCase(), password }),
+        signal: controller.signal,
+      });
+      const json = await res.json().catch(() => ({}));
 
-    const { data, error } = await supabase.auth.signUp({
-      email: email.trim().toLowerCase(),
-      password,
-      options: { data: { naam: naam.trim() } },
-    });
+      if (!res.ok) {
+        setErrorMsg(
+          json.error === "already_registered"
+            ? "Dit e-mailadres is al geregistreerd. Ga naar de inlogpagina."
+            : "Er is iets misgegaan. Probeer het opnieuw."
+        );
+        setStap("error");
+        return;
+      }
 
-    if (error) {
-      setErrorMsg(
-        error.message.includes("already registered")
-          ? "Dit e-mailadres is al geregistreerd. Ga naar de inlogpagina."
-          : "Er is iets misgegaan. Probeer het opnieuw."
-      );
+      // Profile row is created automatically by the handle_new_user() trigger
+      // (SECURITY DEFINER) — no client-side DB write needed here.
+      setStap("bevestigd");
+    } catch {
+      setErrorMsg("Het aanmaken duurt te lang of is mislukt. Probeer het opnieuw.");
       setStap("error");
+    } finally {
+      clearTimeout(timer);
       setLaden(false);
-      return;
     }
-
-    // Profile row is created automatically by the handle_new_user() trigger
-    // (SECURITY DEFINER) — no client-side DB write needed here.
-
-    setLaden(false);
-    setStap("bevestigd");
   }
 
   if (stap === "bevestigd") {
