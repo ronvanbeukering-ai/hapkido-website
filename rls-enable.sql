@@ -6,6 +6,40 @@
 -- Veilig om meerdere keren te draaien (idempotent).
 -- ============================================================
 
+-- ─── 0. Helperfuncties (SECURITY DEFINER) ────────────────────
+-- Omzeilen RLS-recursie: een policy op profiles die zelf weer uit
+-- profiles leest (EXISTS (SELECT ... FROM profiles WHERE rol='admin'))
+-- laat Postgres die RLS-check op zichzelf toepassen → "infinite
+-- recursion detected in policy for relation profiles". Door deze
+-- lookup in een SECURITY DEFINER-functie te zetten (draait met de
+-- rechten van de eigenaar, die als table owner niet aan RLS gebonden
+-- is) wordt die cirkel doorbroken.
+CREATE OR REPLACE FUNCTION public.current_profiel_rol()
+RETURNS text
+LANGUAGE sql SECURITY DEFINER SET search_path = public STABLE
+AS $$
+  SELECT rol FROM public.profiles WHERE id = auth.uid();
+$$;
+
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS boolean
+LANGUAGE sql SECURITY DEFINER SET search_path = public STABLE
+AS $$
+  SELECT public.current_profiel_rol() = 'admin';
+$$;
+
+CREATE OR REPLACE FUNCTION public.heeft_zwarte_band_toegang()
+RETURNS boolean
+LANGUAGE sql SECURITY DEFINER SET search_path = public STABLE
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid()
+      AND zwarte_band_geldig_tot IS NOT NULL
+      AND zwarte_band_geldig_tot > now()
+  );
+$$;
+
 -- ─── 1. profiles (RLS al aan, policies versterken) ───────────
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
@@ -26,7 +60,7 @@ CREATE POLICY "Admin kan alle profielen lezen"
   ON public.profiles FOR SELECT
   USING (
     auth.email() = 'ronvanbeukering@gmail.com'
-    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
+    OR public.is_admin()
   );
 
 CREATE POLICY "Eigen profiel bijwerken"
@@ -34,18 +68,18 @@ CREATE POLICY "Eigen profiel bijwerken"
   USING (auth.uid() = id)
   WITH CHECK (
     auth.uid() = id
-    AND rol = (SELECT rol FROM public.profiles WHERE id = auth.uid())
+    AND rol = public.current_profiel_rol()
   );
 
 CREATE POLICY "Admin kan alle profielen bijwerken"
   ON public.profiles FOR UPDATE
   USING (
     auth.email() = 'ronvanbeukering@gmail.com'
-    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
+    OR public.is_admin()
   )
   WITH CHECK (
     auth.email() = 'ronvanbeukering@gmail.com'
-    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
+    OR public.is_admin()
   );
 
 -- Trigger handle_new_user() is SECURITY DEFINER en omzeilt deze policy
@@ -65,24 +99,19 @@ CREATE POLICY "Videos publiek leesbaar"
   USING (
     categorie != 'zwarte-band'
     OR auth.email() = 'ronvanbeukering@gmail.com'
-    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
-    OR EXISTS (
-      SELECT 1 FROM public.profiles p
-      WHERE p.id = auth.uid()
-        AND p.zwarte_band_geldig_tot IS NOT NULL
-        AND p.zwarte_band_geldig_tot > now()
-    )
+    OR public.is_admin()
+    OR public.heeft_zwarte_band_toegang()
   );
 
 CREATE POLICY "Admin beheert videos"
   ON public.hapkido_videos FOR ALL
   USING (
     auth.email() = 'ronvanbeukering@gmail.com'
-    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
+    OR public.is_admin()
   )
   WITH CHECK (
     auth.email() = 'ronvanbeukering@gmail.com'
-    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
+    OR public.is_admin()
   );
 
 -- ─── 3. hapkido_lessen (RLS al aan, WITH CHECK toevoegen) ────
@@ -97,12 +126,8 @@ CREATE POLICY "Lessen publiek leesbaar"
 
 CREATE POLICY "Admin beheert lessen"
   ON public.hapkido_lessen FOR ALL
-  USING (
-    EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
-  )
-  WITH CHECK (
-    EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
-  );
+  USING (public.is_admin())
+  WITH CHECK (public.is_admin());
 
 -- ─── 4. bijdragen — NIEUW: betaalrecords, volledig geblokkeerd ─
 ALTER TABLE public.bijdragen ENABLE ROW LEVEL SECURITY;
@@ -113,7 +138,7 @@ CREATE POLICY "Admin leest bijdragen"
   ON public.bijdragen FOR SELECT
   USING (
     auth.email() = 'ronvanbeukering@gmail.com'
-    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
+    OR public.is_admin()
   );
 
 -- Geen INSERT/UPDATE/DELETE policy → geblokkeerd voor iedereen via client
@@ -131,11 +156,11 @@ CREATE POLICY "Admin beheert cursussen"
   ON public.cursussen FOR ALL
   USING (
     auth.email() = 'ronvanbeukering@gmail.com'
-    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
+    OR public.is_admin()
   )
   WITH CHECK (
     auth.email() = 'ronvanbeukering@gmail.com'
-    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
+    OR public.is_admin()
   );
 
 -- ─── 6. profielen — NIEUW: legacy, volledig geblokkeerd ──────
@@ -147,7 +172,7 @@ CREATE POLICY "Admin leest profielen legacy"
   ON public.profielen FOR SELECT
   USING (
     auth.email() = 'ronvanbeukering@gmail.com'
-    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
+    OR public.is_admin()
   );
 
 -- ─── 7. proefles_aanvragen (aanmaken indien nog niet bestaat) ─
@@ -173,7 +198,7 @@ CREATE POLICY "Admin leest aanvragen"
   ON public.proefles_aanvragen FOR SELECT
   USING (
     auth.email() = 'ronvanbeukering@gmail.com'
-    OR EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.rol = 'admin')
+    OR public.is_admin()
   );
 
 CREATE POLICY "Geen publieke insert"
