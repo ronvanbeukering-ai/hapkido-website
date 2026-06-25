@@ -40,7 +40,7 @@ function LoginForm() {
         setState("error");
         setErrorMsg(json.error ?? "E-mailadres of wachtwoord klopt niet.");
       } else {
-        window.location.href = "/dashboard";
+        window.location.href = json.isAdmin ? "/dashboard" : "/cursussen";
       }
     } catch {
       setState("error");
