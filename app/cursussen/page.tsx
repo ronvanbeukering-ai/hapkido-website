@@ -42,15 +42,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+export default async function Page() {
   const supabase = await createClient();
-  const debug = (await searchParams)?.debug === "1";
 
   // Server-side auth check — fast and reliable (no client-side hanging)
   const { data: { session } } = await supabase.auth.getSession();
   let heeftToegang = false, isAdminUser = false, isLidUser = false, heeftZwarteBandToegang = false;
-  let debugProfile: unknown = null;
-  let debugProfileError: unknown = null;
 
   if (session?.user) {
     const adminEmail = (process.env.ADMIN_EMAIL ?? "").toLowerCase();
@@ -58,10 +55,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
     if (adminEmail && userEmail === adminEmail) {
       heeftToegang = true; isAdminUser = true; isLidUser = true; heeftZwarteBandToegang = true;
     } else {
-      const { data: profile, error: profileError } = await supabase
+      const { data: profile } = await supabase
         .from("profiles").select("rol,lid_geldig_tot,zwarte_band_geldig_tot").eq("id", session.user.id).single();
-      debugProfile = profile;
-      debugProfileError = profileError;
       if (profile) {
         isAdminUser  = profile.rol === "admin";
         const geldig = !profile.lid_geldig_tot || new Date(profile.lid_geldig_tot) > new Date();
@@ -72,7 +67,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
     }
   }
 
-  const [{ data: videosData, error: videosError }, { data: lessenData }] = await Promise.all([
+  const [{ data: videosData }, { data: lessenData }] = await Promise.all([
     supabase.from("hapkido_videos").select("url, titel, beschrijving, categorie, platform").order("volgorde", { ascending: true }),
     supabase.from("hapkido_lessen").select("*").order("nr", { ascending: true }),
   ]);
@@ -238,25 +233,6 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
           </div>
         </div>
       </section>
-
-      {/* Tijdelijk diagnose-paneel — alleen zichtbaar met ?debug=1 in de URL */}
-      {debug && (
-        <pre className="container-x bg-black text-green-400 text-xs p-4 overflow-auto whitespace-pre-wrap">
-{JSON.stringify({
-  ingelogd: !!session?.user,
-  email: session?.user?.email ?? null,
-  heeftToegang,
-  isAdminUser,
-  isLidUser,
-  heeftZwarteBandToegang,
-  profile: debugProfile,
-  profileError: debugProfileError,
-  videosCount: videos.length,
-  videosError,
-  zwarteBandVideosInResult: videos.filter(v => v.categorie === "zwarte-band").map(v => ({ id: v.id, titel: v.titel })),
-}, null, 2)}
-        </pre>
-      )}
 
       {/* Auth-aware content (client component) */}
       <CursusContent
