@@ -28,6 +28,19 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos, heef
 
   return (
     <>
+      {/* Snelkoppeling naar zwarte-band-sectie — voorkomt lang scrollen */}
+      {heeftZwarteBandToegang && zwarteBandVideos.length > 0 && (
+        <div className="bg-[color:var(--color-gold-600)]/15 border-b border-[color:var(--color-gold-600)]/30">
+          <div className="container-x py-3 flex items-center gap-2 text-sm text-[color:var(--color-gold-600)]">
+            <Crown size={16} />
+            Je hebt toegang tot de zwarte band bibliotheek.
+            <a href="#zwarte-band-bibliotheek" className="ml-auto font-semibold hover:underline flex items-center gap-1">
+              Naar zwarte band bibliotheek <ArrowRight size={14} />
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* Status banner */}
       {heeftCursustoegang && (
         <div className="bg-emerald-50 border-b border-emerald-200">
@@ -205,7 +218,7 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos, heef
       {/* Zwarte band bibliotheek — exclusieve tier, los van reguliere toegang */}
       {zwarteBandVideos.length > 0 && (
         heeftZwarteBandToegang ? (
-          <section className="section bg-[color:var(--color-stone-950)] border-y border-[color:var(--color-gold-600)]/30">
+          <section id="zwarte-band-bibliotheek" className="section scroll-mt-24 bg-[color:var(--color-stone-950)] border-y border-[color:var(--color-gold-600)]/30">
             <div className="container-x">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[color:var(--color-gold-600)]/15 border border-[color:var(--color-gold-600)]/40 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-gold-400)] mb-4">
                 <Crown size={13} /> Zwarte band bibliotheek
@@ -219,10 +232,17 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos, heef
               <div className="mt-10">
                 <VideoGalerij videos={zwarteBandVideos} />
               </div>
+              <button
+                type="button"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="mt-8 inline-flex items-center gap-1 text-sm text-white/50 hover:text-white hover:underline"
+              >
+                ↑ Terug naar boven
+              </button>
             </div>
           </section>
         ) : (
-          <section className="section bg-[color:var(--color-stone-950)] border-y border-[color:var(--color-gold-600)]/30">
+          <section id="zwarte-band-bibliotheek" className="section scroll-mt-24 bg-[color:var(--color-stone-950)] border-y border-[color:var(--color-gold-600)]/30">
             <div className="container-x">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[color:var(--color-gold-600)]/15 border border-[color:var(--color-gold-600)]/40 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-gold-400)] mb-4">
                 <Crown size={13} /> Zwarte band bibliotheek
