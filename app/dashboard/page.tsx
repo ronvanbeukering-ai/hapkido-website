@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { isSuperAdmin, isAdminOrSuperAdmin } from "@/lib/auth";
+import { categorieLabelMap } from "@/lib/cursussen";
 
 /* ─── types ─────────────────────────────────────── */
 type Profiel = { id: string; email: string; rol: "admin" | "lid" | "cursus" | "geen"; lid_geldig_tot: string | null; zwarte_band_geldig_tot: string | null };
@@ -192,6 +193,7 @@ function VideosBeheer() {
   const [form, setForm] = useState<Partial<HKVideo> | null>(null);
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<HKVideo | null>(null);
+  const [filterCat, setFilterCat] = useState<string>("alle");
 
   const laad = useCallback(async () => {
     const { ok, data, error } = await apiFetch("/api/admin/videos");
@@ -250,6 +252,11 @@ function VideosBeheer() {
   const categorieen = ["kwan-nyom", "hapkido-nederland", "eigen", "zwarte-band"];
   const catLabel: Record<string, string> = { "kwan-nyom": "Kwan Nyom Hapkido", "hapkido-nederland": "Hapkido Nederland", "eigen": "Eigen video's", "zwarte-band": "Zwarte band technieken" };
 
+  const aanwezigeCategorieen = Array.from(new Set(videos.map(v => v.categorie))).sort(
+    (a, b) => (categorieLabelMap[a] ?? a).localeCompare(categorieLabelMap[b] ?? b)
+  );
+  const gefilterdeVideos = filterCat === "alle" ? videos : videos.filter(v => v.categorie === filterCat);
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -260,6 +267,23 @@ function VideosBeheer() {
         <button onClick={() => setForm({ categorie: "kwan-nyom", platform: "youtube" })} className="btn-primary !py-2">
           <Plus size={16} /> Video toevoegen
         </button>
+      </div>
+
+      {/* Categoriefilter */}
+      <div className="flex items-center gap-3 mb-6">
+        <label className="text-sm font-medium text-[color:var(--color-muted)]">Filter:</label>
+        <select
+          className="input !w-auto !py-2"
+          value={filterCat}
+          onChange={e => setFilterCat(e.target.value)}
+        >
+          <option value="alle">Alle categorieën ({videos.length})</option>
+          {aanwezigeCategorieen.map(c => (
+            <option key={c} value={c}>
+              {categorieLabelMap[c] ?? c} ({videos.filter(v => v.categorie === c).length})
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Formulier */}
@@ -327,7 +351,7 @@ function VideosBeheer() {
       {/* Video grid */}
       {loading ? <div className="text-center py-12 text-[color:var(--color-muted)]">Laden…</div> : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {videos.map(v => (
+          {gefilterdeVideos.map(v => (
             <div key={v.id} className="card overflow-hidden">
               {/* Thumbnail */}
               <button
@@ -359,7 +383,7 @@ function VideosBeheer() {
               <div className="p-3">
                 <p className="text-sm font-semibold text-[color:var(--color-heading)] truncate">{v.titel}</p>
                 <p className="text-xs text-[color:var(--color-muted)] truncate mt-0.5">{v.beschrijving}</p>
-                <span className="text-[10px] text-[color:var(--color-muted)] mt-1 block">{catLabel[v.categorie] ?? v.categorie}</span>
+                <span className="text-[10px] text-[color:var(--color-muted)] mt-1 block">{categorieLabelMap[v.categorie] ?? v.categorie}</span>
                 <div className="flex gap-2 mt-3 pt-3 border-t border-[color:var(--color-border)]">
                   <button
                     onClick={() => setPreview(v)}
