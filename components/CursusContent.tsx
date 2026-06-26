@@ -13,14 +13,16 @@ type Props = {
   isLid: boolean;
   isIngelogd: boolean;
   heeftZwarteBandToegang: boolean;
+  heeftAcademieToegang: boolean;
 };
 
-export function CursusContent({ lessen: staticLessen, videos: staticVideos, heeftToegang, isAdmin, isLid, isIngelogd, heeftZwarteBandToegang }: Props) {
+export function CursusContent({ lessen: staticLessen, videos: staticVideos, heeftToegang, isAdmin, isLid, isIngelogd, heeftZwarteBandToegang, heeftAcademieToegang }: Props) {
   const heeftCursustoegang = heeftToegang;
 
   const allVideos: VideoItem[] = staticVideos.map((v) => ({ ...v, platform: v.platform ?? "youtube" }));
-  const regulierVideos = allVideos.filter((v) => v.categorie !== "zwarte-band");
+  const regulierVideos = allVideos.filter((v) => v.categorie !== "zwarte-band" && v.categorie !== "academie");
   const zwarteBandVideos = allVideos.filter((v) => v.categorie === "zwarte-band");
+  const academieVideos = allVideos.filter((v) => v.categorie === "academie");
   const publiekeVideos = regulierVideos.filter((v) => v.platform === "youtube");
   const lessenVoorLid = heeftCursustoegang
     ? staticLessen.map((l) => ({ ...l, gratis: true }))
@@ -36,6 +38,19 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos, heef
             Je hebt toegang tot de zwarte band bibliotheek.
             <a href="#zwarte-band-bibliotheek" className="ml-auto font-semibold hover:underline flex items-center gap-1">
               Naar zwarte band bibliotheek <ArrowRight size={14} />
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Snelkoppeling naar academie-sectie — voorkomt lang scrollen */}
+      {heeftAcademieToegang && academieVideos.length > 0 && (
+        <div className="bg-purple-700/15 border-b border-purple-700/30">
+          <div className="container-x py-3 flex items-center gap-2 text-sm text-purple-700">
+            <Crown size={16} />
+            Je hebt toegang tot de Academie.
+            <a href="#academie" className="ml-auto font-semibold hover:underline flex items-center gap-1">
+              Naar Academie <ArrowRight size={14} />
             </a>
           </div>
         </div>
@@ -278,6 +293,77 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos, heef
               </p>
               <div className="mt-4 flex gap-3">
                 <Link href="/contact" className="btn-secondary !border-[color:var(--color-gold-600)] !text-[color:var(--color-gold-400)] hover:!bg-[color:var(--color-gold-600)]/10">
+                  Neem contact op
+                </Link>
+              </div>
+            </div>
+          </section>
+        )
+      )}
+
+      {/* Academie — exclusieve tier, los van reguliere toegang */}
+      {academieVideos.length > 0 && (
+        heeftAcademieToegang ? (
+          <section id="academie" className="section scroll-mt-24 bg-[color:var(--color-stone-950)] border-y border-purple-700/30">
+            <div className="container-x">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-700/15 border border-purple-700/40 text-xs font-semibold uppercase tracking-widest text-purple-400 mb-4">
+                <Crown size={13} /> Academie
+              </div>
+              <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-tight text-white">
+                Academie
+              </h2>
+              <p className="mt-4 text-white/60 max-w-2xl">
+                Exclusieve video&apos;s vanaf bruine band — alleen toegankelijk met speciale toestemming.
+              </p>
+              <div className="mt-10">
+                <VideoGalerij videos={academieVideos} />
+              </div>
+              <button
+                type="button"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="mt-8 inline-flex items-center gap-1 text-sm text-white/50 hover:text-white hover:underline"
+              >
+                ↑ Terug naar boven
+              </button>
+            </div>
+          </section>
+        ) : (
+          <section id="academie" className="section scroll-mt-24 bg-[color:var(--color-stone-950)] border-y border-purple-700/30">
+            <div className="container-x">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-700/15 border border-purple-700/40 text-xs font-semibold uppercase tracking-widest text-purple-400 mb-4">
+                <Crown size={13} /> Academie
+              </div>
+              <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-tight text-white">
+                Academie
+              </h2>
+              <p className="mt-4 text-white/60 max-w-2xl">
+                Exclusieve video&apos;s vanaf bruine band, alleen voor leden met speciale toestemming van hun trainer.
+              </p>
+              <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {academieVideos.slice(0, 3).map((v) => (
+                  <div
+                    key={v.id}
+                    className="group rounded-xl overflow-hidden border border-purple-700/30 bg-white/5 relative"
+                  >
+                    <div className="aspect-video relative overflow-hidden bg-black/40 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-[#0e0b08]/70 flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-full bg-white/10 border border-purple-700/50 flex items-center justify-center">
+                          <Lock size={20} className="text-purple-400" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <h4 className="font-semibold text-sm text-white truncate">{v.titel}</h4>
+                      <p className="mt-1 text-xs text-purple-400">Alleen met speciale toestemming</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-8 text-sm text-white/60 max-w-xl">
+                Deze sectie is niet via een abonnement te activeren — neem contact op met je trainer als je denkt in aanmerking te komen.
+              </p>
+              <div className="mt-4 flex gap-3">
+                <Link href="/contact" className="btn-secondary !border-purple-700 !text-purple-400 hover:!bg-purple-700/10">
                   Neem contact op
                 </Link>
               </div>

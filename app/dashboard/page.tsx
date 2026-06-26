@@ -13,7 +13,7 @@ import { isSuperAdmin } from "@/lib/auth";
 import { categorieLabelMap } from "@/lib/cursussen";
 
 /* ─── types ─────────────────────────────────────── */
-type Profiel = { id: string; email: string; rol: "admin" | "lid" | "cursus" | "geen"; lid_geldig_tot: string | null; zwarte_band_geldig_tot: string | null };
+type Profiel = { id: string; email: string; rol: "admin" | "lid" | "cursus" | "geen"; lid_geldig_tot: string | null; zwarte_band_geldig_tot: string | null; academie_toegang: boolean };
 type HKVideo = { id: string; titel: string; beschrijving: string; categorie: string; platform?: string; url?: string; volgorde?: number };
 type HKLes  = { nr: number; titel: string; duur: string; categorie: string; gratis: boolean; beschrijving?: string; video_url?: string; belt?: string };
 
@@ -115,7 +115,7 @@ export default function Dashboard() {
         const json = await res.json();
         if (!json.email) { router.replace("/login"); return; }
         if (!json.isAdmin) { router.replace("/"); return; }
-        setProfiel({ id: "", email: json.email, rol: "admin", lid_geldig_tot: null, zwarte_band_geldig_tot: null });
+        setProfiel({ id: "", email: json.email, rol: "admin", lid_geldig_tot: null, zwarte_band_geldig_tot: null, academie_toegang: false });
       } catch {
         router.replace("/login");
       } finally {
@@ -256,8 +256,8 @@ function VideosBeheer() {
     setUploading(false);
   }
 
-  const categorieen = ["kwan-nyom", "hapkido-nederland", "eigen", "zwarte-band"];
-  const catLabel: Record<string, string> = { "kwan-nyom": "Kwan Nyom Hapkido", "hapkido-nederland": "Hapkido Nederland", "eigen": "Eigen video's", "zwarte-band": "Zwarte band technieken" };
+  const categorieen = ["kwan-nyom", "hapkido-nederland", "eigen", "zwarte-band", "academie"];
+  const catLabel: Record<string, string> = { "kwan-nyom": "Kwan Nyom Hapkido", "hapkido-nederland": "Hapkido Nederland", "eigen": "Eigen video's", "zwarte-band": "Zwarte band technieken", "academie": "Academie" };
 
   const aanwezigeCategorieen = Array.from(new Set(videos.map(v => v.categorie))).sort(
     (a, b) => (categorieLabelMap[a] ?? a).localeCompare(categorieLabelMap[b] ?? b)
@@ -618,6 +618,16 @@ function LedenBeheer() {
     toast("Toegang zwarte band bibliotheek ingetrokken");
   }
 
+  async function geefAcademie(id: string) {
+    await updateLid(id, { academie_toegang: true });
+    toast("Academie-toestemming gegeven");
+  }
+
+  async function trekAcademieIn(id: string) {
+    await updateLid(id, { academie_toegang: false });
+    toast("Academie-toestemming ingetrokken");
+  }
+
   async function uitnodigen() {
     if (!nieuwEmail.trim()) return;
     setUitnodigBusy(true);
@@ -724,6 +734,7 @@ function LedenBeheer() {
         <span><strong className="text-blue-700">📚 Bibliotheek +1 jaar</strong> → online videobibliotheek, verlengbaar</span>
         <span><strong className="text-red-600">✗ Intrekken</strong> → verwijdert alle toegang</span>
         <span><strong className="text-[color:var(--color-gold-600)]">♛ Zwarte band +1 jaar</strong> → exclusieve zwarte band bibliotheek, verlengbaar</span>
+        <span><strong className="text-purple-700">AC Academie</strong> → toestemming voor de Academie (vanaf bruine band), geen vervaldatum</span>
         <span><strong className="text-red-700">🗑 Verwijder</strong> → verwijdert het account definitief</span>
       </div>
 
@@ -740,6 +751,7 @@ function LedenBeheer() {
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Rol</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Bibliotheek</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Zwarte band</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">AC</th>
                 <th className="text-right px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Acties</th>
               </tr>
             </thead>
@@ -760,6 +772,11 @@ function LedenBeheer() {
                   </td>
                   <td className="px-5 py-4 text-xs text-[color:var(--color-muted)]">
                     {zwarteBandStatus(l)}
+                  </td>
+                  <td className="px-5 py-4 text-xs">
+                    {l.academie_toegang
+                      ? <span className="text-[10px] font-bold px-2 py-1 rounded border bg-purple-100 text-purple-700 border-purple-200">AC</span>
+                      : <span className="text-[color:var(--color-muted)]">—</span>}
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-2 flex-wrap">
@@ -792,6 +809,17 @@ function LedenBeheer() {
                           <XCircle size={12} /> Zwarte band intrekken
                         </button>
                       )}
+                      {/* Academie-toestemming — voor alle niet-admin gebruikers */}
+                      {l.rol !== "admin" && !l.academie_toegang && (
+                        <button onClick={() => geefAcademie(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors font-semibold">
+                          <CheckCircle size={12} /> Academie (AC)
+                        </button>
+                      )}
+                      {l.academie_toegang && (
+                        <button onClick={() => trekAcademieIn(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-orange-100 text-orange-700 hover:bg-orange-200 transition-colors font-semibold">
+                          <XCircle size={12} /> Academie intrekken
+                        </button>
+                      )}
                       {/* Account verwijderen */}
                       {!isSuperAdmin(l.email) && (
                         <button onClick={() => verwijderLid(l.id, l.email)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition-colors font-semibold">
@@ -803,7 +831,7 @@ function LedenBeheer() {
                 </tr>
               ))}
               {gefilterd.length === 0 && (
-                <tr><td colSpan={5} className="px-5 py-8 text-center text-[color:var(--color-muted)]">Geen gebruikers gevonden</td></tr>
+                <tr><td colSpan={6} className="px-5 py-8 text-center text-[color:var(--color-muted)]">Geen gebruikers gevonden</td></tr>
               )}
             </tbody>
           </table>

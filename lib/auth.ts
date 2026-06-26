@@ -56,3 +56,12 @@ export function heeftZwarteBandToegang(
   if (!zwarte_band_geldig_tot) return false;
   return new Date(zwarte_band_geldig_tot) > new Date();
 }
+
+export function heeftAcademieToegang(
+  email: string | null | undefined,
+  rol: string | null | undefined,
+  academie_toegang: boolean | null | undefined
+): boolean {
+  if (isSuperAdmin(email) || rol === "admin") return true;
+  return !!academie_toegang;
+}

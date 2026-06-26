@@ -40,11 +40,25 @@ AS $$
   );
 $$;
 
+CREATE OR REPLACE FUNCTION public.heeft_academie_toegang()
+RETURNS boolean
+LANGUAGE sql SECURITY DEFINER SET search_path = public STABLE
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid()
+      AND academie_toegang = true
+  );
+$$;
+
 -- ─── 1. profiles (RLS al aan, policies versterken) ───────────
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
 -- Zwarte band bibliotheek: aparte, additieve toegang los van rol/lid_geldig_tot
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS zwarte_band_geldig_tot timestamptz;
+
+-- Academie-toestemming: eenvoudige aan/uit-toestemming, geen vervaldatum
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS academie_toegang boolean NOT NULL DEFAULT false;
 
 DROP POLICY IF EXISTS "Eigen profiel lezen"                 ON public.profiles;
 DROP POLICY IF EXISTS "Eigen profiel bijwerken"             ON public.profiles;
@@ -97,10 +111,11 @@ DROP POLICY IF EXISTS "Admin beheert videos"         ON public.hapkido_videos;
 CREATE POLICY "Videos publiek leesbaar"
   ON public.hapkido_videos FOR SELECT
   USING (
-    categorie != 'zwarte-band'
+    (categorie != 'zwarte-band' AND categorie != 'academie')
     OR auth.email() = 'ronvanbeukering@gmail.com'
     OR public.is_admin()
-    OR public.heeft_zwarte_band_toegang()
+    OR (categorie = 'zwarte-band' AND public.heeft_zwarte_band_toegang())
+    OR (categorie = 'academie' AND public.heeft_academie_toegang())
   );
 
 CREATE POLICY "Admin beheert videos"
