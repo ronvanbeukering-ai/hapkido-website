@@ -255,6 +255,7 @@ export default async function Page() {
       <CTABanner
         title="Toegang voor iedereen"
         subtitle="Leden hebben automatisch toegang. Niet-lid? €7,50 per maand of €50 per jaar."
+        primary={{ label: "Start online", href: "/online-aanmelden" }}
       />
     </>
   );

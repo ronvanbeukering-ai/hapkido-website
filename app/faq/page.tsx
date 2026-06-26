@@ -65,7 +65,12 @@ export default function Page() {
         </div>
       </section>
 
-      <CTABanner title="Vraag niet beantwoord?" subtitle="WhatsApp ons direct, meestal binnen een paar uur reactie." />
+      <CTABanner
+        title="Vraag niet beantwoord?"
+        subtitle="WhatsApp ons direct, meestal binnen een paar uur reactie."
+        primary={{ label: "WhatsApp ons", href: site.whatsapp, external: true, icon: "message" }}
+        secondary={{ label: "Gratis proefles", href: "/proefles", icon: "arrow" }}
+      />
     </>
   );
 }

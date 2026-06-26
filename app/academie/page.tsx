@@ -73,7 +73,11 @@ export default function Page() {
         </div>
       </section>
 
-      <CTABanner title="Aanmelden voor de Academie?" subtitle="Neem contact op met je trainer of stuur ons een bericht." />
+      <CTABanner
+        title="Aanmelden voor de Academie?"
+        subtitle="Neem contact op met je trainer of stuur ons een bericht."
+        primary={{ label: "Neem contact op", href: "/contact" }}
+      />
     </>
   );
 }
