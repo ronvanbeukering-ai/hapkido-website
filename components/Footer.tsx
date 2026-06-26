@@ -45,6 +45,8 @@ export function Footer() {
           <h3 className="text-sm text-white font-display tracking-widest mb-4">Snelle Links</h3>
           <ul className="space-y-2 text-sm">
             <li><Link href="/proefles" className="text-white/65 hover:text-white">Gratis proefles</Link></li>
+            <li><Link href="/aanmelden" className="text-white/65 hover:text-white">Lid worden</Link></li>
+            <li><Link href="/online-aanmelden" className="text-white/65 hover:text-white">Online cursus</Link></li>
             <li><Link href="/hapkido-combinatie" className="text-white/65 hover:text-white">Hapkido Combinatie</Link></li>
             <li><Link href="/trainers" className="text-white/65 hover:text-white">Trainers</Link></li>
             <li><Link href="/contributie" className="text-white/65 hover:text-white">Contributie</Link></li>
