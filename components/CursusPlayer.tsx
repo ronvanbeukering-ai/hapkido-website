@@ -219,12 +219,13 @@ function videoItemFromLes(l: Les): VideoItem | null {
 }
 
 export function LessenLijst({ lessen }: { lessen: Les[] }) {
-  const [selectedBelt, setSelectedBelt] = useState<"all" | "white-green" | "green-red">("all");
+  const [selectedCat, setSelectedCat] = useState<string>("alle");
   const [openNr, setOpenNr] = useState<number | null>(null);
 
-  const filteredLessen = selectedBelt === "all"
+  const aanwezigeCategorieen = Array.from(new Set(lessen.map(l => l.categorie))).sort();
+  const filteredLessen = selectedCat === "alle"
     ? lessen
-    : lessen.filter(l => l.belt === selectedBelt);
+    : lessen.filter(l => l.categorie === selectedCat);
 
   return (
     <div>
@@ -232,13 +233,16 @@ export function LessenLijst({ lessen }: { lessen: Les[] }) {
         <label className="text-sm font-medium text-[color:var(--color-muted)]">Filter:</label>
         <div className="relative">
           <select
-            value={selectedBelt}
-            onChange={(e) => setSelectedBelt(e.target.value as "all" | "white-green" | "green-red")}
+            value={selectedCat}
+            onChange={(e) => setSelectedCat(e.target.value)}
             className="appearance-none pl-3 pr-8 py-2 rounded-md bg-[color:var(--color-surface-2)] border border-[color:var(--color-border)] text-sm font-medium text-[color:var(--color-heading)] cursor-pointer hover:bg-[color:var(--color-surface)] transition-colors"
           >
-            <option value="all">Alle lessen</option>
-            <option value="white-green">Witte band tot groen</option>
-            <option value="green-red">Groen tot rood</option>
+            <option value="alle">Alle lessen ({lessen.length})</option>
+            {aanwezigeCategorieen.map(c => (
+              <option key={c} value={c}>
+                {c} ({lessen.filter(l => l.categorie === c).length})
+              </option>
+            ))}
           </select>
           <ChevronDown size={14} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-[color:var(--color-muted)]" />
         </div>
