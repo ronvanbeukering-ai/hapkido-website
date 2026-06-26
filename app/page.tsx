@@ -114,7 +114,7 @@ export default function Home() {
               Bekijk de lessen van Hapkido Yong
             </h2>
             <p className="mt-4 text-white/70 max-w-2xl">
-              Echte trainingsopnames uit de dojang&apos;s in Berkel-Enschot en Waalwijk. Geen toneelstukken, gewoon de mat.
+              Echte trainingsopnames, geen toneelstukken, gewoon de mat.
             </p>
           </Reveal>
           <div className="mt-10">
@@ -161,7 +161,7 @@ export default function Home() {
               Twee dojang&apos;s in Noord-Brabant
             </h2>
             <p className="mt-4 text-[color:var(--color-muted)] max-w-2xl">
-              Kies de locatie die het beste bij je past. Beide met ervaren trainers, een sterke groep en een gratis proefles.
+              Kies de locatie die het beste bij je past.
             </p>
           </Reveal>
           <div className="mt-10 grid md:grid-cols-2 gap-6">
@@ -234,7 +234,7 @@ export default function Home() {
               Gediplomeerde trainers in Noord-Brabant
             </h2>
             <p className="text-[color:var(--color-muted)] leading-relaxed max-w-2xl mb-6">
-              Hapkido Yong staat onder leiding van ervaren, gediplomeerde instructeurs in Berkel-Enschot en Waalwijk. Allen opgeleid binnen Hapkido Combinatie.
+              Een ervaren team, allen opgeleid binnen Hapkido Combinatie.
             </p>
             <Link href="/trainers" className="btn-ghost">
               Bekijk het volledige team <ArrowRight size={16} />
