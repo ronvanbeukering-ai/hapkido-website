@@ -24,9 +24,9 @@ const trainingVideos: VideoItem[] = [
     vimeoId: "1199536635",
     vimeoHash: "87f62c18bd",
     thumbnail: "/images/training/training-1.jpg",
-    title: "Hapkido training trappen en stoten",
+    title: "Proefexamen Jamy van den Heuvel-Toorop & Jesse van Mierlo",
     description:
-      "Trainingsopname bij Hapkido Yong Berkel-Enschot. Werpen, klemmen en trappen en stoten zoals die elke les aan bod komen, voor beginners én gevorderden.",
+      "Mevr. Jamy van den Heuvel-Toorop en Dhr. Jesse van Mierlo laten tijdens hun proefexamen zien wat Hapkido Combinatie in de praktijk inhoudt.",
   },
   {
     vimeoId: "1199526926",
