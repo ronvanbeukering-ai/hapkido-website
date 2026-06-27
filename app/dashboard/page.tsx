@@ -35,9 +35,16 @@ function toast(msg: string, type: "ok" | "err" = "ok") {
 }
 
 async function apiFetch(url: string, options?: RequestInit) {
-  const res = await fetch(url, options);
-  const json = await res.json().catch(() => ({}));
-  return { ok: res.ok, data: json.data, error: json.error as string | undefined };
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(timer);
+    const json = await res.json().catch(() => ({}));
+    return { ok: res.ok, data: json.data, error: json.error as string | undefined };
+  } catch {
+    return { ok: false, data: undefined, error: "Geen verbinding — probeer het opnieuw" };
+  }
 }
 
 function extractYoutubeId(raw: string): string {
@@ -212,7 +219,7 @@ function VideosBeheer() {
   useEffect(() => { laad(); }, [laad]);
 
   async function opslaan() {
-    if (!form?.titel) return;
+    if (!form?.titel?.trim()) { toast("Titel is verplicht", "err"); return; }
     setSaving(true);
     const rec: HKVideo = {
       id:          form.id ?? crypto.randomUUID(),
