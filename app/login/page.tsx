@@ -28,11 +28,14 @@ function LoginForm() {
     setState("loading");
     setErrorMsg("");
 
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
+        signal: controller.signal,
       });
       const json = await res.json();
       if (!res.ok) {
@@ -44,6 +47,8 @@ function LoginForm() {
     } catch {
       setState("error");
       setErrorMsg("Verbinding mislukt. Probeer het opnieuw.");
+    } finally {
+      clearTimeout(timer);
     }
   }
 
