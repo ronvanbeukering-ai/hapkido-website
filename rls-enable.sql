@@ -6,6 +6,11 @@
 -- Veilig om meerdere keren te draaien (idempotent).
 -- ============================================================
 
+-- ─── -1. Kolommen vooraf aanmaken (functies in sectie 0 verwijzen
+-- hiernaar, dus deze moeten eerst bestaan) ────────────────────
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS zwarte_band_geldig_tot timestamptz;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS academie_toegang boolean NOT NULL DEFAULT false;
+
 -- ─── 0. Helperfuncties (SECURITY DEFINER) ────────────────────
 -- Omzeilen RLS-recursie: een policy op profiles die zelf weer uit
 -- profiles leest (EXISTS (SELECT ... FROM profiles WHERE rol='admin'))
@@ -53,12 +58,6 @@ $$;
 
 -- ─── 1. profiles (RLS al aan, policies versterken) ───────────
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
-
--- Zwarte band bibliotheek: aparte, additieve toegang los van rol/lid_geldig_tot
-ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS zwarte_band_geldig_tot timestamptz;
-
--- Academie-toestemming: eenvoudige aan/uit-toestemming, geen vervaldatum
-ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS academie_toegang boolean NOT NULL DEFAULT false;
 
 DROP POLICY IF EXISTS "Eigen profiel lezen"                 ON public.profiles;
 DROP POLICY IF EXISTS "Eigen profiel bijwerken"             ON public.profiles;
