@@ -36,12 +36,19 @@ export default function DisclaimerPage() {
               <li>Deelname aan proeflessen, reguliere trainingen en de Hapkido Combinatie Academie is op eigen risico.</li>
               <li>Bent u niet zeker of u medisch gezien kunt deelnemen, raadpleeg dan vooraf een arts.</li>
               <li>Volg altijd de aanwijzingen van de aanwezige trainer of instructeur op en meld een blessure of medische aandoening vooraf.</li>
-              <li>Ouders/verzorgers van minderjarige deelnemers zijn verantwoordelijk voor het geven van toestemming voor deelname.</li>
+              <li>Ouders/verzorgers van minderjarige deelnemers zijn verantwoordelijk voor het geven van toestemming voor deelname, en voor toestemming voor het gebruik van beeldmateriaal zoals beschreven in artikel 3.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">3. Online lesmateriaal en video&apos;s</h2>
+            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">3. Foto- en videogebruik</h2>
+            <p>
+              Tijdens trainingen, proeflessen, examens en evenementen kunnen foto&apos;s en video&apos;s worden gemaakt voor gebruik op onze website, social media en ander promotiemateriaal. Door deel te nemen aan een training of evenement gaat u akkoord met dit gebruik, tenzij u vooraf of achteraf schriftelijk (per e-mail) aangeeft hiertegen bezwaar te hebben — in dat geval verwijderen wij bestaand beeldmateriaal van u op verzoek en houden wij daar in de toekomst rekening mee. Voor minderjarige deelnemers geldt dit bezwaarrecht voor de ouder/verzorger.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">4. Online lesmateriaal en video&apos;s</h2>
             <p>
               De videobibliotheek op deze website (waaronder de reguliere lessen, de zwarte band bibliotheek en de Academie-video&apos;s) is bedoeld als aanvulling op begeleide training, niet als vervanging ervan. Sommige getoonde technieken — zoals worpen, gewrichtstechnieken en trappen — kunnen bij verkeerde of ongecontroleerde toepassing tot letsel leiden.
             </p>
@@ -53,45 +60,45 @@ export default function DisclaimerPage() {
           </section>
 
           <section>
-            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">4. Aansprakelijkheid</h2>
+            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">5. Aansprakelijkheid</h2>
             <p>
-              Hapkido Yong, haar trainers en instructeurs zijn niet aansprakelijk voor schade, blessures of letsel die ontstaan tijdens of als gevolg van deelname aan trainingen, proeflessen, examens of de Academie, of door het toepassen van technieken uit het online lesmateriaal, behalve in geval van opzet of bewuste roekeloosheid van Hapkido Yong of haar trainers. Wij raden iedere deelnemer aan zelf te beoordelen of een passende aansprakelijkheids- en/of ongevallenverzekering aanwezig is.
+              Hapkido Yong, haar trainers en instructeurs zijn niet aansprakelijk voor schade, blessures of letsel die ontstaan tijdens of als gevolg van deelname aan trainingen, proeflessen, examens of de Academie, of door het toepassen van technieken uit het online lesmateriaal, behalve in geval van opzet of bewuste roekeloosheid van Hapkido Yong of haar trainers. Als bondslid via de NBJJV valt u mogelijk onder de aansprakelijkheids-/ongevallenverzekering die de bond voor haar leden afsluit; wij raden iedere deelnemer daarnaast aan zelf te beoordelen of een passende eigen verzekering aanwezig is.
             </p>
             <p className="mt-3">
-              Wij zijn evenmin aansprakelijk voor schade die voortvloeit uit het gebruik van deze website, waaronder onjuistheden of onvolledigheden in de aangeboden informatie, tijdelijke onbeschikbaarheid van de website, of technische storingen.
+              Wij zijn evenmin aansprakelijk voor schade die voortvloeit uit het gebruik van deze website, waaronder onjuistheden of onvolledigheden in de aangeboden informatie, tijdelijke onbeschikbaarheid van de website, of technische storingen, behalve in geval van opzet of bewuste roekeloosheid.
             </p>
           </section>
 
           <section>
-            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">5. Intellectueel eigendom</h2>
+            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">6. Intellectueel eigendom</h2>
             <p>
               Alle teksten, foto&apos;s, video&apos;s, logo&apos;s en overige content op deze website zijn eigendom van Hapkido Yong of zijn met toestemming van de rechthebbende geplaatst, en worden beschermd door het auteursrecht. Niets van deze website mag zonder voorafgaande schriftelijke toestemming worden verveelvoudigd, gedownload of openbaar gemaakt, met uitzondering van het gebruik van het online lesmateriaal door leden en abonnees voor persoonlijk, niet-commercieel gebruik.
             </p>
           </section>
 
           <section>
-            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">6. Links naar derden</h2>
+            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">7. Links naar derden</h2>
             <p>
               Deze website bevat links naar en embedded content van externe diensten, waaronder Vimeo, YouTube, WhatsApp en social media. Wij hebben geen invloed op en zijn niet verantwoordelijk voor de inhoud, beschikbaarheid of het privacybeleid van deze externe diensten. Het gebruik daarvan is onderworpen aan de voorwaarden van de betreffende aanbieder.
             </p>
           </section>
 
           <section>
-            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">7. Wijzigingen</h2>
+            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">8. Wijzigingen</h2>
             <p>
               Prijzen, lestijden, locaties en programma-onderdelen kunnen wijzigen. Wij kunnen deze disclaimer aanpassen; de meest actuele versie staat altijd op deze pagina met de datum van de laatste wijziging.
             </p>
           </section>
 
           <section>
-            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">8. Toepasselijk recht</h2>
+            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">9. Toepasselijk recht</h2>
             <p>
               Op deze disclaimer en het gebruik van deze website is Nederlands recht van toepassing. Geschillen worden voorgelegd aan de bevoegde rechter in Nederland.
             </p>
           </section>
 
           <section>
-            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">9. Contact</h2>
+            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-3">10. Contact</h2>
             <p>
               Vragen over deze disclaimer kunt u richten aan{" "}
               <a href="mailto:hapkidonederland@gmail.com" className="text-[color:var(--color-accent-600)] hover:underline">
