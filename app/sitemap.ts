@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/lessen/waalwijk`, lastModified, changeFrequency: "weekly", priority: 0.9 },
     // Secundaire pagina's
     { url: `${base}/trainers`, lastModified, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/vrouwen-zelfverdediging`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/contributie`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/faq`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/contact`, lastModified, changeFrequency: "monthly", priority: 0.8 },

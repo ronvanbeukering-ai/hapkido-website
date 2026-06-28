@@ -48,6 +48,7 @@ export function Footer() {
             <li><Link href="/aanmelden" className="text-white/65 hover:text-white">Lid worden</Link></li>
             <li><Link href="/online-aanmelden" className="text-white/65 hover:text-white">Online cursus</Link></li>
             <li><Link href="/hapkido-combinatie" className="text-white/65 hover:text-white">Hapkido Combinatie</Link></li>
+            <li><Link href="/vrouwen-zelfverdediging" className="text-white/65 hover:text-white">Zelfverdediging voor vrouwen</Link></li>
             <li><Link href="/trainers" className="text-white/65 hover:text-white">Trainers</Link></li>
             <li><Link href="/contributie" className="text-white/65 hover:text-white">Contributie</Link></li>
             <li><Link href="/academie" className="text-white/65 hover:text-white">Academie</Link></li>
