@@ -308,6 +308,8 @@ export function LessenLijst({ lessen }: { lessen: Les[] }) {
 // ─── VideoGalerij ─────────────────────────────────────────────
 
 export function VideoGalerij({ videos }: { videos: VideoItem[] }) {
+  const [filterCat, setFilterCat] = useState<string>("alle");
+
   const byCategorie = videos.reduce<Record<string, VideoItem[]>>((acc, v) => {
     if (!acc[v.categorie]) acc[v.categorie] = [];
     acc[v.categorie].push(v);
@@ -319,9 +321,28 @@ export function VideoGalerij({ videos }: { videos: VideoItem[] }) {
     .filter(([cat]) => catOrder.includes(cat))
     .sort(([a], [b]) => catOrder.indexOf(a) - catOrder.indexOf(b));
 
+  const gefilterdeEntries = filterCat === "alle" ? sortedEntries : sortedEntries.filter(([cat]) => cat === filterCat);
+
   return (
     <div className="space-y-10">
-      {sortedEntries.map(([cat, vids]) => (
+      {sortedEntries.length > 1 && (
+        <div className="flex items-center gap-3">
+          <label className="text-sm font-medium text-[color:var(--color-muted)]">Techniek:</label>
+          <select
+            className="input !w-auto !py-2"
+            value={filterCat}
+            onChange={(e) => setFilterCat(e.target.value)}
+          >
+            <option value="alle">Alle technieken ({videos.length})</option>
+            {sortedEntries.map(([cat, vids]) => (
+              <option key={cat} value={cat}>
+                {categorieLabelMap[cat] ?? cat} ({vids.length})
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+      {gefilterdeEntries.map(([cat, vids]) => (
         <div key={cat}>
           <h3 className="font-[family-name:var(--font-display)] text-2xl text-[color:var(--color-heading)] mb-5">
             {categorieLabelMap[cat] ?? cat}
