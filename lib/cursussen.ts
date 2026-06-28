@@ -25,6 +25,7 @@ export type HapkidoVideo = {
     | "eigen"
     | "zwarte-band"
     | "academie";
+  subcategorie?: string | null;
   platform?: "youtube" | "vimeo" | "local";
 };
 

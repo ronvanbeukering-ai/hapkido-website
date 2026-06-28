@@ -103,6 +103,11 @@ CREATE POLICY "Geen directe insert door gebruikers"
 -- ─── 2. hapkido_videos (RLS al aan, WITH CHECK toevoegen) ────
 ALTER TABLE public.hapkido_videos ENABLE ROW LEVEL SECURITY;
 
+-- Techniekgroep: vrij invoerveld voor onderverdeling binnen een
+-- categorie die zelf voor toegangsbeheer wordt gebruikt (zwarte-band,
+-- academie) — losstaand van "categorie", geen RLS-impact.
+ALTER TABLE public.hapkido_videos ADD COLUMN IF NOT EXISTS subcategorie text;
+
 DROP POLICY IF EXISTS "Videos zijn publiek leesbaar" ON public.hapkido_videos;
 DROP POLICY IF EXISTS "Videos publiek leesbaar"      ON public.hapkido_videos;
 DROP POLICY IF EXISTS "Admin beheert videos"         ON public.hapkido_videos;

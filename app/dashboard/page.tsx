@@ -14,7 +14,7 @@ import { categorieLabelMap } from "@/lib/cursussen";
 
 /* ─── types ─────────────────────────────────────── */
 type Profiel = { id: string; email: string; rol: "admin" | "lid" | "cursus" | "geen"; lid_geldig_tot: string | null; zwarte_band_geldig_tot: string | null; academie_toegang: boolean };
-type HKVideo = { id: string; titel: string; beschrijving: string; categorie: string; platform?: string; url?: string; volgorde?: number };
+type HKVideo = { id: string; titel: string; beschrijving: string; categorie: string; subcategorie?: string | null; platform?: string; url?: string; volgorde?: number };
 type HKLes  = { nr: number; titel: string; duur: string; categorie: string; gratis: boolean; beschrijving?: string; video_url?: string; belt?: string };
 
 const TABS = [
@@ -226,6 +226,7 @@ function VideosBeheer() {
       titel:       form.titel,
       beschrijving: form.beschrijving ?? "",
       categorie:   form.categorie ?? "kwan-nyom",
+      subcategorie: form.subcategorie?.trim() || null,
       platform:    form.platform ?? "youtube",
       url:         form.url ?? form.id ?? "",
       volgorde:    form.volgorde ?? videos.length + 1,
@@ -318,6 +319,23 @@ function VideosBeheer() {
                 {categorieen.map(c => <option key={c} value={c}>{catLabel[c]}</option>)}
               </select>
             </div>
+            {(form.categorie === "zwarte-band" || form.categorie === "academie") && (
+              <div>
+                <label className="label">Techniekgroep (optioneel)</label>
+                <input
+                  className="input"
+                  value={form.subcategorie ?? ""}
+                  onChange={e => setForm(f => ({ ...f, subcategorie: e.target.value }))}
+                  placeholder="bijv. Worpen, Faking style, Vanuit zit/stoel"
+                  list="techniekgroepen"
+                />
+                <datalist id="techniekgroepen">
+                  {Array.from(new Set(videos.map(v => v.subcategorie).filter((s): s is string => !!s))).map(s => (
+                    <option key={s} value={s} />
+                  ))}
+                </datalist>
+              </div>
+            )}
             <div>
               <label className="label">Platform</label>
               <select className="input" value={form.platform ?? "youtube"} onChange={e => setForm(f => ({ ...f, platform: e.target.value }))}>

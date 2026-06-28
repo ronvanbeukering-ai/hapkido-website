@@ -10,6 +10,7 @@ export type VideoItem = {
   titel: string;
   beschrijving?: string | null;
   categorie: string;
+  subcategorie?: string | null;
   platform: string;
   volgorde?: number;
 };
@@ -310,16 +311,25 @@ export function LessenLijst({ lessen }: { lessen: Les[] }) {
 export function VideoGalerij({ videos }: { videos: VideoItem[] }) {
   const [filterCat, setFilterCat] = useState<string>("alle");
 
+  // Groepeer op subcategorie (techniekgroep) indien aanwezig — relevant voor
+  // zwarte-band/academie, waar "categorie" al de toegangstier is, niet de
+  // techniekgroep. Video's zonder subcategorie groeperen op categorie, zoals
+  // voorheen (geen verandering voor de reguliere bibliotheek).
   const byCategorie = videos.reduce<Record<string, VideoItem[]>>((acc, v) => {
-    if (!acc[v.categorie]) acc[v.categorie] = [];
-    acc[v.categorie].push(v);
+    const key = v.subcategorie || v.categorie;
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(v);
     return acc;
   }, {});
 
   const catOrder = ["uitleg", "stoten", "elleboog", "hammerslag", "palm", "trappen", "ground", "eigen", "zwarte-band", "academie"];
-  const sortedEntries = Object.entries(byCategorie)
-    .filter(([cat]) => catOrder.includes(cat))
-    .sort(([a], [b]) => catOrder.indexOf(a) - catOrder.indexOf(b));
+  const sortedEntries = Object.entries(byCategorie).sort(([a], [b]) => {
+    const ia = catOrder.indexOf(a), ib = catOrder.indexOf(b);
+    if (ia !== -1 && ib !== -1) return ia - ib;
+    if (ia !== -1) return -1;
+    if (ib !== -1) return 1;
+    return a.localeCompare(b);
+  });
 
   const gefilterdeEntries = filterCat === "alle" ? sortedEntries : sortedEntries.filter(([cat]) => cat === filterCat);
 

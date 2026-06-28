@@ -7,7 +7,7 @@ import type { Les } from "@/lib/cursussen";
 
 type Props = {
   lessen: Les[];
-  videos: { id: string; titel: string; beschrijving: string; categorie: string; platform?: string }[];
+  videos: { id: string; titel: string; beschrijving: string; categorie: string; subcategorie?: string | null; platform?: string }[];
   heeftToegang: boolean;
   isAdmin: boolean;
   isLid: boolean;
