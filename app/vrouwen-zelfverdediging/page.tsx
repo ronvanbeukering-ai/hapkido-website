@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Eye, Shield, HandMetal, Wind, Footprints, MessageCircleWarning } from "lucide-react";
+import Link from "next/link";
+import { Eye, Shield, HandMetal, Wind, Footprints, MessageCircleWarning, Calendar } from "lucide-react";
 import { PageHero } from "@/components/Hero";
 import { CTABanner } from "@/components/CTABanner";
 import { Reveal } from "@/components/Reveal";
@@ -89,6 +90,20 @@ export default function VrouwenZelfverdedigingPage() {
           { name: "Zelfverdediging voor vrouwen", href: "/vrouwen-zelfverdediging" },
         ]}
       />
+
+      {/* Wanneer */}
+      <section className="bg-[color:var(--color-surface-2)] border-b border-[color:var(--color-border)]">
+        <div className="container-x py-5 flex flex-wrap items-center gap-3 text-sm">
+          <Calendar size={16} className="text-[color:var(--color-accent-500)] shrink-0" />
+          <span className="text-[color:var(--color-text)]">
+            <strong>Berkel-Enschot:</strong> maandag 20:25–21:00 uur (niet op de eerste maandag van de maand, dan is er
+            zwarte-bandtraining van de Academie).
+          </span>
+          <Link href="/lessen/berkel-enschot" className="ml-auto font-semibold text-[color:var(--color-accent-600)] hover:underline shrink-0">
+            Bekijk lesrooster
+          </Link>
+        </div>
+      </section>
 
       {/* Intro: visie van Jamy & Leonie */}
       <section className="section">
