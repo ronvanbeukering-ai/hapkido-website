@@ -65,14 +65,14 @@ export default function Page() {
 
       <section className="section">
         <div className="container-x grid lg:grid-cols-12 gap-10">
-          <Reveal className="lg:col-span-5">
+          <Reveal className="lg:col-span-2">
             <div className="aspect-[3/4] card relative overflow-hidden">
               {trainer.photo ? (
                 <Image
                   src={trainer.photo}
                   alt="CGN Marco van Gulik 2e Dan Hapkido Combinatie, Senior Instructor en hoofdtrainer van Hapkido Yong Waalwijk"
                   fill
-                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  sizes="(max-width: 1024px) 50vw, 17vw"
                   className="object-cover object-top"
                   priority
                 />
@@ -83,7 +83,7 @@ export default function Page() {
               )}
             </div>
           </Reveal>
-          <Reveal delay={150} className="lg:col-span-7">
+          <Reveal delay={150} className="lg:col-span-10">
             <div className="badge-gold mb-4">{trainer.shortRank}</div>
             <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-5xl tracking-tight mb-6">
               Senior Instructor met Pencak Silat-achtergrond
