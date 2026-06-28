@@ -96,7 +96,7 @@ export default function VrouwenZelfverdedigingPage() {
         <div className="container-x py-5 flex flex-wrap items-center gap-3 text-sm">
           <Calendar size={16} className="text-[color:var(--color-accent-500)] shrink-0" />
           <span className="text-[color:var(--color-text)]">
-            <strong>Berkel-Enschot:</strong> maandag 20:25–21:00 uur (niet op de eerste maandag van de maand, dan is er
+            <strong>Berkel-Enschot:</strong> maandag 20:15–21:00 uur (niet op de eerste maandag van de maand, dan is er
             zwarte-bandtraining van de Academie).
           </span>
           <Link href="/lessen/berkel-enschot" className="ml-auto font-semibold text-[color:var(--color-accent-600)] hover:underline shrink-0">
