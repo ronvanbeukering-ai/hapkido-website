@@ -363,7 +363,10 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos, heef
                 Deze sectie is niet via een abonnement te activeren — neem contact op met je trainer als je denkt in aanmerking te komen.
               </p>
               <div className="mt-4 flex gap-3">
-                <Link href="/contact" className="btn-secondary !border-purple-700 !text-purple-400 hover:!bg-purple-700/10">
+                <Link href="/academie" className="btn-secondary !border-purple-700 !text-purple-400 hover:!bg-purple-700/10">
+                  Meer over de Academie
+                </Link>
+                <Link href="/contact" className="text-sm text-white/60 hover:text-white hover:underline inline-flex items-center">
                   Neem contact op
                 </Link>
               </div>
