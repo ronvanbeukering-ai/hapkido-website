@@ -130,7 +130,7 @@
     font-size: 16px;
     line-height: 1.6;
     color: var(--color-text);
-    background: linear-gradient(160deg, #0e0b08 0%, #4a1e00 35%, #b86010 75%, #d07820 100%) fixed;
+    background: linear-gradient(160deg, #0e0b08 0%, #4a1e00 35%, #2e1608 75%, #39190a 100%) fixed;
     -webkit-font-smoothing: antialiased;
     scroll-behavior: smooth;
   }
