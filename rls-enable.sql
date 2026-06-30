@@ -10,6 +10,7 @@
 -- hiernaar, dus deze moeten eerst bestaan) ────────────────────
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS zwarte_band_geldig_tot timestamptz;
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS academie_toegang boolean NOT NULL DEFAULT false;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS tijdelijk_wachtwoord text;
 
 -- ─── 0. Helperfuncties (SECURITY DEFINER) ────────────────────
 -- Omzeilen RLS-recursie: een policy op profiles die zelf weer uit

@@ -144,23 +144,36 @@ export async function PUT(req: NextRequest) {
   if (!email) return NextResponse.json({ error: "Missing email" }, { status: 400 });
 
   const db = createServiceClient();
-  const { data, error } = await db.auth.admin.inviteUserByEmail(email.trim().toLowerCase(), {
+  const cleanEmail = email.trim().toLowerCase();
+
+  const { data, error } = await db.auth.admin.inviteUserByEmail(cleanEmail, {
     data: { naam: naam?.trim() ?? "" },
     redirectTo: "https://hapkidonederland.nl/login",
   });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
+  // Genereer direct een tijdelijk wachtwoord zodat het lid meteen kan
+  // inloggen zonder te hoeven wachten op de uitnodigingsmail.
+  const tempPw = "Hapkido" + Math.floor(1000 + Math.random() * 9000) + "!";
+
   if (data.user) {
+    // Account activeren + tijdelijk wachtwoord instellen
+    await db.auth.admin.updateUserById(data.user.id, {
+      password: tempPw,
+      email_confirm: true,
+    });
+
     await db.from("profiles").upsert({
       id: data.user.id,
-      email: email.trim().toLowerCase(),
+      email: cleanEmail,
       rol: "lid",
       lid_geldig_tot: null,
+      tijdelijk_wachtwoord: tempPw,
     });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, tijdelijk_wachtwoord: tempPw });
 }
 
 export async function DELETE(req: NextRequest) {

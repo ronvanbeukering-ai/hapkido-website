@@ -13,7 +13,7 @@ import { isSuperAdmin } from "@/lib/auth";
 import { categorieLabelMap } from "@/lib/cursussen";
 
 /* ─── types ─────────────────────────────────────── */
-type Profiel = { id: string; email: string; rol: "admin" | "lid" | "cursus" | "geen"; lid_geldig_tot: string | null; zwarte_band_geldig_tot: string | null; academie_toegang: boolean };
+type Profiel = { id: string; email: string; rol: "admin" | "lid" | "cursus" | "geen"; lid_geldig_tot: string | null; zwarte_band_geldig_tot: string | null; academie_toegang: boolean; tijdelijk_wachtwoord?: string | null };
 type HKVideo = { id: string; titel: string; beschrijving: string; categorie: string; subcategorie?: string | null; platform?: string; url?: string; volgorde?: number };
 type HKLes  = { nr: number; titel: string; duur: string; categorie: string; gratis: boolean; beschrijving?: string; video_url?: string; belt?: string };
 
@@ -584,6 +584,7 @@ function LedenBeheer() {
   const [nieuwNaam, setNieuwNaam] = useState("");
   const [nieuwEmail, setNieuwEmail] = useState("");
   const [uitnodigBusy, setUitnodigBusy] = useState(false);
+  const [uitnodigWachtwoord, setUitnodigWachtwoord] = useState<{ email: string; ww: string } | null>(null);
 
   const laad = useCallback(async () => {
     const { ok, data, error } = await apiFetch("/api/admin/leden");
@@ -656,16 +657,24 @@ function LedenBeheer() {
   async function uitnodigen() {
     if (!nieuwEmail.trim()) return;
     setUitnodigBusy(true);
-    const { ok, error } = await apiFetch("/api/admin/leden", {
+    const { ok, data, error } = await apiFetch("/api/admin/leden", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ naam: nieuwNaam.trim(), email: nieuwEmail.trim() }),
     });
     setUitnodigBusy(false);
     if (!ok) { toast("Fout: " + (error ?? "onbekend"), "err"); return; }
-    toast("Uitnodiging verstuurd naar " + nieuwEmail.trim());
+    toast("Lid aangemaakt!");
+    if (data?.tijdelijk_wachtwoord) {
+      setUitnodigWachtwoord({ email: nieuwEmail.trim(), ww: data.tijdelijk_wachtwoord });
+    }
     setNieuwNaam(""); setNieuwEmail(""); setNieuwForm(false);
     laad();
+  }
+
+  async function verwijderTijdelijkWachtwoord(id: string) {
+    await updateLid(id, { tijdelijk_wachtwoord: null });
+    toast("Tijdelijk wachtwoord gewist");
   }
 
   async function verwijderLid(id: string, email: string) {
@@ -725,7 +734,7 @@ function LedenBeheer() {
             <button onClick={() => setNieuwForm(false)} className="text-[color:var(--color-muted)] hover:text-[color:var(--color-heading)]"><X size={20} /></button>
           </div>
           <p className="text-sm text-[color:var(--color-muted)] mb-4">
-            Het lid ontvangt een e-mail met een link om een wachtwoord in te stellen. Na het instellen is het account direct actief als <strong>lid</strong>.
+            Het account wordt direct geactiveerd met een tijdelijk wachtwoord dat je kunt doorgeven via WhatsApp of telefoon. Een uitnodigingsmail gaat ter informatie ook mee.
           </p>
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
@@ -749,6 +758,29 @@ function LedenBeheer() {
               {uitnodigBusy ? "Bezig…" : "Uitnodiging versturen"}
             </button>
             <button onClick={() => setNieuwForm(false)} className="btn-secondary !py-2">Annuleer</button>
+          </div>
+        </div>
+      )}
+
+      {/* Tijdelijk wachtwoord notificatie — direct na uitnodigen */}
+      {uitnodigWachtwoord && (
+        <div className="card p-5 mb-6 border-emerald-300 bg-emerald-50">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold text-emerald-800 mb-1">Lid aangemaakt — tijdelijk wachtwoord:</p>
+              <p className="text-xs text-emerald-700 mb-2">{uitnodigWachtwoord.email}</p>
+              <div className="flex items-center gap-3">
+                <code className="text-lg font-bold text-emerald-900 bg-emerald-100 px-3 py-1 rounded">{uitnodigWachtwoord.ww}</code>
+                <button
+                  onClick={() => { navigator.clipboard.writeText(uitnodigWachtwoord.ww); toast("Gekopieerd!"); }}
+                  className="text-xs px-2 py-1 rounded bg-emerald-200 text-emerald-800 hover:bg-emerald-300 transition-colors font-semibold"
+                >
+                  Kopieer
+                </button>
+              </div>
+              <p className="text-xs text-emerald-600 mt-2">Geef dit door via WhatsApp of telefoon. Het staat ook zichtbaar in de ledenlijst totdat je het wist.</p>
+            </div>
+            <button onClick={() => setUitnodigWachtwoord(null)} className="text-emerald-600 hover:text-emerald-800 shrink-0"><X size={18} /></button>
           </div>
         </div>
       )}
@@ -777,6 +809,7 @@ function LedenBeheer() {
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Bibliotheek</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Zwarte band</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">AC</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Tijdelijk ww</th>
                 <th className="text-right px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Acties</th>
               </tr>
             </thead>
@@ -802,6 +835,23 @@ function LedenBeheer() {
                     {l.academie_toegang
                       ? <span className="text-[10px] font-bold px-2 py-1 rounded border bg-purple-100 text-purple-700 border-purple-200">AC</span>
                       : <span className="text-[color:var(--color-muted)]">—</span>}
+                  </td>
+                  <td className="px-5 py-4 text-xs">
+                    {l.tijdelijk_wachtwoord ? (
+                      <div className="flex items-center gap-1.5">
+                        <code className="font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">{l.tijdelijk_wachtwoord}</code>
+                        <button
+                          onClick={() => { navigator.clipboard.writeText(l.tijdelijk_wachtwoord!); toast("Gekopieerd!"); }}
+                          title="Kopieer"
+                          className="text-emerald-600 hover:text-emerald-800"
+                        ><CheckCircle size={12} /></button>
+                        <button
+                          onClick={() => verwijderTijdelijkWachtwoord(l.id)}
+                          title="Wis wachtwoord"
+                          className="text-[color:var(--color-muted)] hover:text-red-500"
+                        ><X size={12} /></button>
+                      </div>
+                    ) : <span className="text-[color:var(--color-muted)]">—</span>}
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-2 flex-wrap">
@@ -856,7 +906,7 @@ function LedenBeheer() {
                 </tr>
               ))}
               {gefilterd.length === 0 && (
-                <tr><td colSpan={6} className="px-5 py-8 text-center text-[color:var(--color-muted)]">Geen gebruikers gevonden</td></tr>
+                <tr><td colSpan={7} className="px-5 py-8 text-center text-[color:var(--color-muted)]">Geen gebruikers gevonden</td></tr>
               )}
             </tbody>
           </table>
