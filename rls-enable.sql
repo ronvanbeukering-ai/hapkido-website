@@ -41,6 +41,7 @@ AS $$
   SELECT EXISTS (
     SELECT 1 FROM public.profiles
     WHERE id = auth.uid()
+      AND rol != 'jeugdlid'
       AND zwarte_band_geldig_tot IS NOT NULL
       AND zwarte_band_geldig_tot > now()
   );
@@ -53,6 +54,7 @@ AS $$
   SELECT EXISTS (
     SELECT 1 FROM public.profiles
     WHERE id = auth.uid()
+      AND rol != 'jeugdlid'
       AND academie_toegang = true
   );
 $$;

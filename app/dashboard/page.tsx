@@ -13,7 +13,7 @@ import { isSuperAdmin } from "@/lib/auth";
 import { categorieLabelMap } from "@/lib/cursussen";
 
 /* ─── types ─────────────────────────────────────── */
-type Profiel = { id: string; email: string; rol: "admin" | "lid" | "cursus" | "geen"; lid_geldig_tot: string | null; zwarte_band_geldig_tot: string | null; academie_toegang: boolean; tijdelijk_wachtwoord?: string | null };
+type Profiel = { id: string; email: string; rol: "admin" | "lid" | "jeugdlid" | "cursus" | "geen"; lid_geldig_tot: string | null; zwarte_band_geldig_tot: string | null; academie_toegang: boolean; tijdelijk_wachtwoord?: string | null };
 type HKVideo = { id: string; titel: string; beschrijving: string; categorie: string; subcategorie?: string | null; platform?: string; url?: string; volgorde?: number };
 type HKLes  = { nr: number; titel: string; duur: string; categorie: string; gratis: boolean; beschrijving?: string; video_url?: string; belt?: string };
 
@@ -583,6 +583,7 @@ function LedenBeheer() {
   const [nieuwForm, setNieuwForm] = useState(false);
   const [nieuwNaam, setNieuwNaam] = useState("");
   const [nieuwEmail, setNieuwEmail] = useState("");
+  const [nieuwRol, setNieuwRol] = useState<"lid" | "jeugdlid">("lid");
   const [uitnodigBusy, setUitnodigBusy] = useState(false);
   const [uitnodigWachtwoord, setUitnodigWachtwoord] = useState<{ email: string; ww: string } | null>(null);
 
@@ -660,7 +661,7 @@ function LedenBeheer() {
     const { ok, data, error } = await apiFetch("/api/admin/leden", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ naam: nieuwNaam.trim(), email: nieuwEmail.trim() }),
+      body: JSON.stringify({ naam: nieuwNaam.trim(), email: nieuwEmail.trim(), rol: nieuwRol }),
     });
     setUitnodigBusy(false);
     if (!ok) { toast("Fout: " + (error ?? "onbekend"), "err"); return; }
@@ -668,7 +669,7 @@ function LedenBeheer() {
     if (data?.tijdelijk_wachtwoord) {
       setUitnodigWachtwoord({ email: nieuwEmail.trim(), ww: data.tijdelijk_wachtwoord });
     }
-    setNieuwNaam(""); setNieuwEmail(""); setNieuwForm(false);
+    setNieuwNaam(""); setNieuwEmail(""); setNieuwRol("lid"); setNieuwForm(false);
     laad();
   }
 
@@ -688,16 +689,17 @@ function LedenBeheer() {
   const gefilterd = leden.filter(l => l.email?.toLowerCase().includes(zoek.toLowerCase()));
 
   const rolKleur: Record<string, string> = {
-    admin:  "bg-[color:var(--color-gold-100)] text-[color:var(--color-gold-600)] border-[color:var(--color-gold-200)]",
-    lid:    "bg-emerald-100 text-emerald-700 border-emerald-200",
-    cursus: "bg-blue-100 text-blue-700 border-blue-200",
-    geen:   "bg-[color:var(--color-stone-100)] text-[color:var(--color-muted)] border-[color:var(--color-border)]",
+    admin:    "bg-[color:var(--color-gold-100)] text-[color:var(--color-gold-600)] border-[color:var(--color-gold-200)]",
+    lid:      "bg-emerald-100 text-emerald-700 border-emerald-200",
+    jeugdlid: "bg-teal-100 text-teal-700 border-teal-200",
+    cursus:   "bg-blue-100 text-blue-700 border-blue-200",
+    geen:     "bg-[color:var(--color-stone-100)] text-[color:var(--color-muted)] border-[color:var(--color-border)]",
   };
 
-  const rolLabel: Record<string, string> = { admin: "ADMIN", lid: "LID", cursus: "CURSUS", geen: "GEEN" };
+  const rolLabel: Record<string, string> = { admin: "ADMIN", lid: "LID", jeugdlid: "JEUGD", cursus: "CURSUS", geen: "GEEN" };
 
   function bibliotheekStatus(l: Profiel): string {
-    if (!l.lid_geldig_tot) return l.rol === "lid" ? "onbeperkt" : "—";
+    if (!l.lid_geldig_tot) return (l.rol === "lid" || l.rol === "jeugdlid") ? "onbeperkt" : "—";
     const datum = new Date(l.lid_geldig_tot);
     const verlopen = datum < new Date();
     return (verlopen ? "verlopen " : "t/m ") + datum.toLocaleDateString("nl-NL", { day: "numeric", month: "short", year: "numeric" });
@@ -736,7 +738,7 @@ function LedenBeheer() {
           <p className="text-sm text-[color:var(--color-muted)] mb-4">
             Het account wordt direct geactiveerd met een tijdelijk wachtwoord dat je kunt doorgeven via WhatsApp of telefoon. Een uitnodigingsmail gaat ter informatie ook mee.
           </p>
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-3 gap-4">
             <div>
               <label className="label">Naam</label>
               <input className="input" placeholder="Voor- en achternaam" value={nieuwNaam} onChange={e => setNieuwNaam(e.target.value)} />
@@ -744,6 +746,13 @@ function LedenBeheer() {
             <div>
               <label className="label">E-mailadres *</label>
               <input className="input" type="email" placeholder="klant@email.nl" value={nieuwEmail} onChange={e => setNieuwEmail(e.target.value)} />
+            </div>
+            <div>
+              <label className="label">Type lid</label>
+              <select className="input" value={nieuwRol} onChange={e => setNieuwRol(e.target.value as "lid" | "jeugdlid")}>
+                <option value="lid">Lid (volwassen)</option>
+                <option value="jeugdlid">Jeugdlid</option>
+              </select>
             </div>
           </div>
           <div className="flex gap-3 mt-4">
@@ -855,8 +864,8 @@ function LedenBeheer() {
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-2 flex-wrap">
-                      {/* Lid maken — voor iedereen zonder lid/admin rol */}
-                      {l.rol !== "lid" && l.rol !== "admin" && (
+                      {/* Lid maken — voor iedereen zonder lid/jeugdlid/admin rol */}
+                      {l.rol !== "lid" && l.rol !== "jeugdlid" && l.rol !== "admin" && (
                         <button onClick={() => maakLid(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors font-semibold">
                           <CheckCircle size={12} /> Lid maken
                         </button>
@@ -868,13 +877,13 @@ function LedenBeheer() {
                         </button>
                       )}
                       {/* Toegang intrekken */}
-                      {(l.rol === "lid" || l.rol === "cursus") && (
+                      {(l.rol === "lid" || l.rol === "jeugdlid" || l.rol === "cursus") && (
                         <button onClick={() => intrekken(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-orange-100 text-orange-700 hover:bg-orange-200 transition-colors font-semibold">
                           <XCircle size={12} /> Intrekken
                         </button>
                       )}
-                      {/* Zwarte band bibliotheek — voor alle niet-admin gebruikers */}
-                      {l.rol !== "admin" && (
+                      {/* Zwarte band bibliotheek — niet voor jeugdleden */}
+                      {l.rol !== "admin" && l.rol !== "jeugdlid" && (
                         <button onClick={() => geefZwarteBand(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-[color:var(--color-gold-100)] text-[color:var(--color-gold-600)] hover:bg-[color:var(--color-gold-200)] transition-colors font-semibold">
                           <Crown size={12} /> Zwarte band +1 jaar
                         </button>
@@ -885,7 +894,7 @@ function LedenBeheer() {
                         </button>
                       )}
                       {/* Academie-toestemming — voor alle niet-admin gebruikers */}
-                      {l.rol !== "admin" && !l.academie_toegang && (
+                      {l.rol !== "admin" && l.rol !== "jeugdlid" && !l.academie_toegang && (
                         <button onClick={() => geefAcademie(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors font-semibold">
                           <CheckCircle size={12} /> Academie (AC)
                         </button>

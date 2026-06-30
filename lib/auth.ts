@@ -27,7 +27,7 @@ export function isLidOfAdmin(
 ): boolean {
   if (isSuperAdmin(email)) return true;
   if (rol === "admin") return true;
-  if (rol === "lid") {
+  if (rol === "lid" || rol === "jeugdlid") {
     if (!lid_geldig_tot) return true;
     return new Date(lid_geldig_tot) > new Date();
   }
@@ -53,6 +53,7 @@ export function heeftZwarteBandToegang(
   zwarte_band_geldig_tot: string | null | undefined
 ): boolean {
   if (isSuperAdmin(email) || rol === "admin") return true;
+  if (rol === "jeugdlid") return false;
   if (!zwarte_band_geldig_tot) return false;
   return new Date(zwarte_band_geldig_tot) > new Date();
 }
@@ -63,5 +64,6 @@ export function heeftAcademieToegang(
   academie_toegang: boolean | null | undefined
 ): boolean {
   if (isSuperAdmin(email) || rol === "admin") return true;
+  if (rol === "jeugdlid") return false;
   return !!academie_toegang;
 }

@@ -140,7 +140,7 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   if (!await checkAdmin()) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { email, naam } = await req.json() as { email: string; naam?: string };
+  const { email, naam, rol: rolKeuze } = await req.json() as { email: string; naam?: string; rol?: "lid" | "jeugdlid" };
   if (!email) return NextResponse.json({ error: "Missing email" }, { status: 400 });
 
   const db = createServiceClient();
@@ -167,7 +167,7 @@ export async function PUT(req: NextRequest) {
     await db.from("profiles").upsert({
       id: data.user.id,
       email: cleanEmail,
-      rol: "lid",
+      rol: rolKeuze ?? "lid",
       lid_geldig_tot: null,
       tijdelijk_wachtwoord: tempPw,
     });
