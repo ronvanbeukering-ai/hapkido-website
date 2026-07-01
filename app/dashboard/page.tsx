@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   Video, BookOpen, Users, LogOut, Plus, Trash2, Pencil,
   Save, X, Upload, Crown, CheckCircle, XCircle, ArrowLeft,
-  Youtube, Library, Play,
+  Youtube, Library, Play, MoreVertical,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { isSuperAdmin } from "@/lib/auth";
@@ -580,6 +580,7 @@ function LedenBeheer() {
   const [leden, setLeden] = useState<Profiel[]>([]);
   const [loading, setLoading] = useState(true);
   const [zoek, setZoek] = useState("");
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [nieuwForm, setNieuwForm] = useState(false);
   const [nieuwNaam, setNieuwNaam] = useState("");
   const [nieuwEmail, setNieuwEmail] = useState("");
@@ -844,61 +845,53 @@ function LedenBeheer() {
                       ? <span className="text-[10px] font-bold px-2 py-1 rounded border bg-purple-100 text-purple-700 border-purple-200">AC</span>
                       : <span className="text-[color:var(--color-muted)]">—</span>}
                   </td>
-                  <td className="px-5 py-4">
-                    <div className="flex items-center justify-end gap-2 flex-wrap">
-                      {/* Tijdelijk wachtwoord — kopieer + wis */}
-                      {l.tijdelijk_wachtwoord && (
-                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-emerald-50 border border-emerald-200">
-                          <code className="text-xs font-bold text-emerald-700">{l.tijdelijk_wachtwoord}</code>
-                          <button onClick={() => { navigator.clipboard.writeText(l.tijdelijk_wachtwoord!); toast("Gekopieerd!"); }} title="Kopieer wachtwoord" className="text-emerald-600 hover:text-emerald-800 ml-1"><CheckCircle size={12} /></button>
-                          <button onClick={() => verwijderTijdelijkWachtwoord(l.id)} title="Wis wachtwoord" className="text-[color:var(--color-muted)] hover:text-red-500"><X size={12} /></button>
+                  <td className="px-5 py-4 text-right">
+                    <div className="relative inline-block">
+                      <button
+                        onClick={() => setOpenMenu(openMenu === l.id ? null : l.id)}
+                        className="p-1.5 rounded-md hover:bg-[color:var(--color-stone-200)] text-[color:var(--color-muted)] hover:text-[color:var(--color-heading)] transition-colors"
+                      >
+                        <MoreVertical size={16} />
+                      </button>
+                      {openMenu === l.id && (
+                        <div className="absolute right-0 top-8 z-50 w-52 bg-white border border-[color:var(--color-border)] rounded-xl shadow-lg py-1 text-left">
+                          {l.tijdelijk_wachtwoord && (
+                            <>
+                              <div className="px-3 py-2 border-b border-[color:var(--color-border)]">
+                                <p className="text-[10px] text-[color:var(--color-muted)] uppercase tracking-wide mb-1">Tijdelijk wachtwoord</p>
+                                <div className="flex items-center gap-2">
+                                  <code className="text-sm font-bold text-emerald-700 flex-1">{l.tijdelijk_wachtwoord}</code>
+                                  <button onClick={() => { navigator.clipboard.writeText(l.tijdelijk_wachtwoord!); toast("Gekopieerd!"); }} className="text-emerald-600 hover:text-emerald-800"><CheckCircle size={14} /></button>
+                                  <button onClick={() => { verwijderTijdelijkWachtwoord(l.id); setOpenMenu(null); }} className="text-[color:var(--color-muted)] hover:text-red-500"><X size={14} /></button>
+                                </div>
+                              </div>
+                            </>
+                          )}
+                          {l.rol !== "lid" && l.rol !== "jeugdlid" && l.rol !== "admin" && (
+                            <button onClick={() => { maakLid(l.id); setOpenMenu(null); }} className="w-full text-left px-3 py-2 text-xs hover:bg-emerald-50 text-emerald-700 flex items-center gap-2"><CheckCircle size={13} /> Lid maken</button>
+                          )}
+                          {l.rol !== "admin" && (
+                            <button onClick={() => { geefBibliotheek(l.id); setOpenMenu(null); }} className="w-full text-left px-3 py-2 text-xs hover:bg-blue-50 text-blue-700 flex items-center gap-2"><Library size={13} /> Bibliotheek +1 jaar</button>
+                          )}
+                          {(l.rol === "lid" || l.rol === "jeugdlid" || l.rol === "cursus") && (
+                            <button onClick={() => { intrekken(l.id); setOpenMenu(null); }} className="w-full text-left px-3 py-2 text-xs hover:bg-orange-50 text-orange-700 flex items-center gap-2"><XCircle size={13} /> Toegang intrekken</button>
+                          )}
+                          {l.rol !== "admin" && l.rol !== "jeugdlid" && (
+                            <button onClick={() => { geefZwarteBand(l.id); setOpenMenu(null); }} className="w-full text-left px-3 py-2 text-xs hover:bg-amber-50 text-amber-700 flex items-center gap-2"><Crown size={13} /> Zwarte band +1 jaar</button>
+                          )}
+                          {heeftActieveZwarteBand(l) && (
+                            <button onClick={() => { trekZwarteBandIn(l.id); setOpenMenu(null); }} className="w-full text-left px-3 py-2 text-xs hover:bg-orange-50 text-orange-700 flex items-center gap-2"><XCircle size={13} /> Zwarte band intrekken</button>
+                          )}
+                          {l.rol !== "admin" && l.rol !== "jeugdlid" && !l.academie_toegang && (
+                            <button onClick={() => { geefAcademie(l.id); setOpenMenu(null); }} className="w-full text-left px-3 py-2 text-xs hover:bg-purple-50 text-purple-700 flex items-center gap-2"><CheckCircle size={13} /> Academie (AC)</button>
+                          )}
+                          {l.academie_toegang && (
+                            <button onClick={() => { trekAcademieIn(l.id); setOpenMenu(null); }} className="w-full text-left px-3 py-2 text-xs hover:bg-orange-50 text-orange-700 flex items-center gap-2"><XCircle size={13} /> Academie intrekken</button>
+                          )}
+                          {!isSuperAdmin(l.email) && (
+                            <button onClick={() => { verwijderLid(l.id, l.email); setOpenMenu(null); }} className="w-full text-left px-3 py-2 text-xs hover:bg-red-50 text-red-600 flex items-center gap-2 border-t border-[color:var(--color-border)] mt-1"><Trash2 size={13} /> Account verwijderen</button>
+                          )}
                         </div>
-                      )}
-                      {/* Lid maken — voor iedereen zonder lid/jeugdlid/admin rol */}
-                      {l.rol !== "lid" && l.rol !== "jeugdlid" && l.rol !== "admin" && (
-                        <button onClick={() => maakLid(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors font-semibold">
-                          <CheckCircle size={12} /> Lid maken
-                        </button>
-                      )}
-                      {/* Bibliotheek — voor alle niet-admin gebruikers */}
-                      {l.rol !== "admin" && (
-                        <button onClick={() => geefBibliotheek(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors font-semibold">
-                          <Library size={12} /> Bibliotheek +1 jaar
-                        </button>
-                      )}
-                      {/* Toegang intrekken */}
-                      {(l.rol === "lid" || l.rol === "jeugdlid" || l.rol === "cursus") && (
-                        <button onClick={() => intrekken(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-orange-100 text-orange-700 hover:bg-orange-200 transition-colors font-semibold">
-                          <XCircle size={12} /> Intrekken
-                        </button>
-                      )}
-                      {/* Zwarte band bibliotheek — niet voor jeugdleden */}
-                      {l.rol !== "admin" && l.rol !== "jeugdlid" && (
-                        <button onClick={() => geefZwarteBand(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-[color:var(--color-gold-100)] text-[color:var(--color-gold-600)] hover:bg-[color:var(--color-gold-200)] transition-colors font-semibold">
-                          <Crown size={12} /> Zwarte band +1 jaar
-                        </button>
-                      )}
-                      {heeftActieveZwarteBand(l) && (
-                        <button onClick={() => trekZwarteBandIn(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-orange-100 text-orange-700 hover:bg-orange-200 transition-colors font-semibold">
-                          <XCircle size={12} /> Zwarte band intrekken
-                        </button>
-                      )}
-                      {/* Academie-toestemming — voor alle niet-admin gebruikers */}
-                      {l.rol !== "admin" && l.rol !== "jeugdlid" && !l.academie_toegang && (
-                        <button onClick={() => geefAcademie(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors font-semibold">
-                          <CheckCircle size={12} /> Academie (AC)
-                        </button>
-                      )}
-                      {l.academie_toegang && (
-                        <button onClick={() => trekAcademieIn(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-orange-100 text-orange-700 hover:bg-orange-200 transition-colors font-semibold">
-                          <XCircle size={12} /> Academie intrekken
-                        </button>
-                      )}
-                      {/* Account verwijderen */}
-                      {!isSuperAdmin(l.email) && (
-                        <button onClick={() => verwijderLid(l.id, l.email)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition-colors font-semibold">
-                          <Trash2 size={12} /> Verwijder
-                        </button>
                       )}
                     </div>
                   </td>
