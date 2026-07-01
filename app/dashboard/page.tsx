@@ -818,7 +818,6 @@ function LedenBeheer() {
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Bibliotheek</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Zwarte band</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">AC</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Tijdelijk ww</th>
                 <th className="text-right px-5 py-3 text-xs font-semibold text-[color:var(--color-muted)] uppercase tracking-wider">Acties</th>
               </tr>
             </thead>
@@ -845,25 +844,16 @@ function LedenBeheer() {
                       ? <span className="text-[10px] font-bold px-2 py-1 rounded border bg-purple-100 text-purple-700 border-purple-200">AC</span>
                       : <span className="text-[color:var(--color-muted)]">—</span>}
                   </td>
-                  <td className="px-5 py-4 text-xs">
-                    {l.tijdelijk_wachtwoord ? (
-                      <div className="flex items-center gap-1.5">
-                        <code className="font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">{l.tijdelijk_wachtwoord}</code>
-                        <button
-                          onClick={() => { navigator.clipboard.writeText(l.tijdelijk_wachtwoord!); toast("Gekopieerd!"); }}
-                          title="Kopieer"
-                          className="text-emerald-600 hover:text-emerald-800"
-                        ><CheckCircle size={12} /></button>
-                        <button
-                          onClick={() => verwijderTijdelijkWachtwoord(l.id)}
-                          title="Wis wachtwoord"
-                          className="text-[color:var(--color-muted)] hover:text-red-500"
-                        ><X size={12} /></button>
-                      </div>
-                    ) : <span className="text-[color:var(--color-muted)]">—</span>}
-                  </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-2 flex-wrap">
+                      {/* Tijdelijk wachtwoord — kopieer + wis */}
+                      {l.tijdelijk_wachtwoord && (
+                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-emerald-50 border border-emerald-200">
+                          <code className="text-xs font-bold text-emerald-700">{l.tijdelijk_wachtwoord}</code>
+                          <button onClick={() => { navigator.clipboard.writeText(l.tijdelijk_wachtwoord!); toast("Gekopieerd!"); }} title="Kopieer wachtwoord" className="text-emerald-600 hover:text-emerald-800 ml-1"><CheckCircle size={12} /></button>
+                          <button onClick={() => verwijderTijdelijkWachtwoord(l.id)} title="Wis wachtwoord" className="text-[color:var(--color-muted)] hover:text-red-500"><X size={12} /></button>
+                        </div>
+                      )}
                       {/* Lid maken — voor iedereen zonder lid/jeugdlid/admin rol */}
                       {l.rol !== "lid" && l.rol !== "jeugdlid" && l.rol !== "admin" && (
                         <button onClick={() => maakLid(l.id)} className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-md bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors font-semibold">
@@ -915,7 +905,7 @@ function LedenBeheer() {
                 </tr>
               ))}
               {gefilterd.length === 0 && (
-                <tr><td colSpan={7} className="px-5 py-8 text-center text-[color:var(--color-muted)]">Geen gebruikers gevonden</td></tr>
+                <tr><td colSpan={6} className="px-5 py-8 text-center text-[color:var(--color-muted)]">Geen gebruikers gevonden</td></tr>
               )}
             </tbody>
           </table>
