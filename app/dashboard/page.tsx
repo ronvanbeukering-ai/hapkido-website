@@ -849,9 +849,9 @@ function LedenBeheer() {
                     <div className="relative inline-block">
                       <button
                         onClick={() => setOpenMenu(openMenu === l.id ? null : l.id)}
-                        className="p-1.5 rounded-md hover:bg-[color:var(--color-stone-200)] text-[color:var(--color-muted)] hover:text-[color:var(--color-heading)] transition-colors"
+                        className="px-2 py-1.5 rounded-md border border-[color:var(--color-border)] bg-[color:var(--color-surface)] hover:bg-[color:var(--color-stone-200)] text-[color:var(--color-heading)] transition-colors font-bold text-sm"
                       >
-                        <MoreVertical size={16} />
+                        ⋯
                       </button>
                       {openMenu === l.id && (
                         <div className="absolute right-0 top-8 z-50 w-52 bg-white border border-[color:var(--color-border)] rounded-xl shadow-lg py-1 text-left">
