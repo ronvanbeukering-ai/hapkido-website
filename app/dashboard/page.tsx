@@ -580,6 +580,7 @@ function LedenBeheer() {
   const [leden, setLeden] = useState<Profiel[]>([]);
   const [loading, setLoading] = useState(true);
   const [zoek, setZoek] = useState("");
+  const [filterRol, setFilterRol] = useState<"alle" | "lid" | "jeugdlid">("alle");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [nieuwForm, setNieuwForm] = useState(false);
   const [nieuwNaam, setNieuwNaam] = useState("");
@@ -687,7 +688,14 @@ function LedenBeheer() {
     laad();
   }
 
-  const gefilterd = leden.filter(l => l.email?.toLowerCase().includes(zoek.toLowerCase()));
+  const gefilterd = leden
+    .filter(l => l.email?.toLowerCase().includes(zoek.toLowerCase()))
+    .filter(l => filterRol === "alle" || l.rol === filterRol)
+    .sort((a, b) => {
+      const rolVolgorde: Record<string, number> = { admin: 0, lid: 1, cursus: 2, jeugdlid: 3, geen: 4 };
+      const rv = (rolVolgorde[a.rol] ?? 5) - (rolVolgorde[b.rol] ?? 5);
+      return rv !== 0 ? rv : a.email.localeCompare(b.email);
+    });
 
   const rolKleur: Record<string, string> = {
     admin:    "bg-[color:var(--color-gold-100)] text-[color:var(--color-gold-600)] border-[color:var(--color-gold-200)]",
@@ -805,8 +813,19 @@ function LedenBeheer() {
         <span><strong className="text-red-700">🗑 Verwijder</strong> → verwijdert het account definitief</span>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 flex flex-wrap items-center gap-3">
         <input className="input max-w-sm" placeholder="Zoek op e-mailadres…" value={zoek} onChange={e => setZoek(e.target.value)} />
+        <div className="flex rounded-lg border border-[color:var(--color-border)] overflow-hidden text-xs font-semibold">
+          {(["alle", "lid", "jeugdlid"] as const).map(r => (
+            <button
+              key={r}
+              onClick={() => setFilterRol(r)}
+              className={`px-3 py-2 transition-colors ${filterRol === r ? "bg-[color:var(--color-accent-600)] text-white" : "bg-[color:var(--color-surface)] text-[color:var(--color-muted)] hover:bg-[color:var(--color-stone-100)]"}`}
+            >
+              {r === "alle" ? `Alle (${leden.length})` : r === "lid" ? `Volwassenen (${leden.filter(l => l.rol === "lid").length})` : `Jeugd (${leden.filter(l => l.rol === "jeugdlid").length})`}
+            </button>
+          ))}
+        </div>
       </div>
 
       {loading ? <div className="text-center py-12 text-[color:var(--color-muted)]">Laden…</div> : (
