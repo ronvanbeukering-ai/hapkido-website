@@ -62,6 +62,10 @@ $$;
 -- ─── 1. profiles (RLS al aan, policies versterken) ───────────
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
+-- Zorg dat 'jeugdlid' is toegestaan als rolwaarde
+ALTER TABLE public.profiles DROP CONSTRAINT IF EXISTS profiles_rol_check;
+ALTER TABLE public.profiles ADD CONSTRAINT profiles_rol_check CHECK (rol IN ('admin','lid','jeugdlid','cursus','geen'));
+
 DROP POLICY IF EXISTS "Eigen profiel lezen"                 ON public.profiles;
 DROP POLICY IF EXISTS "Eigen profiel bijwerken"             ON public.profiles;
 DROP POLICY IF EXISTS "Admin kan alle profielen lezen"      ON public.profiles;
