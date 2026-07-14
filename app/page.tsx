@@ -14,9 +14,9 @@ import { videoSchema } from "@/lib/jsonld";
 import { locations, benefits, faq, site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: { absolute: "Hapkido Yong — Hapkido Combinatie in Berkel-Enschot & Waalwijk" },
+  title: { absolute: "Hapkido Combinatie Berkel-Enschot & Waalwijk | Hapkido Yong" },
   description:
-    "Hapkido Combinatie (Koreaans MMA) bij Hapkido Yong in Berkel-Enschot en Waalwijk. Zelfverdediging voor alle leeftijden onder leiding van Master Ron van Beukering. Gratis proefles.",
+    "Hapkido Combinatie (Koreaans MMA) bij Hapkido Yong. Zelfverdediging voor alle leeftijden in Berkel-Enschot en Waalwijk. Gratis proefles.",
   keywords: [
     "hapkido nederland",
     "hapkido combinatie",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Hapkido Yong Hapkido Combinatie in Berkel-Enschot & Waalwijk",
     description:
-      "Hapkido Combinatie (Koreaans MMA) bij Hapkido Yong in Berkel-Enschot en Waalwijk. Zelfverdediging voor alle leeftijden onder leiding van Master Ron van Beukering. Gratis proefles.",
+      "Hapkido Combinatie (Koreaans MMA) bij Hapkido Yong. Zelfverdediging voor alle leeftijden in Berkel-Enschot en Waalwijk. Gratis proefles.",
     locale: "nl_NL",
     type: "website",
     images: [

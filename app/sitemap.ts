@@ -2,7 +2,11 @@ import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
+  // Static date, not new Date(): a lastmod that changes on every single
+  // crawl (regardless of whether content actually changed) is a false
+  // freshness signal — Google explicitly recommends omitting lastmod
+  // over reporting an inaccurate one. Bump this manually when pages change.
+  const lastModified = new Date("2026-07-14");
   const base = site.url;
 
   return [
