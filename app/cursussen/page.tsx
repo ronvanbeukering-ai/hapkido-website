@@ -9,7 +9,7 @@ import { CursusContent } from "@/components/CursusContent";
 import { onlineLessen, hapkidoVideos } from "@/lib/cursussen";
 import { site } from "@/lib/site";
 import { createClient } from "@/lib/supabase/server";
-import { heeftZwarteBandToegang as berekenZwarteBandToegang, heeftAcademieToegang as berekenAcademieToegang } from "@/lib/auth";
+import { heeftZwarteBandToegang as berekenZwarteBandToegang, heeftAcademieToegang as berekenAcademieToegang, isLidOfAdmin, isCursusAbonnee } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "Hapkido Online Cursus Lessen van Ron van Beukering",
@@ -59,9 +59,8 @@ export default async function Page() {
         .from("profiles").select("rol,lid_geldig_tot,zwarte_band_geldig_tot,academie_toegang").eq("id", session.user.id).single();
       if (profile) {
         isAdminUser  = profile.rol === "admin";
-        const geldig = !profile.lid_geldig_tot || new Date(profile.lid_geldig_tot) > new Date();
-        isLidUser    = isAdminUser || (profile.rol === "lid" && geldig);
-        heeftToegang = isLidUser  || (profile.rol === "cursus" && geldig);
+        isLidUser    = isLidOfAdmin(session.user.email, profile.rol, profile.lid_geldig_tot);
+        heeftToegang = isCursusAbonnee(session.user.email, profile.rol, profile.lid_geldig_tot);
         heeftZwarteBandToegang = berekenZwarteBandToegang(session.user.email, profile.rol, profile.zwarte_band_geldig_tot);
         heeftAcademieToegang = berekenAcademieToegang(session.user.email, profile.rol, profile.academie_toegang);
       }

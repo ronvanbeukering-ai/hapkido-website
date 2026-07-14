@@ -120,6 +120,14 @@ export default function Home() {
           <div className="mt-10">
             <VideoGallery />
           </div>
+          <Reveal>
+            <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+              <span className="badge-gold text-xs whitespace-nowrap">Ledenvoordeel</span>
+              <p className="text-sm md:text-base text-white/80">
+                Leden hebben <span className="text-[color:var(--color-gold-400)] font-medium">gratis toegang tot onze volledige videotheek</span> met alle trainingsopnames — inbegrepen bij je lidmaatschap.
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 

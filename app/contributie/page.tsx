@@ -46,6 +46,7 @@ const plans = [
     features: [
       "Tot 2× per week trainen",
       "Aparte jeugdgroepen",
+      "Gratis toegang tot onze videotheek",
       "Bondsexamens via NBJJV (zwarte band)",
       "Bondskosten apart (€25/jaar)",
     ],
@@ -58,6 +59,7 @@ const plans = [
     features: [
       "Tot 2× per week trainen",
       "Gemixte volwassen groepen",
+      "Gratis toegang tot onze videotheek",
       "Toegang tot Academie (vanaf bruine band)",
       "Bondskosten apart (€25/jaar)",
     ],
