@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/lessen", destination: "/lessen/berkel-enschot", permanent: true },
+      // Stale URL from a much older version of the site, still occasionally crawled.
+      { source: "/index.htm", destination: "/", permanent: true },
     ];
   },
   async headers() {
