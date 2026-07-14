@@ -70,6 +70,7 @@ export const site = {
     facebook: "https://www.facebook.com/Kwannyomhapkido",
     instagram: "https://www.instagram.com/hapkidonederland",
     youtube: "https://www.youtube.com/@hapkidonederland",
+    googleBusiness: "https://share.google/7KEaTDlZrNuy6aMNk",
   },
   stats: [
     { value: "18+", label: "Jaar in Nederland" },

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Facebook, Instagram, MapPin, Mail, Phone, MessageCircle } from "lucide-react";
+import { Facebook, Instagram, MapPin, Mail, Phone, MessageCircle, Star } from "lucide-react";
 import { Logo } from "./Logo";
 import { site, locations } from "@/lib/site";
 
@@ -20,6 +20,10 @@ export function Footer() {
             <a href={site.socials.instagram} aria-label="Instagram" target="_blank" rel="noopener noreferrer"
               className="w-9 h-9 inline-flex items-center justify-center rounded-md bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-colors">
               <Instagram size={16} />
+            </a>
+            <a href={site.socials.googleBusiness} aria-label="Google Reviews" target="_blank" rel="noopener noreferrer"
+              className="w-9 h-9 inline-flex items-center justify-center rounded-md bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-colors">
+              <Star size={16} />
             </a>
           </div>
         </div>

@@ -23,6 +23,7 @@ export const organizationSchema = {
     site.socials.facebook,
     site.socials.instagram,
     site.socials.youtube,
+    site.socials.googleBusiness,
     `https://${site.domainAlias}`,
   ],
   contactPoint: {

@@ -262,6 +262,16 @@ export default function Home() {
           <div className="mt-10">
             <Testimonials />
           </div>
+          <div className="mt-8">
+            <a
+              href={site.socials.googleBusiness}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost"
+            >
+              Bekijk al onze reviews op Google <ArrowRight size={16} />
+            </a>
+          </div>
         </div>
       </section>
 
