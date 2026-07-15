@@ -259,7 +259,7 @@ function VideosBeheer() {
     const { data, error } = await supabase.storage.from("hapkido-videos").upload(naam, file, { upsert: true });
     if (error) { toast("Upload mislukt: " + error.message, "err"); setUploading(false); return; }
     const { data: pub } = supabase.storage.from("hapkido-videos").getPublicUrl(data.path);
-    setForm(f => ({ ...f, url: pub.publicUrl, platform: "local", id: pub.publicUrl }));
+    setForm(f => ({ ...f, url: pub.publicUrl, platform: "local" }));
     toast("Video geüpload!");
     setUploading(false);
   }
@@ -351,7 +351,7 @@ function VideosBeheer() {
               <input
                 className="input"
                 value={form.url ?? form.id ?? ""}
-                onChange={e => setForm(f => ({ ...f, url: e.target.value, id: e.target.value }))}
+                onChange={e => setForm(f => ({ ...f, url: e.target.value }))}
                 placeholder={form.platform === "youtube" ? "bijv. dQw4w9WgXcQ" : form.platform === "vimeo" ? "vimeo-1234567" : "URL"}
               />
             </div>
