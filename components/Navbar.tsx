@@ -94,7 +94,7 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
                 className={cn(
                   "text-sm px-3 py-2 transition-colors font-medium",
                   solid
-                    ? "text-[color:var(--color-text-strong)] hover:text-[color:var(--color-accent-400)]"
+                    ? "text-[color:var(--color-text-strong)] hover:text-[color:var(--color-accent-300)]"
                     : "text-white/85 hover:text-white"
                 )}
               >

@@ -40,7 +40,7 @@ export function CookieBanner() {
       <div className="max-w-2xl mx-auto pointer-events-auto bg-[color:var(--color-stone-900)] border border-white/15 rounded-xl shadow-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <p className="text-sm text-white/80 flex-1 leading-relaxed">
           We gebruiken cookies om het bezoek aan onze website te analyseren. Zo kunnen we de site blijven verbeteren.{" "}
-          <a href="/privacy" className="text-[color:var(--color-accent-400)] hover:underline">Meer info</a>
+          <a href="/privacy" className="text-[color:var(--color-accent-300)] hover:underline">Meer info</a>
         </p>
         <div className="flex gap-2 shrink-0">
           <button

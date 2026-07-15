@@ -168,7 +168,7 @@ export default function Page() {
               Meer weten over Hapkido Combinatie?
             </h2>
             <p className="text-[color:var(--color-muted)] leading-relaxed">
-              Lees alles over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-400)] hover:underline">Hapkido Combinatie</Link>, onze complete zelfverdedigingsstijl. Of bekijk de andere locatie in <Link href="/lessen/waalwijk" className="text-[color:var(--color-accent-400)] hover:underline">Waalwijk</Link>. Meer over onze hoofdtrainer: <Link href="/trainers/ron-van-beukering" className="text-[color:var(--color-accent-400)] hover:underline">Master Ron van Beukering</Link>.
+              Lees alles over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-300)] hover:underline">Hapkido Combinatie</Link>, onze complete zelfverdedigingsstijl. Of bekijk de andere locatie in <Link href="/lessen/waalwijk" className="text-[color:var(--color-accent-300)] hover:underline">Waalwijk</Link>. Meer over onze hoofdtrainer: <Link href="/trainers/ron-van-beukering" className="text-[color:var(--color-accent-300)] hover:underline">Master Ron van Beukering</Link>.
             </p>
           </Reveal>
         </div>

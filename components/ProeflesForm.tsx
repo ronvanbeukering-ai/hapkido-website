@@ -127,7 +127,7 @@ export function ProeflesForm({ compact = false, locatie }: { compact?: boolean; 
       </label>
 
       {state === "error" && (
-        <div className="mt-4 flex items-start gap-2 text-sm text-[color:var(--color-accent-400)] bg-[color:var(--color-accent-600)]/10 border border-[color:var(--color-accent-600)]/30 rounded-md p-3">
+        <div className="mt-4 flex items-start gap-2 text-sm text-[color:var(--color-accent-300)] bg-[color:var(--color-accent-600)]/10 border border-[color:var(--color-accent-600)]/30 rounded-md p-3">
           <AlertCircle size={16} className="shrink-0 mt-0.5" />
           <span>{errorMsg}</span>
         </div>

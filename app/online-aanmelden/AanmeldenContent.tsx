@@ -87,7 +87,7 @@ function AanmeldenForm() {
 
         <p className="text-xs text-[color:var(--color-muted)]">
           Vragen? Mail naar{" "}
-          <a href={`mailto:${site.email}`} className="text-[color:var(--color-accent-400)] hover:underline">
+          <a href={`mailto:${site.email}`} className="text-[color:var(--color-accent-300)] hover:underline">
             {site.email}
           </a>
         </p>
@@ -187,7 +187,7 @@ function AanmeldenForm() {
       <div className="border-t border-[color:var(--color-border)] pt-4">
         <p className="text-xs text-[color:var(--color-muted)] text-center">
           Al een account?{" "}
-          <Link href="/login" className="text-[color:var(--color-accent-400)] hover:underline">
+          <Link href="/login" className="text-[color:var(--color-accent-300)] hover:underline">
             Inloggen
           </Link>
         </p>

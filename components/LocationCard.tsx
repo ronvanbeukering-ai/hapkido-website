@@ -59,7 +59,7 @@ export function LocationCard({ loc }: { loc: Location }) {
           )}
           <Link
             href={`/lessen/${loc.slug}`}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--color-accent-400)] hover:text-[color:var(--color-accent-300)] group/cta"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--color-accent-300)] hover:text-[color:var(--color-accent-200)] group/cta"
           >
             Bekijk {loc.city}
             <ArrowRight size={14} className="transition-transform group-hover/cta:translate-x-0.5" />

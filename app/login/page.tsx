@@ -147,7 +147,7 @@ function LoginForm() {
               Wachtwoord
             </label>
             <button type="button" onClick={() => setResetModus(true)}
-              className="text-xs text-[color:var(--color-accent-400)] hover:underline">
+              className="text-xs text-[color:var(--color-accent-300)] hover:underline">
               Wachtwoord vergeten?
             </button>
           </div>

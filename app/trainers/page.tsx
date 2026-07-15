@@ -134,7 +134,7 @@ export default function Page() {
               Train Hapkido Combinatie in Noord-Brabant
             </h2>
             <p className="text-[color:var(--color-muted)] leading-relaxed mb-6">
-              Onze trainers geven les op twee locaties: <Link href="/lessen/berkel-enschot" className="text-[color:var(--color-accent-400)] hover:underline">Berkel-Enschot</Link> (Master Ron van Beukering) en <Link href="/lessen/waalwijk" className="text-[color:var(--color-accent-400)] hover:underline">Waalwijk</Link> (CGN Marco van Gulik). Bekijk ook meer over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-400)] hover:underline">Hapkido Combinatie</Link>.
+              Onze trainers geven les op twee locaties: <Link href="/lessen/berkel-enschot" className="text-[color:var(--color-accent-300)] hover:underline">Berkel-Enschot</Link> (Master Ron van Beukering) en <Link href="/lessen/waalwijk" className="text-[color:var(--color-accent-300)] hover:underline">Waalwijk</Link> (CGN Marco van Gulik). Bekijk ook meer over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-300)] hover:underline">Hapkido Combinatie</Link>.
             </p>
           </Reveal>
         </div>

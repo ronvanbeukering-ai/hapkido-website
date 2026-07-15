@@ -119,7 +119,7 @@ export default function Page() {
               Train Hapkido Combinatie in Berkel-Enschot
             </h2>
             <p className="text-[color:var(--color-muted)] leading-relaxed">
-              Master Ron geeft les op <Link href="/lessen/berkel-enschot" className="text-[color:var(--color-accent-400)] hover:underline">Kerkstraat 9B in Berkel-Enschot</Link> (bij Tilburg). Lees alles over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-400)] hover:underline">Hapkido Combinatie</Link> of bekijk alle <Link href="/trainers" className="text-[color:var(--color-accent-400)] hover:underline">trainers van Hapkido Yong</Link>.
+              Master Ron geeft les op <Link href="/lessen/berkel-enschot" className="text-[color:var(--color-accent-300)] hover:underline">Kerkstraat 9B in Berkel-Enschot</Link> (bij Tilburg). Lees alles over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-300)] hover:underline">Hapkido Combinatie</Link> of bekijk alle <Link href="/trainers" className="text-[color:var(--color-accent-300)] hover:underline">trainers van Hapkido Yong</Link>.
             </p>
           </Reveal>
         </div>

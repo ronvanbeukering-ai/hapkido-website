@@ -102,7 +102,7 @@ export default function Page() {
               Train Hapkido Combinatie in Waalwijk
             </h2>
             <p className="text-[color:var(--color-muted)] leading-relaxed">
-              Marco geeft les op <Link href="/lessen/waalwijk" className="text-[color:var(--color-accent-400)] hover:underline">Dominee Louwe Kooymanslaan 9 in Waalwijk</Link>. Lees alles over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-400)] hover:underline">Hapkido Combinatie</Link> of bekijk alle <Link href="/trainers" className="text-[color:var(--color-accent-400)] hover:underline">trainers van Hapkido Yong</Link>.
+              Marco geeft les op <Link href="/lessen/waalwijk" className="text-[color:var(--color-accent-300)] hover:underline">Dominee Louwe Kooymanslaan 9 in Waalwijk</Link>. Lees alles over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-300)] hover:underline">Hapkido Combinatie</Link> of bekijk alle <Link href="/trainers" className="text-[color:var(--color-accent-300)] hover:underline">trainers van Hapkido Yong</Link>.
             </p>
           </Reveal>
         </div>

@@ -73,7 +73,7 @@ export function AanmeldenForm() {
         </p>
         <p className="text-[color:var(--color-muted)] text-sm">
           Zodra je toegang geactiveerd is, ontvang je bericht. Heb je vragen? Stuur ons een bericht via{" "}
-          <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="text-[color:var(--color-accent-400)] underline">WhatsApp</a>.
+          <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="text-[color:var(--color-accent-300)] underline">WhatsApp</a>.
         </p>
       </div>
     );
@@ -141,7 +141,7 @@ export function AanmeldenForm() {
 
       <p className="text-xs text-[color:var(--color-muted)] text-center border-t border-[color:var(--color-border)] pt-4">
         Al een account?{" "}
-        <Link href="/login" className="text-[color:var(--color-accent-400)] hover:underline">Inloggen</Link>
+        <Link href="/login" className="text-[color:var(--color-accent-300)] hover:underline">Inloggen</Link>
       </p>
     </div>
   );
