@@ -13,6 +13,7 @@ export type VideoItem = {
   subcategorie?: string | null;
   platform: string;
   volgorde?: number;
+  thumbnail_url?: string | null;
 };
 
 // ─── helpers ──────────────────────────────────────────────────
@@ -62,7 +63,7 @@ function YoutubeEmbed({ videoId: rawId, titel }: { videoId: string; titel: strin
   );
 }
 
-function VimeoEmbed({ videoId, titel }: { videoId: string; titel: string }) {
+function VimeoEmbed({ videoId, titel, thumbnailUrl }: { videoId: string; titel: string; thumbnailUrl?: string | null }) {
   const [active, setActive] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const playerId = useId().replace(/:/g, "");
@@ -109,14 +110,26 @@ function VimeoEmbed({ videoId, titel }: { videoId: string; titel: string }) {
     <button
       type="button"
       onClick={() => setActive(true)}
-      className="absolute inset-0 flex flex-col items-center justify-center bg-stone-700 group cursor-pointer gap-3"
+      className="absolute inset-0 flex flex-col items-center justify-center bg-stone-700 group cursor-pointer gap-3 overflow-hidden"
       aria-label={`Speel ${titel} af`}
     >
-      <div className="w-16 h-16 rounded-full bg-[#1ab7ea] flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
+      {thumbnailUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={thumbnailUrl}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+        />
+      )}
+      <div className={`absolute inset-0 ${thumbnailUrl ? "bg-black/35 group-hover:bg-black/25" : ""} transition-colors`} />
+      <div className="relative w-16 h-16 rounded-full bg-[#1ab7ea] flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
         <Play size={26} className="text-white ml-1" fill="currentColor" />
       </div>
-      <span className="text-white font-semibold text-sm text-center px-4 leading-snug drop-shadow">{titel}</span>
-      <span className="absolute bottom-3 right-3 text-[11px] text-white/50 font-medium">Vimeo</span>
+      {!thumbnailUrl && (
+        <span className="relative text-white font-semibold text-sm text-center px-4 leading-snug drop-shadow">{titel}</span>
+      )}
+      <span className="absolute bottom-3 right-3 text-[11px] text-white/70 font-medium drop-shadow">Vimeo</span>
     </button>
   );
 }
@@ -195,7 +208,7 @@ function VideoEmbed({ video }: { video: VideoItem }) {
   return (
     <div className="relative w-full h-full" onContextMenu={(e) => e.preventDefault()}>
       {p === "youtube" && <YoutubeEmbed videoId={video.id} titel={video.titel} />}
-      {p === "vimeo"   && <VimeoEmbed   videoId={video.id} titel={video.titel} />}
+      {p === "vimeo"   && <VimeoEmbed   videoId={video.id} titel={video.titel} thumbnailUrl={video.thumbnail_url} />}
       {p === "local"   && <LocalEmbed   videoId={video.id} titel={video.titel} />}
       {p === "gdrive"  && <GdriveEmbed  videoId={video.id} titel={video.titel} />}
       {!["youtube","vimeo","local","gdrive"].includes(p ?? "") && <YoutubeEmbed videoId={video.id} titel={video.titel} />}

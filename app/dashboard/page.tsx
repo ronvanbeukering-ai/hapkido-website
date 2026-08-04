@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   Video, BookOpen, Users, LogOut, Plus, Trash2, Pencil,
   Save, X, Upload, Crown, CheckCircle, XCircle, ArrowLeft,
-  Youtube, Library, Play, MoreVertical,
+  Youtube, Library, Play, MoreVertical, KeyRound,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { isSuperAdmin } from "@/lib/auth";
@@ -14,7 +14,7 @@ import { categorieLabelMap } from "@/lib/cursussen";
 
 /* ─── types ─────────────────────────────────────── */
 type Profiel = { id: string; email: string; rol: "admin" | "lid" | "jeugdlid" | "cursus" | "geen"; lid_geldig_tot: string | null; zwarte_band_geldig_tot: string | null; academie_toegang: boolean; tijdelijk_wachtwoord?: string | null };
-type HKVideo = { id: string; titel: string; beschrijving: string; categorie: string; subcategorie?: string | null; platform?: string; url?: string; volgorde?: number };
+type HKVideo = { id: string; titel: string; beschrijving: string; categorie: string; subcategorie?: string | null; platform?: string; url?: string; volgorde?: number; thumbnail_url?: string | null };
 type HKLes  = { nr: number; titel: string; duur: string; categorie: string; gratis: boolean; beschrijving?: string; video_url?: string; belt?: string };
 
 const TABS = [
@@ -175,6 +175,9 @@ export default function Dashboard() {
         <div className="p-4 border-t border-white/10 space-y-2">
           <Link href="/" className="flex items-center gap-2 px-4 py-2 text-xs text-white/50 hover:text-white transition-colors rounded-lg hover:bg-white/8">
             <ArrowLeft size={14} /> Terug naar website
+          </Link>
+          <Link href="/nieuw-wachtwoord" className="flex items-center gap-2 px-4 py-2 text-xs text-white/50 hover:text-white transition-colors rounded-lg hover:bg-white/8">
+            <KeyRound size={14} /> Wachtwoord wijzigen
           </Link>
           <button onClick={uitloggen} className="w-full flex items-center gap-2 px-4 py-2 text-xs text-red-400 hover:text-red-300 transition-colors rounded-lg hover:bg-white/8">
             <LogOut size={14} /> Uitloggen
@@ -396,10 +399,14 @@ function VideosBeheer() {
                   <img src={`https://img.youtube.com/vi/${v.url ?? v.id}/hqdefault.jpg`} alt={v.titel} className="w-full h-full object-cover" loading="lazy" />
                 )}
                 {v.platform === "vimeo" && (
-                  <div className="w-full h-full bg-[#1ab7ea]/15 flex flex-col items-center justify-center gap-1">
-                    <span className="text-[#1ab7ea] font-bold text-lg">vimeo</span>
-                    <span className="text-[10px] text-[#1ab7ea]/60 px-2 text-center truncate max-w-full">{v.url ?? v.id}</span>
-                  </div>
+                  v.thumbnail_url ? (
+                    <img src={v.thumbnail_url} alt={v.titel} className="w-full h-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="w-full h-full bg-[#1ab7ea]/15 flex flex-col items-center justify-center gap-1">
+                      <span className="text-[#1ab7ea] font-bold text-lg">vimeo</span>
+                      <span className="text-[10px] text-[#1ab7ea]/60 px-2 text-center truncate max-w-full">{v.url ?? v.id}</span>
+                    </div>
+                  )
                 )}
                 {v.platform === "local" && (
                   <video src={v.url} className="w-full h-full object-cover" preload="metadata" muted />

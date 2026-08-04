@@ -68,12 +68,12 @@ export default async function Page() {
   }
 
   const [{ data: videosData }, { data: lessenData }] = await Promise.all([
-    supabase.from("hapkido_videos").select("url, titel, beschrijving, categorie, subcategorie, platform").order("volgorde", { ascending: true }),
+    supabase.from("hapkido_videos").select("url, titel, beschrijving, categorie, subcategorie, platform, thumbnail_url").order("volgorde", { ascending: true }),
     supabase.from("hapkido_lessen").select("*").order("nr", { ascending: true }),
   ]);
 
-  const videos = (videosData ?? hapkidoVideos.map(v => ({ url: v.id, titel: v.titel, beschrijving: v.beschrijving, categorie: v.categorie, subcategorie: v.subcategorie, platform: v.platform ?? "vimeo" })))
-    .map(v => ({ id: v.url ?? "", titel: v.titel, beschrijving: v.beschrijving, categorie: v.categorie, subcategorie: v.subcategorie, platform: v.platform as "youtube" | "vimeo" | "local" | undefined }));
+  const videos = (videosData ?? hapkidoVideos.map(v => ({ url: v.id, titel: v.titel, beschrijving: v.beschrijving, categorie: v.categorie, subcategorie: v.subcategorie, platform: v.platform ?? "vimeo", thumbnail_url: null })))
+    .map(v => ({ id: v.url ?? "", titel: v.titel, beschrijving: v.beschrijving, categorie: v.categorie, subcategorie: v.subcategorie, platform: v.platform as "youtube" | "vimeo" | "local" | undefined, thumbnail_url: v.thumbnail_url as string | null | undefined }));
 
   const lessen = (lessenData && lessenData.length > 0 ? lessenData : onlineLessen) as typeof onlineLessen;
 
