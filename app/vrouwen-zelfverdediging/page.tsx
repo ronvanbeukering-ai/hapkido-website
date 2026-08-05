@@ -12,7 +12,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Zelfverdediging voor Vrouwen | Hapkido Yong",
   description:
-    "Zelfverdediging voor vrouwen, verweven in de reguliere hapkido-lessen in Berkel-Enschot en Waalwijk: grenzen aangeven, situaties inschatten en jezelf veilig verdedigen.",
+    "Zelfverdediging voor vrouwen, verweven in de reguliere hapkido-lessen in Berkel-Enschot en Waalwijk: grenzen aangeven, situaties inschatten en verdedigen.",
   keywords: [
     "zelfverdediging voor vrouwen",
     "vrouwen zelfverdediging",

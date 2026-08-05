@@ -14,7 +14,7 @@ import { heeftZwarteBandToegang as berekenZwarteBandToegang, heeftAcademieToegan
 export const metadata: Metadata = {
   title: "Hapkido Online Cursus Lessen van Ron van Beukering",
   description:
-    "Online hapkido-lessen van Master Ron van Beukering. 12 videolessen van basis tot gevorderd. Kwan Nyom Hapkido en Hapkido Combinatie technieken. Voor leden en niet-leden.",
+    "Online hapkido-lessen van Master Ron van Beukering. 12 videolessen van basis tot gevorderd, Kwan Nyom Hapkido en Hapkido Combinatie. Voor leden en niet-leden.",
   keywords: [
     "hapkido cursus online",
     "hapkido video training",

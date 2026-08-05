@@ -93,9 +93,15 @@ export function PageHero({
       <div className="absolute inset-0 -z-10">
         {bgImage ? (
           <>
-            <div
-              className="absolute inset-0 bg-cover"
-              style={{ backgroundImage: `url('${bgImage}')`, backgroundPosition: bgPosition }}
+            <Image
+              src={bgImage}
+              alt=""
+              aria-hidden="true"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+              style={{ objectPosition: bgPosition }}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#0e0b08]/55 via-[#3d1a00]/45 to-[#a05000]/85" />
           </>

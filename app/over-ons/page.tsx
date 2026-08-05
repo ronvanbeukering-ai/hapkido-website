@@ -10,7 +10,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Over ons — Hapkido in Noord-Brabant sinds 2006",
   description:
-    "Hapkido Yong brengt Hapkido Combinatie naar Noord-Brabant. Opgericht door Master Ron van Beukering, met vestigingen in Berkel-Enschot en Waalwijk. Bekijk ons verhaal.",
+    "Hapkido Yong brengt Hapkido Combinatie naar Noord-Brabant. Opgericht door Master Ron van Beukering, vestigingen in Berkel-Enschot en Waalwijk.",
   keywords: [
     "hapkido yong",
     "hapkido combinatie",

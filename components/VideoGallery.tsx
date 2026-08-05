@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Play } from "lucide-react";
 
 type VideoItem = {
@@ -64,10 +65,18 @@ function VideoCard({ video }: { video: VideoItem }) {
           <button
             type="button"
             onClick={() => setActive(true)}
-            style={{ backgroundImage: `url(${video.thumbnail})`, backgroundSize: "cover", backgroundPosition: "center" }}
             className="w-full h-full flex items-center justify-center group cursor-pointer relative"
             aria-label={`Speel ${video.title} af`}
           >
+            <Image
+              src={video.thumbnail}
+              alt=""
+              aria-hidden="true"
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+              className="object-cover"
+              loading="lazy"
+            />
             <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors" />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-16 h-16 rounded-full bg-[#1ab7ea]/90 flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">

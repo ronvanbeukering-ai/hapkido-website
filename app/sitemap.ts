@@ -20,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Secundaire pagina's
     { url: `${base}/trainers`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/vrouwen-zelfverdediging`, lastModified, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/zelfverdediging-op-locatie`, lastModified: new Date("2026-08-05"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/contributie`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/faq`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/contact`, lastModified, changeFrequency: "monthly", priority: 0.8 },

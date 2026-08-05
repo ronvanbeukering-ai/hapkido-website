@@ -206,6 +206,23 @@ export function breadcrumbSchema(items: { name: string; url: string }[]) {
   };
 }
 
+export const zelfverdedigingOpLocatieSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${site.url}/zelfverdediging-op-locatie#service`,
+  serviceType: "Zelfverdediging- en weerbaarheidstraining op locatie",
+  name: "Zelfverdediging op locatie voor bedrijven en zorg",
+  description:
+    "Praktische zelfverdedigings- en weerbaarheidstraining op locatie voor teams, bedrijven en zorgprofessionals in Noord-Brabant, op maat samengesteld door Master Ron van Beukering (6e Dan).",
+  provider: { "@id": `${site.url}/#organization` },
+  areaServed: { "@type": "State", name: "Noord-Brabant" },
+  audience: [
+    { "@type": "BusinessAudience", audienceType: "Bedrijven en teams" },
+    { "@type": "Audience", audienceType: "Zorg- en welzijnsprofessionals" },
+  ],
+  url: `${site.url}/zelfverdediging-op-locatie`,
+};
+
 export const courseSchema = {
   "@context": "https://schema.org",
   "@type": "Course",

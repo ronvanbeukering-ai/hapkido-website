@@ -12,7 +12,7 @@ import { site, trainers } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Trainers — Master Ron van Beukering & team",
   description:
-    "Ontmoet de trainers van Hapkido Yong. Master Ron van Beukering (6e Dan Hapkido Combinatie) leidt het team in Berkel-Enschot en Waalwijk. Plan een gratis proefles.",
+    "Ontmoet de trainers van Hapkido Yong. Master Ron van Beukering (6e Dan) leidt het team in Berkel-Enschot en Waalwijk. Plan een gratis proefles.",
   keywords: [
     "hapkido trainer nederland",
     "ron van beukering hapkido",
