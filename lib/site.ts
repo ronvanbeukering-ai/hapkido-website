@@ -262,7 +262,7 @@ export const trainers: Trainer[] = [
 export const faq = [
   {
     q: "Vanaf welke leeftijd kan mijn kind meedoen?",
-    a: "Kinderen kunnen meedoen vanaf 7 jaar. Voor de leeftijdsgroep tot 12 jaar zijn er aparte jeugdlessen in Berkel-Enschot en Waalwijk.",
+    a: "In Berkel-Enschot kunnen kinderen meedoen vanaf 7 jaar, in aparte jeugdlessen. In Waalwijk is dat vanaf 11 jaar, in de gemixte groep samen met de volwassenen.",
   },
   {
     q: "Hoeveel kost de contributie?",

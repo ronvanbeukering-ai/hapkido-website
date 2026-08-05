@@ -9,9 +9,9 @@ import { breadcrumbSchema } from "@/lib/jsonld";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Hapkido voor Kinderen (vanaf 7 jaar) | Hapkido Yong",
+  title: "Hapkido voor Kinderen, vanaf 7 jaar | Hapkido Yong",
   description:
-    "Hapkido voor kinderen vanaf 7 jaar in Berkel-Enschot en Waalwijk. Zelfvertrouwen, discipline en plezier. Aparte jeugdlessen. Plan een gratis proefles.",
+    "Hapkido voor kinderen: vanaf 7 jaar in Berkel-Enschot, vanaf 11 jaar in Waalwijk. Zelfvertrouwen, discipline en plezier. Plan een gratis proefles.",
   keywords: [
     "hapkido kinderen",
     "hapkido voor kinderen",
@@ -24,17 +24,17 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: `${site.url}/hapkido-kinderen` },
   openGraph: {
-    title: "Hapkido voor Kinderen (vanaf 7 jaar) | Hapkido Yong",
+    title: "Hapkido voor Kinderen, vanaf 7 jaar | Hapkido Yong",
     description:
-      "Hapkido voor kinderen vanaf 7 jaar — zelfvertrouwen, discipline en plezier, in Berkel-Enschot en Waalwijk.",
+      "Hapkido voor kinderen: vanaf 7 jaar in Berkel-Enschot, vanaf 11 jaar in Waalwijk — zelfvertrouwen, discipline en plezier.",
     locale: "nl_NL",
     type: "website",
     images: [{ url: "/images/training/training-4.jpg", width: 1200, height: 630, alt: "Hapkido voor kinderen bij Hapkido Yong" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hapkido voor Kinderen (vanaf 7 jaar) | Hapkido Yong",
-    description: "Hapkido voor kinderen vanaf 7 jaar in Berkel-Enschot en Waalwijk.",
+    title: "Hapkido voor Kinderen, vanaf 7 jaar | Hapkido Yong",
+    description: "Vanaf 7 jaar in Berkel-Enschot, vanaf 11 jaar in Waalwijk.",
     images: ["/images/training/training-4.jpg"],
   },
 };
@@ -84,7 +84,7 @@ export default function HapkidoKinderenPage() {
       <PageHero
         eyebrow="Hapkido voor kinderen"
         title="Sterker in hun schoenen, vanaf 7 jaar"
-        subtitle="Aparte jeugdlessen in Berkel-Enschot, en samen trainen met de gemixte groep in Waalwijk — voor kinderen vanaf 7 jaar."
+        subtitle="Aparte jeugdlessen in Berkel-Enschot vanaf 7 jaar, en samen trainen met de volwassenen in de gemixte groep in Waalwijk vanaf 11 jaar."
         breadcrumb={[
           { name: "Home", href: "/" },
           { name: "Hapkido voor kinderen", href: "/hapkido-kinderen" },
@@ -97,7 +97,7 @@ export default function HapkidoKinderenPage() {
           <Calendar size={16} className="text-[color:var(--color-accent-500)] shrink-0" />
           <span className="text-[color:var(--color-text)]">
             <strong>Berkel-Enschot:</strong> ma 18:30–19:15 (t/m 12 jaar), wo 18:30–19:15 (t/m 13 jaar), za 11:30–12:15 (t/m 13 jaar).{" "}
-            <strong>Waalwijk:</strong> ma en za, gemixte groep vanaf 7 jaar.
+            <strong>Waalwijk:</strong> ma en za, gemixte groep samen met de volwassenen, vanaf 11 jaar.
           </span>
           <Link href="/lessen/berkel-enschot" className="ml-auto font-semibold text-[color:var(--color-accent-600)] hover:underline shrink-0">
             Bekijk lesrooster
@@ -188,9 +188,10 @@ export default function HapkidoKinderenPage() {
             Instructeurs met affiniteit voor jeugd
           </h2>
           <p className="mt-4 text-[color:var(--color-text)] max-w-2xl leading-relaxed">
-            De jeugdlessen staan onder leiding van Master Ron van Beukering (6e Dan), met Jesse van Mierlo (2e Dan) —
-            gericht op techniek en jeugdtraining — en CGN Leonie Klerkx (1e Dan), met affiniteit voor jeugd- en
-            vrouwenlessen.
+            De jeugdlessen in Berkel-Enschot staan onder leiding van Master Ron van Beukering (6e Dan), met Jesse van
+            Mierlo (2e Dan) — gericht op techniek en jeugdtraining — en CGN Leonie Klerkx (1e Dan), met affiniteit
+            voor jeugd- en vrouwenlessen. In Waalwijk traint de jeugd vanaf 11 jaar mee in de gemixte groep van CGN
+            Marco van Gulik (2e Dan).
           </p>
           <Link href="/trainers" className="mt-6 inline-block font-semibold text-[color:var(--color-accent-600)] hover:underline">
             Bekijk alle trainers →
