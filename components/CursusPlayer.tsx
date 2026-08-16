@@ -309,6 +309,11 @@ export function LessenLijst({ lessen }: { lessen: Les[] }) {
                   <div className="aspect-video relative overflow-hidden">
                     <VideoEmbed video={videoItem} />
                   </div>
+                  {l.beschrijving && (
+                    <div className="px-5 py-3 bg-[color:var(--color-surface-2)] text-sm text-[color:var(--color-text)]">
+                      {l.beschrijving}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

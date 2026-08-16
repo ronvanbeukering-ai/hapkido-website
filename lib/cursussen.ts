@@ -6,6 +6,7 @@ export type Les = {
   gratis: boolean;
   belt?: "white-green" | "green-red";
   video_url?: string;
+  beschrijving?: string;
 };
 
 export type HapkidoVideo = {
@@ -30,7 +31,7 @@ export type HapkidoVideo = {
 };
 
 export const onlineLessen: Les[] = [
-  { nr: 1, titel: "Basishoudingen & voetenwerk",       duur: "18m", categorie: "Houding", gratis: true,  belt: "white-green", video_url: "vimeo-1198905757" },
+  { nr: 1, titel: "Basishoudingen & voetenwerk",       duur: "18m", categorie: "Houding", gratis: true,  belt: "white-green", video_url: "vimeo-1198905757", beschrijving: "Alle oefeningen (waar mogelijk) 10x links en rechts uitvoeren." },
   { nr: 2, titel: "Inward Elbow",                       duur: "12m", categorie: "Stoten",  gratis: true,  belt: "white-green", video_url: "vimeo-1198905564" },
   { nr: 3, titel: "Stoten — basisreeks tot rode band", duur: "30m", categorie: "Stoten",  gratis: false, belt: "white-green" },
   { nr: 4, titel: "Trappen — basisreeks tot rode band",duur: "30m", categorie: "Trappen", gratis: false, belt: "green-red"   },
