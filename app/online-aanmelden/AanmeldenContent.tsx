@@ -75,7 +75,7 @@ function AanmeldenForm() {
             Stap 2 — Maak de betaling over
           </p>
           <div className="text-sm text-[color:var(--color-accent-700)] space-y-1">
-            <div><span className="text-xs text-[color:var(--color-accent-600)] uppercase tracking-widest">Bedrag</span><br />€ 7,50 per maand of € 50,00 per jaar</div>
+            <div><span className="text-xs text-[color:var(--color-accent-600)] uppercase tracking-widest">Bedrag</span><br />€ 49,50 per jaar</div>
             <div className="mt-2"><span className="text-xs text-[color:var(--color-accent-600)] uppercase tracking-widest">IBAN</span><br /><span className="font-mono">{site.iban}</span></div>
             <div className="mt-2"><span className="text-xs text-[color:var(--color-accent-600)] uppercase tracking-widest">Tenaamstelling</span><br />Yong</div>
             <div className="mt-2"><span className="text-xs text-[color:var(--color-accent-600)] uppercase tracking-widest">Omschrijving</span><br />Online training – {email}</div>
@@ -215,7 +215,7 @@ export function AanmeldenContent() {
           </Link>
           <div className="badge-gold inline-flex mb-4">Online training</div>
           <h1 className="font-[family-name:var(--font-display)] text-4xl md:text-6xl text-[color:var(--color-heading)] tracking-tight leading-tight">
-            Hapkido thuis trainen<br />€7,50 per maand of €50 per jaar
+            Hapkido thuis trainen<br />€49,50 per jaar
           </h1>
           <p className="mt-4 text-[color:var(--color-muted)] max-w-xl mx-auto leading-relaxed">
             Geen vaste trainingstijden, geen dojang nodig. Volg de online cursus van Master Ron van Beukering en oefen wanneer het jou uitkomt.

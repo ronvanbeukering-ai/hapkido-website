@@ -130,7 +130,7 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos, heef
                   <>
                     <p className="text-sm text-[color:var(--color-accent-800)] leading-relaxed">
                       <strong>Lessen 1 &amp; 2 zijn gratis.</strong> Voor volledige toegang kun je lid worden
-                      of een abonnement nemen vanaf <strong>€7,50/maand</strong> of <strong>€50/jaar</strong>.
+                      of een abonnement nemen vanaf <strong>€49,50 per jaar</strong>.
                     </p>
                     <div className="flex flex-wrap gap-2">
                       <Link href="/login" className="btn-primary !py-2 !px-4 text-sm inline-flex">

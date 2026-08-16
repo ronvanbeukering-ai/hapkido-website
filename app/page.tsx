@@ -196,7 +196,7 @@ export default function Home() {
                   Woon je te ver weg of wil je eerst thuis oefenen?
                 </h3>
                 <p className="mt-2 text-sm text-[color:var(--color-muted)] max-w-xl leading-relaxed">
-                  Volg de volledige Hapkido Combinatie cursus van Master Ron vanuit huis. Vijf lessen met video's — €7,50 per maand of €50 per jaar.
+                  Volg de volledige Hapkido Combinatie cursus van Master Ron vanuit huis. Vijf lessen met video's — €49,50 per jaar.
                 </p>
               </div>
               <Link href="/online-aanmelden" className="btn-primary shrink-0">

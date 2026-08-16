@@ -81,7 +81,7 @@ export default async function Page() {
     { icon: BookOpen, value: `${lessen.length}`, label: "Online lessen" },
     { icon: Clock, value: `${lessen.reduce((s, l) => s + parseInt(l.duur), 0)}m`, label: "Totale duur" },
     { icon: Star, value: "4.9", label: "Beoordeling" },
-    { icon: Lock, value: "€7,50", label: "Niet-leden (per maand)" },
+    { icon: Lock, value: "€49,50", label: "Niet-leden (per jaar)" },
   ];
 
   return (
@@ -143,7 +143,7 @@ export default async function Page() {
                   </p>
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Link href="/online-aanmelden" className="btn-primary">
-                      Starten vanaf €7,50 per maand
+                      Starten vanaf €49,50 per jaar
                     </Link>
                     <Link href="/proefles" className="btn-secondary">
                       Liever naar de dojang?
@@ -154,7 +154,7 @@ export default async function Page() {
                   {[
                     { icon: Home,      t: "Thuis trainen",        b: "Geen dojang nodig. Oefen in je woonkamer, garage of tuin op het moment dat jou uitkomt." },
                     { icon: Play,      t: "Solo trainbaar",          b: "Basishoudingen, valbreken, stoten, trappen en locks. Alles wat je zelfstandig kunt oefenen." },
-                    { icon: CalendarX, t: "Geen verplichting",    b: "Maandelijks opzegbaar. Geen kwartaalcontract, geen inschrijfgeld, geen bondskosten." },
+                    { icon: CalendarX, t: "Geen verplichting",    b: "Eén keer per jaar betalen. Geen kwartaalcontract, geen inschrijfgeld, geen bondskosten." },
                   ].map(({ icon: Icon, t, b }) => (
                     <div key={t} className="card p-5 flex gap-4 items-start">
                       <div className="w-10 h-10 rounded-md bg-[color:var(--color-accent-600)]/15 border border-[color:var(--color-accent-600)]/30 inline-flex items-center justify-center text-[color:var(--color-accent-400)] shrink-0">
@@ -255,7 +255,7 @@ export default async function Page() {
 
       <CTABanner
         title="Toegang voor iedereen"
-        subtitle="Leden hebben automatisch toegang. Niet-lid? €7,50 per maand of €50 per jaar."
+        subtitle="Leden hebben automatisch toegang. Niet-lid? €49,50 per jaar."
         primary={{ label: "Start online", href: "/online-aanmelden" }}
       />
     </>
