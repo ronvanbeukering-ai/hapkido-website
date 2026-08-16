@@ -76,7 +76,7 @@ export function CursusContent({ lessen: staticLessen, videos: staticVideos, heef
       )}
 
       {/* Cursusinfo + lessenlijst */}
-      <section className="section">
+      <section id="lessen" className="section scroll-mt-24">
         <div className="container-x grid lg:grid-cols-12 gap-10">
           <div className="lg:col-span-5 space-y-6">
             <div>

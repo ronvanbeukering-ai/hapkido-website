@@ -220,6 +220,13 @@ export function AanmeldenContent() {
           <p className="mt-4 text-[color:var(--color-muted)] max-w-xl mx-auto leading-relaxed">
             Geen vaste trainingstijden, geen dojang nodig. Volg de online cursus van Master Ron van Beukering en oefen wanneer het jou uitkomt.
           </p>
+          <p className="mt-3 text-sm text-[color:var(--color-muted)]">
+            Nog twijfelen?{" "}
+            <Link href="/cursussen#lessen" className="text-[color:var(--color-accent-300)] hover:underline">
+              Bekijk eerst de eerste 2 lessen gratis
+            </Link>
+            , geen account nodig.
+          </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-5 mb-12">

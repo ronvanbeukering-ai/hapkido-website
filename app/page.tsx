@@ -191,17 +191,22 @@ export default function Home() {
                 <Play size={24} />
               </div>
               <div className="flex-1">
-                <div className="badge-gold mb-2">Online training</div>
+                <div className="badge-gold mb-2">Online training · eerste 2 lessen gratis</div>
                 <h3 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl leading-tight">
                   Woon je te ver weg of wil je eerst thuis oefenen?
                 </h3>
                 <p className="mt-2 text-sm text-[color:var(--color-muted)] max-w-xl leading-relaxed">
-                  Volg de volledige Hapkido Combinatie cursus van Master Ron vanuit huis. Vijf lessen met video's — €49,50 per jaar.
+                  Volg de volledige Hapkido Combinatie cursus van Master Ron vanuit huis. Bekijk de eerste 2 lessen gratis, geen account nodig — daarna €49,50 per jaar voor alle lessen.
                 </p>
               </div>
-              <Link href="/online-aanmelden" className="btn-primary shrink-0">
-                Start online <ArrowRight size={16} />
-              </Link>
+              <div className="flex flex-col sm:items-start gap-2 shrink-0">
+                <Link href="/cursussen" className="btn-primary">
+                  Bekijk 2 gratis lessen <ArrowRight size={16} />
+                </Link>
+                <Link href="/online-aanmelden" className="btn-ghost text-sm">
+                  Direct abonneren
+                </Link>
+              </div>
             </div>
           </Reveal>
         </div>

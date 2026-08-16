@@ -98,7 +98,7 @@ export default async function Page() {
       <PageHero
         eyebrow="Online trainingsmateriaal"
         title="Hapkido Cursus Basis tot Gevorderd"
-        subtitle="Solo te trainen · door Ron van Beukering · voor leden en niet-leden"
+        subtitle="Solo te trainen · door Ron van Beukering · eerste 2 lessen gratis, geen account nodig"
         breadcrumb={[
           { name: "Home", href: "/" },
           { name: "Cursussen", href: "/cursussen" },
@@ -130,23 +130,23 @@ export default async function Page() {
             <div className="container-x">
               <div className="grid lg:grid-cols-2 gap-10 items-center">
                 <div>
-                  <div className="badge-gold mb-4">Geen lid? Geen probleem.</div>
+                  <div className="badge-gold mb-4">Geen lid? Geen probleem. Eerste 2 lessen gratis.</div>
                   <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-tight leading-tight">
                     Train Hapkido<br />gewoon thuis
                   </h2>
                   <p className="mt-4 text-[color:var(--color-text)] leading-relaxed max-w-lg">
                     Woon je te ver weg, heb je een druk schema of wil je eerst rustig kennismaken met Hapkido Combinatie?
-                    Met het online cursusabonnement volg je dezelfde lessen als onze leden — op jouw tijd, in jouw eigen ruimte.
+                    Bekijk hieronder de eerste 2 lessen gratis — geen account, geen betaling. Bevalt het, dan volg je met het online cursusabonnement dezelfde lessen als onze leden.
                   </p>
                   <p className="mt-3 text-[color:var(--color-muted)] leading-relaxed max-w-lg">
                     Master Ron van Beukering legt elke techniek stap voor stap uit. Van basishoudingen en valbreken tot stoten, trappen en locks — alles wat je solo kunt oefenen.
                   </p>
                   <div className="mt-8 flex flex-wrap gap-3">
-                    <Link href="/online-aanmelden" className="btn-primary">
-                      Starten vanaf €49,50 per jaar
-                    </Link>
-                    <Link href="/proefles" className="btn-secondary">
-                      Liever naar de dojang?
+                    <a href="#lessen" className="btn-primary">
+                      Bekijk 2 gratis lessen
+                    </a>
+                    <Link href="/online-aanmelden" className="btn-secondary">
+                      Direct abonneren — €49,50/jaar
                     </Link>
                   </div>
                 </div>
