@@ -183,6 +183,7 @@ export const trainers: Trainer[] = [
     rank: "2e Dan Senior Instructor · 2e Dan Taekwondo · 1e Dan Kwan Nyom Hapkido",
     shortRank: "2e Dan",
     role: "Senior Instructor",
+    location: "Berkel-Enschot",
     bio: "Senior Instructor met jarenlange ervaring in technische lessen en mentorschap.",
     knowsAbout: ["Hapkido Combinatie", "Mentorschap"],
     photo: "/images/trainers/jamy.jpg",
