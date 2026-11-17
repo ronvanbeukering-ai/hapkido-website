@@ -30,7 +30,12 @@ export function ProeflesForm({ compact = false, locatie }: { compact?: boolean; 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Aanvraag mislukt");
+      const json = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error((json as { error?: string }).error || "Aanvraag mislukt. Probeer het opnieuw of WhatsApp ons.");
+      }
+
       setState("success");
     } catch (err) {
       setErrorMsg((err as Error).message || "Er ging iets mis. Probeer het opnieuw of WhatsApp ons.");

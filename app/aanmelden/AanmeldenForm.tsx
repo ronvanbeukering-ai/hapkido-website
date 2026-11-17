@@ -43,15 +43,20 @@ export function AanmeldenForm() {
         return;
       }
 
-      await fetch("/api/aanmelden", {
+      const aanmeldRes = await fetch("/api/aanmelden", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ naam: naam.trim(), email: email.trim().toLowerCase() }),
       });
+      const aanmeldJson = await aanmeldRes.json().catch(() => ({}));
+
+      if (!aanmeldRes.ok) {
+        throw new Error((aanmeldJson as { error?: string }).error || "De bevestiging kon niet worden verzonden.");
+      }
 
       setStap("bevestigd");
-    } catch {
-      setErrorMsg("Het aanmaken duurt te lang of is mislukt. Probeer het opnieuw.");
+    } catch (err) {
+      setErrorMsg((err as Error).message || "Het aanmaken duurt te lang of is mislukt. Probeer het opnieuw.");
       setStap("error");
     } finally {
       clearTimeout(timer);

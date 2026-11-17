@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { createServiceClient } from "@/lib/supabase/service";
 
 export const runtime = "nodejs";
 
@@ -122,56 +123,87 @@ export async function POST(req: Request) {
   const gmailPass = process.env.GMAIL_APP_PASSWORD;
   const toEmail   = process.env.ADMIN_EMAIL;
 
-  if (gmailUser && gmailPass && toEmail) {
-    try {
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: { user: gmailUser, pass: gmailPass },
+  if (!gmailUser || !gmailPass || !toEmail) {
+    console.error("[proefles] E-mailconfig ontbreekt: GMAIL_USER / GMAIL_APP_PASSWORD / ADMIN_EMAIL zijn niet ingesteld.");
+    return NextResponse.json(
+      { ok: false, error: "E-mail verzenden is momenteel niet beschikbaar. Neem contact op via WhatsApp." },
+      { status: 500 }
+    );
+  }
+
+  // Supabase client
+  const supabase = createServiceClient();
+
+  try {
+    // Sla de aanvraag eerst op, zodat deze niet verloren gaat bij een e-mailfout.
+    const { error: opslagFout } = await supabase
+      .from("proefles_aanvragen")
+      .insert({
+        naam,
+        email,
+        telefoon,
+        leeftijd: leeftijd ? parseInt(leeftijd, 10) : null,
+        voor,
+        locatie,
+        dag,
+        opmerking,
       });
 
-      // Mail naar admin
-      await transporter.sendMail({
-        from: `Hapkido Yong <${gmailUser}>`,
-        to: toEmail,
-        subject: `Nieuwe proeflesaanvraag: ${naam} (${locatie})`,
-        text: [
-          `Naam:      ${naam}`,
-          `E-mail:    ${email}`,
-          `Telefoon:  ${telefoon}`,
-          `Leeftijd:  ${leeftijd ?? "—"}`,
-          `Voor:      ${voor ?? "—"}`,
-          `Locatie:   ${locatie}`,
-          `Dag:       ${dag ?? "—"}`,
-          `Opmerking: ${opmerking ?? "—"}`,
-          "",
-          `Ontvangen op: ${new Date().toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}`,
-        ].join("\n"),
-      });
-
-      // Bevestigingsmail naar de aanvrager
-      await transporter.sendMail({
-        from: `Hapkido Yong <${gmailUser}>`,
-        to: email,
-        subject: "Je proeflesaanvraag bij Hapkido Yong is ontvangen",
-        text: [
-          `Hallo ${naam},`,
-          "",
-          `Bedankt voor je aanvraag! We hebben je aanmelding voor een proefles in ${locatie} in goede orde ontvangen.`,
-          "",
-          "We nemen zo snel mogelijk contact met je op om een datum en tijd af te spreken.",
-          "",
-          "Heb je vragen? Bel of WhatsApp ons gerust:",
-          "Tel: 06-19073256",
-          "WhatsApp: https://wa.me/message/GBCYDJPCHVCCA1",
-          "",
-          "Met sportieve groet,",
-          "Master Ron van Beukering",
-          "Hapkido Yong — hapkidonederland.nl",
-        ].join("\n"),
-      });
-    } catch (err) {
-      console.error("[proefles] e-mail mislukt:", err);
+    if (opslagFout) {
+      throw new Error(`Opslag aanvraag mislukt: ${opslagFout.message}`);
     }
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: { user: gmailUser, pass: gmailPass },
+    });
+
+    // Mail naar admin
+    await transporter.sendMail({
+      from: `Hapkido Yong <${gmailUser}>`,
+      to: toEmail,
+      subject: `Nieuwe proeflesaanvraag: ${naam} (${locatie})`,
+      text: [
+        `Naam:      ${naam}`,
+        `E-mail:    ${email}`,
+        `Telefoon:  ${telefoon}`,
+        `Leeftijd:  ${leeftijd ?? "—"}`,
+        `Voor:      ${voor ?? "—"}`,
+        `Locatie:   ${locatie}`,
+        `Dag:       ${dag ?? "—"}`,
+        `Opmerking: ${opmerking ?? "—"}`,
+        "",
+        `Ontvangen op: ${new Date().toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}`,
+      ].join("\n"),
+    });
+
+    // Bevestigingsmail naar de aanvrager
+    await transporter.sendMail({
+      from: `Hapkido Yong <${gmailUser}>`,
+      to: email,
+      subject: "Je proeflesaanvraag bij Hapkido Yong is ontvangen",
+      text: [
+        `Hallo ${naam},`,
+        "",
+        `Bedankt voor je aanvraag! We hebben je aanmelding voor een proefles in ${locatie} in goede orde ontvangen.`,
+        "",
+        "We nemen zo snel mogelijk contact met je op om een datum en tijd af te spreken.",
+        "",
+        "Heb je vragen? Bel of WhatsApp ons gerust:",
+        "Tel: 06-19073256",
+        "WhatsApp: https://wa.me/message/GBCYDJPCHVCCA1",
+        "",
+        "Met sportieve groet,",
+        "Master Ron van Beukering",
+        "Hapkido Yong — hapkidonederland.nl",
+      ].join("\n"),
+    });
+  } catch (err) {
+    console.error("[proefles] opslag of e-mail mislukt:", err);
+    return NextResponse.json(
+      { ok: false, error: "Opslaan of verzenden van de bevestiging is mislukt. Neem contact op via WhatsApp." },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ ok: true });

@@ -63,28 +63,38 @@ export async function POST(req: Request) {
   const gmailPass = process.env.GMAIL_APP_PASSWORD;
   const toEmail   = process.env.ADMIN_EMAIL;
 
-  if (gmailUser && gmailPass && toEmail) {
-    try {
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: { user: gmailUser, pass: gmailPass },
-      });
-      await transporter.sendMail({
-        from: `Hapkido Yong <${gmailUser}>`,
-        to: toEmail,
-        subject: `Nieuwe aanmelding: ${safeNaam}`,
-        text: [
-          `Naam:   ${safeNaam}`,
-          `E-mail: ${safeEmail}`,
-          ``,
-          `Activeer via het dashboard: https://hapkidonederland.nl/dashboard`,
-          ``,
-          `Ontvangen op: ${new Date().toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}`,
-        ].join("\n"),
-      });
-    } catch (err) {
-      console.error("[aanmelden] e-mail mislukt:", err);
-    }
+  if (!gmailUser || !gmailPass || !toEmail) {
+    console.error("[aanmelden] E-mailconfig ontbreekt: GMAIL_USER / GMAIL_APP_PASSWORD / ADMIN_EMAIL zijn niet ingesteld.");
+    return NextResponse.json(
+      { ok: false, error: "E-mail verzenden is momenteel niet beschikbaar. Neem contact op via WhatsApp." },
+      { status: 500 }
+    );
+  }
+
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: { user: gmailUser, pass: gmailPass },
+    });
+    await transporter.sendMail({
+      from: `Hapkido Yong <${gmailUser}>`,
+      to: toEmail,
+      subject: `Nieuwe aanmelding: ${safeNaam}`,
+      text: [
+        `Naam:   ${safeNaam}`,
+        `E-mail: ${safeEmail}`,
+        ``,
+        `Activeer via het dashboard: https://hapkidonederland.nl/dashboard`,
+        ``,
+        `Ontvangen op: ${new Date().toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}`,
+      ].join("\n"),
+    });
+  } catch (err) {
+    console.error("[aanmelden] e-mail mislukt:", err);
+    return NextResponse.json(
+      { ok: false, error: "Het verzenden van de bevestiging is mislukt. Neem contact op via WhatsApp." },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ ok: true });
