@@ -156,12 +156,26 @@ export async function POST(req: Request) {
     );
   }
 
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: { user: gmailUser, pass: gmailPass },
-    });
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user: gmailUser, pass: gmailPass },
+  });
 
+  try {
+    await transporter.verify();
+  } catch (err) {
+    const e = err as { code?: string; responseCode?: number; message?: string };
+    console.error("[proefles] Gmail-authenticatie mislukt:", err);
+    return NextResponse.json(
+      {
+        ok: false,
+        error: `Gmail-authenticatie mislukt (${e.responseCode ?? e.code ?? "onbekende fout"}). Controleer het app-wachtwoord in Vercel.`,
+      },
+      { status: 500 }
+    );
+  }
+
+  try {
     // Mail naar admin
     await transporter.sendMail({
       from: `Hapkido Yong <${gmailUser}>`,
@@ -180,7 +194,15 @@ export async function POST(req: Request) {
         `Ontvangen op: ${new Date().toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}`,
       ].join("\n"),
     });
+  } catch (err) {
+    console.error("[proefles] e-mail naar admin mislukt:", err);
+    return NextResponse.json(
+      { ok: false, error: "Verzenden van de melding aan de admin is mislukt. Neem contact op via WhatsApp." },
+      { status: 500 }
+    );
+  }
 
+  try {
     // Bevestigingsmail naar de aanvrager
     await transporter.sendMail({
       from: `Hapkido Yong <${gmailUser}>`,
@@ -203,7 +225,7 @@ export async function POST(req: Request) {
       ].join("\n"),
     });
   } catch (err) {
-    console.error("[proefles] e-mail mislukt:", err);
+    console.error("[proefles] e-mail naar aanvrager mislukt:", err);
     return NextResponse.json(
       { ok: false, error: "Verzenden van de bevestiging is mislukt. Neem contact op via WhatsApp." },
       { status: 500 }
