@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 export const runtime = "nodejs";
 
@@ -59,25 +59,23 @@ export async function POST(req: Request) {
   const safeNaam  = sanitize(naam);
   const safeEmail = sanitize(email);
 
-  const gmailUser = process.env.GMAIL_USER;
-  const gmailPass = process.env.GMAIL_APP_PASSWORD;
+  const resendApiKey = process.env.RESEND_API_KEY;
   const toEmail   = process.env.ADMIN_EMAIL;
 
-  if (!gmailUser || !gmailPass || !toEmail) {
-    console.error("[aanmelden] E-mailconfig ontbreekt: GMAIL_USER / GMAIL_APP_PASSWORD / ADMIN_EMAIL zijn niet ingesteld.");
+  if (!resendApiKey || !toEmail) {
+    console.error("[aanmelden] E-mailconfig ontbreekt: RESEND_API_KEY / ADMIN_EMAIL zijn niet ingesteld.");
     return NextResponse.json(
       { ok: false, error: "E-mail verzenden is momenteel niet beschikbaar. Neem contact op via WhatsApp." },
       { status: 500 }
     );
   }
 
+  const resend = new Resend(resendApiKey);
+  const mailFrom = process.env.RESEND_FROM ?? "Hapkido Yong <noreply@hapkidonederland.nl>";
+
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: { user: gmailUser, pass: gmailPass },
-    });
-    await transporter.sendMail({
-      from: `Hapkido Yong <${gmailUser}>`,
+    await resend.emails.send({
+      from: mailFrom,
       to: toEmail,
       subject: `Nieuwe aanmelding: ${safeNaam}`,
       text: [

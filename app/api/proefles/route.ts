@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { createServiceClient } from "@/lib/supabase/service";
 
 export const runtime = "nodejs";
@@ -119,17 +119,18 @@ export async function POST(req: Request) {
     }
   }
 
-  const gmailUser = process.env.GMAIL_USER;
-  const gmailPass = process.env.GMAIL_APP_PASSWORD;
-  const toEmail   = process.env.ADMIN_EMAIL;
-
-  if (!gmailUser || !gmailPass || !toEmail) {
-    console.error("[proefles] E-mailconfig ontbreekt: GMAIL_USER / GMAIL_APP_PASSWORD / ADMIN_EMAIL zijn niet ingesteld.");
+  // Resend client
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) {
+    console.error("[proefles] RESEND_API_KEY ontbreekt.");
     return NextResponse.json(
       { ok: false, error: "E-mail verzenden is momenteel niet beschikbaar. Neem contact op via WhatsApp." },
       { status: 500 }
     );
   }
+
+  const resend = new Resend(resendApiKey);
+  const mailFrom = process.env.RESEND_FROM ?? "Hapkido Yong <noreply@hapkidonederland.nl>";
 
   // Supabase client
   const supabase = createServiceClient();
@@ -156,30 +157,11 @@ export async function POST(req: Request) {
     );
   }
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: { user: gmailUser, pass: gmailPass },
-  });
-
-  try {
-    await transporter.verify();
-  } catch (err) {
-    const e = err as { code?: string; responseCode?: number; message?: string };
-    console.error("[proefles] Gmail-authenticatie mislukt:", err);
-    return NextResponse.json(
-      {
-        ok: false,
-        error: `Gmail-authenticatie mislukt (${e.responseCode ?? e.code ?? "onbekende fout"}). Controleer het app-wachtwoord in Vercel.`,
-      },
-      { status: 500 }
-    );
-  }
-
   try {
     // Mail naar admin
-    await transporter.sendMail({
-      from: `Hapkido Yong <${gmailUser}>`,
-      to: toEmail,
+    await resend.emails.send({
+      from: mailFrom,
+      to: process.env.ADMIN_EMAIL!,
       subject: `Nieuwe proeflesaanvraag: ${naam} (${locatie})`,
       text: [
         `Naam:      ${naam}`,
@@ -204,8 +186,8 @@ export async function POST(req: Request) {
 
   try {
     // Bevestigingsmail naar de aanvrager
-    await transporter.sendMail({
-      from: `Hapkido Yong <${gmailUser}>`,
+    await resend.emails.send({
+      from: mailFrom,
       to: email,
       subject: "Je proeflesaanvraag bij Hapkido Yong is ontvangen",
       text: [

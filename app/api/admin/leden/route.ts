@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 
@@ -19,14 +19,12 @@ async function stuurActivatieEmail(
   type: "lid" | "bibliotheek" | "zwarte-band",
   geldigTot?: string | null,
 ) {
-  const gmailUser = process.env.GMAIL_USER;
-  const gmailPass = process.env.GMAIL_APP_PASSWORD;
-  if (!gmailUser || !gmailPass) return;
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: { user: gmailUser, pass: gmailPass },
-  });
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) {
+    throw new Error("RESEND_API_KEY ontbreekt");
+  }
+  const resend = new Resend(resendApiKey);
+  const mailFrom = process.env.RESEND_FROM ?? "Hapkido Yong <noreply@hapkidonederland.nl>";
 
   const datumTekst = geldigTot
     ? new Date(geldigTot).toLocaleDateString("nl-NL", { day: "numeric", month: "long", year: "numeric" })
@@ -85,8 +83,8 @@ Met sportieve groet,
 Master Ron van Beukering
 Hapkido Yong — hapkidonederland.nl`;
 
-  await transporter.sendMail({
-    from: `Hapkido Yong <${gmailUser}>`,
+  await resend.emails.send({
+    from: mailFrom,
     to: naarEmail,
     subject,
     text: body,
