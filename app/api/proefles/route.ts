@@ -134,25 +134,29 @@ export async function POST(req: Request) {
   // Supabase client
   const supabase = createServiceClient();
 
+  // Sla de aanvraag eerst op, zodat deze niet verloren gaat bij een e-mailfout.
+  const { error: opslagFout } = await supabase
+    .from("proefles_aanvragen")
+    .insert({
+      naam,
+      email,
+      telefoon,
+      leeftijd: leeftijd ? parseInt(leeftijd, 10) : null,
+      voor,
+      locatie,
+      dag,
+      opmerking,
+    });
+
+  if (opslagFout) {
+    console.error("[proefles] opslag mislukt:", opslagFout);
+    return NextResponse.json(
+      { ok: false, error: "De aanvraag kon niet worden opgeslagen. Neem contact op via WhatsApp." },
+      { status: 500 }
+    );
+  }
+
   try {
-    // Sla de aanvraag eerst op, zodat deze niet verloren gaat bij een e-mailfout.
-    const { error: opslagFout } = await supabase
-      .from("proefles_aanvragen")
-      .insert({
-        naam,
-        email,
-        telefoon,
-        leeftijd: leeftijd ? parseInt(leeftijd, 10) : null,
-        voor,
-        locatie,
-        dag,
-        opmerking,
-      });
-
-    if (opslagFout) {
-      throw new Error(`Opslag aanvraag mislukt: ${opslagFout.message}`);
-    }
-
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: { user: gmailUser, pass: gmailPass },
@@ -199,9 +203,9 @@ export async function POST(req: Request) {
       ].join("\n"),
     });
   } catch (err) {
-    console.error("[proefles] opslag of e-mail mislukt:", err);
+    console.error("[proefles] e-mail mislukt:", err);
     return NextResponse.json(
-      { ok: false, error: "Opslaan of verzenden van de bevestiging is mislukt. Neem contact op via WhatsApp." },
+      { ok: false, error: "Verzenden van de bevestiging is mislukt. Neem contact op via WhatsApp." },
       { status: 500 }
     );
   }
