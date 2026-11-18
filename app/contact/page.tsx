@@ -4,14 +4,13 @@ import Link from "next/link";
 import { PageHero } from "@/components/Hero";
 import { Reveal } from "@/components/Reveal";
 import { JsonLd } from "@/components/JsonLd";
-import { EmailCard } from "@/components/EmailCard";
 import { breadcrumbSchema } from "@/lib/jsonld";
 import { site, locations } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact — Berkel-Enschot & Waalwijk",
   description:
-    "Neem contact op met Hapkido Yong. Bel of WhatsApp +31 6 46 55 55 55, mail hapkidonederland@gmail.com. Dojang in Berkel-Enschot (Tilburg) en Waalwijk.",
+    "Neem contact op met Hapkido Yong via WhatsApp of telefonisch. Twee locaties in Berkel-Enschot en Waalwijk.",
   keywords: [
     "contact hapkido yong",
     "hapkido berkel-enschot contact",
@@ -24,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Contact Hapkido Yong Berkel-Enschot & Waalwijk",
     description:
-      "Bel, WhatsApp of mail Hapkido Yong. Twee locaties in Noord-Brabant: Berkel-Enschot en Waalwijk.",
+      "Bel of WhatsApp Hapkido Yong. Vermeld je leeftijd en locatie. Twee locaties in Noord-Brabant: Berkel-Enschot en Waalwijk.",
     locale: "nl_NL",
     type: "website",
     images: [{ url: "/images/training/training-1.jpg", width: 1200, height: 630, alt: "Hapkido Yong contact opnemen" }],
@@ -49,7 +48,7 @@ export default function Page() {
       <PageHero
         eyebrow="Contact"
         title="We horen graag van je"
-        subtitle="Bellen, WhatsAppen of mailen, wat jou het beste uitkomt. Reactietijd: meestal binnen 24 uur."
+        subtitle="Bel ons of stuur een WhatsAppbericht. Vermeld daarbij je leeftijd en welke locatie je wilt bezoeken."
         breadcrumb={[
           { name: "Home", href: "/" },
           { name: "Contact", href: "/contact" },
@@ -57,7 +56,7 @@ export default function Page() {
       />
 
       <section className="section">
-        <div className="container-x grid md:grid-cols-3 gap-5">
+        <div className="container-x grid md:grid-cols-2 gap-5">
           <Reveal delay={0}>
             <a
               href={`tel:${site.phoneRaw}`}
@@ -70,7 +69,9 @@ export default function Page() {
           </Reveal>
           <Reveal delay={80}>
             <a
-              href={site.whatsapp}
+              href={`https://wa.me/${site.phoneRaw.replace(/\D/g, "")}?text=${encodeURIComponent(
+                "Hallo Hapkido Yong,\n\nIk wil informatie of een gratis proefles aanvragen.\nLeeftijd:\nGewenste locatie:\nNaam:"
+              )}`}
               target="_blank"
               rel="noopener noreferrer"
               className="card p-6 block hover:border-[color:var(--color-accent-700)] transition-colors group h-full"
@@ -79,9 +80,6 @@ export default function Page() {
               <h3 className="font-[family-name:var(--font-display)] text-2xl mt-4">WhatsApp</h3>
               <p className="text-sm text-[color:var(--color-muted)] mt-1">Snelste reactie</p>
             </a>
-          </Reveal>
-          <Reveal delay={160}>
-            <EmailCard />
           </Reveal>
         </div>
       </section>
@@ -100,7 +98,7 @@ export default function Page() {
                 <Link href={`/lessen/${l.slug}`} className="card p-6 block hover:border-[color:var(--color-accent-700)] transition-colors">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <MapPin className="text-[color:var(--color-accent-500)]" size={20} />
+                      <MapPin className="text-[color:var(--color-accent-500]" size={20} />
                       <h3 className="font-[family-name:var(--font-display)] text-3xl mt-3">{l.city}</h3>
                       <p className="text-sm text-[color:var(--color-muted)] mt-2">{l.street}</p>
                       <p className="text-sm text-[color:var(--color-muted)]">{l.postalCode} {l.city}</p>

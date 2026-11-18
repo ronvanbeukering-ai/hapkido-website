@@ -39,8 +39,8 @@ export const metadata: Metadata = {
 };
 
 const steps = [
-  { n: "01", t: "Aanmelden", b: "Vul het formulier in. Drie minuutjes, klaar." },
-  { n: "02", t: "Bevestiging", b: "Binnen 24 uur krijg je een bericht met dag, tijd en wat je meeneemt." },
+  { n: "01", t: "WhatsAppen", b: "Stuur je naam, leeftijd en gewenste locatie via WhatsApp." },
+  { n: "02", t: "Bevestiging", b: "We spreken via WhatsApp af op welke dag, tijd en wat je meeneemt." },
   { n: "03", t: "Meetrainen", b: "Kom langs, draai mee, voel of het klikt. Geen verplichting." },
 ];
 
@@ -56,7 +56,7 @@ export default function Page() {
       <PageHero
         eyebrow="Gratis proefles"
         title="Plan je eerste les"
-        subtitle="Gewoon meedoen, geen verplichting, geen kosten. Kies een locatie en een dag die jou uitkomt. App of vul het formulier in. Twee gratis proeflessen."
+        subtitle="Gewoon meedoen, geen verplichting, geen kosten. Stuur ons je naam, leeftijd en gewenste locatie via WhatsApp. Twee gratis proeflessen."
         breadcrumb={[
           { name: "Home", href: "/" },
           { name: "Proefles", href: "/proefles" },

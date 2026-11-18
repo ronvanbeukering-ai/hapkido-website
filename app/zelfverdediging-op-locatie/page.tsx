@@ -219,7 +219,7 @@ export default function ZelfverdedigingOpLocatiePage() {
         title="Interesse? Vraag een offerte aan"
         subtitle="Vertel ons over jullie team, locatie en wensen — we stellen een programma op maat voor. Reactie meestal binnen 24 uur."
         primary={{ label: "WhatsApp direct", href: site.whatsapp, external: true, icon: "message" }}
-        secondary={{ label: "Mail ons", href: `mailto:${site.email}`, external: true }}
+        secondary={{ label: "Bel ons", href: `tel:${site.phoneRaw}`, external: true }}
       />
     </>
   );

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Facebook, Instagram, MapPin, Mail, Phone, MessageCircle, Star } from "lucide-react";
+import { Facebook, Instagram, MapPin, Phone, MessageCircle, Star } from "lucide-react";
 import { Logo } from "./Logo";
 import { site, locations } from "@/lib/site";
 
@@ -74,11 +74,6 @@ export function Footer() {
             <li>
               <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="text-white/65 inline-flex items-center gap-2 hover:text-white">
                 <MessageCircle size={14} /> WhatsApp
-              </a>
-            </li>
-            <li>
-              <a href={`mailto:${site.email}`} className="text-white/65 inline-flex items-center gap-2 hover:text-white">
-                <Mail size={14} /> {site.email}
               </a>
             </li>
           </ul>
