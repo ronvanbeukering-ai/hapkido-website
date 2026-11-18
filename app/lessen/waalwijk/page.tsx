@@ -16,7 +16,7 @@ const loc = locations.find((l) => l.slug === "waalwijk")!;
 export const metadata: Metadata = {
   title: "Hapkido Waalwijk Hapkido Combinatie, Gratis proefles",
   description:
-    "Hapkido Combinatie lessen in Waalwijk, Dominee Louwe Kooymanslaan 9. Maandag en zaterdag. Trainer CGN Marco van Gulik (2e Dan). Plan een gratis proefles.",
+    "Hapkido Combinatie lessen in Waalwijk, Dominee Louwe Kooymanslaan 9. Maandag en zaterdag. Trainer KSN Marco van Gulik (2e Dan). Plan een gratis proefles.",
   keywords: [
     "hapkido waalwijk",
     "hapkido combinatie waalwijk",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Hapkido Waalwijk Hapkido Combinatie, Gratis proefles",
     description:
-      "Hapkido Combinatie in Waalwijk onder leiding van CGN Marco van Gulik. Lessen maandag en zaterdag. Gratis proefles aanvragen.",
+      "Hapkido Combinatie in Waalwijk onder leiding van KSN Marco van Gulik. Lessen maandag en zaterdag. Gratis proefles aanvragen.",
     locale: "nl_NL",
     type: "website",
     images: [{ url: "/images/training/training-2.jpg", width: 1200, height: 630, alt: "Hapkido Yong Waalwijk groepsles Hapkido Combinatie" }],
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Hapkido Waalwijk Hapkido Combinatie",
-    description: "CGN Marco van Gulik (2e Dan). Lessen ma/za. Gratis proefles in Waalwijk.",
+    description: "KSN Marco van Gulik (2e Dan). Lessen ma/za. Gratis proefles in Waalwijk.",
     images: ["/images/training/training-2.jpg"],
   },
 };
@@ -60,7 +60,7 @@ export default function Page() {
       <PageHero
         eyebrow="Waalwijk"
         title="Hapkido in Waalwijk"
-        subtitle="Dominee Louwe Kooymanslaan 9 · hoofdtrainer CGN Marco van Gulik, 2e Dan."
+        subtitle="Dominee Louwe Kooymanslaan 9 · hoofdtrainer KSN Marco van Gulik, 2e Dan."
         breadcrumb={[
           { name: "Home", href: "/" },
           { name: "Waalwijk", href: "/lessen/waalwijk" },
@@ -71,7 +71,7 @@ export default function Page() {
       <section className="bg-[color:var(--color-surface-2)] border-b border-[color:var(--color-border)]">
         <div className="container-x grid sm:grid-cols-3 gap-px bg-[color:var(--color-border)]">
           <div className="bg-[color:var(--color-surface-2)] p-6 flex items-center gap-3">
-            <MapPin className="text-[color:var(--color-accent-500)]" size={18} />
+            <MapPin className="text-[color:var(--color-accent-500]" size={18} />
             <div>
               <div className="text-xs text-[color:var(--color-muted)] uppercase tracking-widest">Adres</div>
               <div className="text-sm">{loc.street}, {loc.postalCode}</div>
@@ -165,7 +165,7 @@ export default function Page() {
               Meer weten over Hapkido Combinatie?
             </h2>
             <p className="text-[color:var(--color-muted)] leading-relaxed">
-              Lees alles over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-300)] hover:underline">Hapkido Combinatie</Link>, onze complete zelfverdedigingsstijl. Of bekijk de andere locatie in <Link href="/lessen/berkel-enschot" className="text-[color:var(--color-accent-300)] hover:underline">Berkel-Enschot (bij Tilburg)</Link>. Meer over onze trainer in Waalwijk: <Link href="/trainers/marco-van-gulik" className="text-[color:var(--color-accent-300)] hover:underline">CGN Marco van Gulik</Link>.
+              Lees alles over <Link href="/hapkido-combinatie" className="text-[color:var(--color-accent-300)] hover:underline">Hapkido Combinatie</Link>, onze complete zelfverdedigingsstijl. Of bekijk de andere locatie in <Link href="/lessen/berkel-enschot" className="text-[color:var(--color-accent-300)] hover:underline">Berkel-Enschot (bij Tilburg)</Link>. Meer over onze trainer in Waalwijk: <Link href="/trainers/marco-van-gulik" className="text-[color:var(--color-accent-300)] hover:underline">KSN Marco van Gulik</Link>.
             </p>
           </Reveal>
         </div>

@@ -13,7 +13,7 @@ const trainer = trainers.find((t) => t.slug === "marco-van-gulik")!;
 export const metadata: Metadata = {
   title: "Marco van Gulik Senior Instructor Hapkido Waalwijk",
   description:
-    "CGN Marco van Gulik (2e Dan Hapkido Combinatie) is Senior Instructor bij Hapkido Yong Waalwijk. Specialist Pencak Silat en weerbaarheidstraining.",
+    "KSN Marco van Gulik (2e Dan Hapkido Combinatie) is Senior Instructor bij Hapkido Yong Waalwijk. Specialist Pencak Silat en weerbaarheidstraining.",
   keywords: [
     "marco van gulik hapkido",
     "hapkido waalwijk",
@@ -26,10 +26,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Marco van Gulik Senior Instructor Hapkido Yong Waalwijk",
     description:
-      "CGN Marco van Gulik (2e Dan) geeft les bij Hapkido Yong Waalwijk. Specialist Pencak Silat en Hapkido Combinatie. Maandag en zaterdag.",
+      "KSN Marco van Gulik (2e Dan) geeft les bij Hapkido Yong Waalwijk. Specialist Pencak Silat en Hapkido Combinatie. Maandag en zaterdag.",
     locale: "nl_NL",
     type: "profile",
-    images: [{ url: "/images/trainers/marco-van-gulik.jpg", width: 800, height: 1067, alt: "CGN Marco van Gulik Senior Instructor Hapkido Yong Waalwijk" }],
+    images: [{ url: "/images/trainers/marco-van-gulik.jpg", width: 800, height: 1067, alt: "KSN Marco van Gulik Senior Instructor Hapkido Yong Waalwijk" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -70,7 +70,7 @@ export default function Page() {
               {trainer.photo ? (
                 <Image
                   src={trainer.photo}
-                  alt="CGN Marco van Gulik 2e Dan Hapkido Combinatie, Senior Instructor en hoofdtrainer van Hapkido Yong Waalwijk"
+                  alt="KSN Marco van Gulik 2e Dan Hapkido Combinatie, Senior Instructor en hoofdtrainer van Hapkido Yong Waalwijk"
                   fill
                   sizes="(max-width: 1024px) 50vw, 17vw"
                   className="object-cover object-top"
@@ -78,7 +78,7 @@ export default function Page() {
                 />
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-[color:var(--color-stone-800)] to-[color:var(--color-stone-700)] flex items-center justify-center">
-                  <span className="font-[family-name:var(--font-display)] text-9xl text-[color:var(--color-stone-500)]">MG</span>
+                  <span className="font-[family-name:var(--font-display)] text-9xl text-[color:var(--color-stone-500]">MG</span>
                 </div>
               )}
             </div>

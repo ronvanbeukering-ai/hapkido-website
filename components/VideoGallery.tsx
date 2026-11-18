@@ -25,9 +25,9 @@ const trainingVideos: VideoItem[] = [
     vimeoId: "1199536635",
     vimeoHash: "87f62c18bd",
     thumbnail: "/images/training/training-1.jpg",
-    title: "Proefexamen Jamy van den Heuvel-Toorop & Jesse van Mierlo",
+    title: "Proefexamen KSN Jamy van den Heuvel-Toorop & KSN Jesse van Mierlo",
     description:
-      "Mevr. Jamy van den Heuvel-Toorop en Dhr. Jesse van Mierlo laten tijdens hun proefexamen zien wat Hapkido Combinatie in de praktijk inhoudt.",
+      "KSN Jamy van den Heuvel-Toorop en KSN Jesse van Mierlo laten tijdens hun proefexamen zien wat Hapkido Combinatie in de praktijk inhoudt.",
   },
   {
     vimeoId: "1199526926",

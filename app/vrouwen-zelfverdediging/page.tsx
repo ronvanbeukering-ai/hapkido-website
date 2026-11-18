@@ -121,14 +121,14 @@ export default function VrouwenZelfverdedigingPage() {
               ook hoe je steviger in je schoenen staat in het dagelijks leven.
             </p>
             <p className="text-sm text-[color:var(--color-muted)]">
-              — Jamy van den Heuvel-Toorop (Instructrice, 2e Dan), ondersteund door Leonie Klerkx (1e Dan) en input van
+              — KSN Jamy van den Heuvel-Toorop (Instructrice, 2e Dan), ondersteund door Leonie Klerkx (1e Dan) en input van
               onze vrouwelijke leden
             </p>
           </div>
 
           <div className="lg:col-span-4 flex gap-4">
             <div className="flex-1 rounded-xl overflow-hidden border border-[color:var(--color-border)] relative aspect-[3/4]">
-              <Image src="/images/trainers/jamy.jpg" alt="Jamy van den Heuvel-Toorop" fill className="object-cover" />
+              <Image src="/images/trainers/jamy.jpg" alt="KSN Jamy van den Heuvel-Toorop" fill className="object-cover" />
             </div>
             <div className="flex-1 rounded-xl overflow-hidden border border-[color:var(--color-border)] relative aspect-[3/4]">
               <Image src="/images/trainers/leonie.jpg" alt="Leonie Klerkx" fill className="object-cover" />
@@ -184,7 +184,7 @@ export default function VrouwenZelfverdedigingPage() {
                 Zie het zelf
               </h2>
               <p className="mt-4 text-[color:var(--color-muted)] max-w-md">
-                Tijdens haar proefexamen laat Jamy van den Heuvel-Toorop zien wat Hapkido Combinatie in de praktijk
+                Tijdens haar proefexamen laat KSN Jamy van den Heuvel-Toorop zien wat Hapkido Combinatie in de praktijk
                 inhoudt — inclusief de technieken die ook bij zelfverdediging voor vrouwen aan bod komen.
               </p>
             </div>
@@ -192,7 +192,7 @@ export default function VrouwenZelfverdedigingPage() {
               <iframe
                 className="w-full h-full"
                 src="https://player.vimeo.com/video/1199536635?h=87f62c18bd&color=c25a00"
-                title="Proefexamen Jamy van den Heuvel-Toorop & Jesse van Mierlo"
+                title="Proefexamen KSN Jamy van den Heuvel-Toorop & KSN Jesse van Mierlo"
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
               />

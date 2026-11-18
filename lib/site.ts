@@ -127,7 +127,7 @@ export const locations: Location[] = [
     postalCode: "5141 AP",
     region: "Noord-Brabant",
     geo: { lat: 51.6899, lng: 5.0614 },
-    trainerName: "CGN Marco van Gulik",
+    trainerName: "KSN Marco van Gulik",
     trainerSlug: "marco-van-gulik",
     schedule: [
       { day: "Maandag", time: "19:00 – 20:00", group: "Gemixte groep" },
@@ -167,7 +167,7 @@ export const trainers: Trainer[] = [
   },
   {
     slug: "marco-van-gulik",
-    name: "CGN Marco van Gulik",
+    name: "KSN Marco van Gulik",
     rank: "2e Dan Hapkido Combinatie · Senior Instructor · 1e Dan Kwan Nyom Hapkido",
     shortRank: "2e Dan",
     role: "Senior Instructor",
@@ -179,7 +179,7 @@ export const trainers: Trainer[] = [
   },
   {
     slug: "jamy-van-den-heuvel-toorop",
-    name: "CGN Jamy van den Heuvel-Toorop",
+    name: "KSN Jamy van den Heuvel-Toorop",
     rank: "2e Dan Senior Instructor · 2e Dan Taekwondo · 1e Dan Kwan Nyom Hapkido",
     shortRank: "2e Dan",
     role: "Senior Instructor",
@@ -190,7 +190,7 @@ export const trainers: Trainer[] = [
   },
   {
     slug: "jesse-van-mierlo",
-    name: "Jesse van Mierlo",
+    name: "KSN Jesse van Mierlo",
     rank: "2e Dan · 1e Dan Kwan Nyom Hapkido",
     shortRank: "2e Dan",
     role: "2e Dan",
