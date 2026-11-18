@@ -141,7 +141,7 @@ export default function HapkidoKinderenPage() {
             <Reveal delay={0}>
               <div className="card p-6 h-full">
                 <h3 className="font-[family-name:var(--font-display)] text-xl">7 t/m 12 jaar</h3>
-                <p className="mt-2 text-2xl font-[family-name:var(--font-display)] text-[color:var(--color-accent-600)]">
+                <p className="mt-2 text-2xl font-[family-name:var(--font-display)] text-[color:var(--color-accent-600]">
                   €75 <span className="text-sm text-[color:var(--color-muted)] font-sans">/ kwartaal</span>
                 </p>
                 <p className="mt-1 text-sm text-[color:var(--color-muted)]">of €265 per jaar</p>
@@ -190,7 +190,7 @@ export default function HapkidoKinderenPage() {
           <p className="mt-4 text-[color:var(--color-text)] max-w-2xl leading-relaxed">
             De jeugdlessen in Berkel-Enschot staan onder leiding van Master Ron van Beukering (6e Dan), met Jesse van
             Mierlo (2e Dan) — gericht op techniek en jeugdtraining — en CGN Leonie Klerkx (1e Dan), met affiniteit
-            voor jeugd- en vrouwenlessen. In Waalwijk traint de jeugd vanaf 11 jaar mee in de gemixte groep van CGN
+            voor jeugd- en vrouwenlessen. In Waalwijk traint de jeugd vanaf 11 jaar mee in de gemixte groep van KSN
             Marco van Gulik (2e Dan).
           </p>
           <Link href="/trainers" className="mt-6 inline-block font-semibold text-[color:var(--color-accent-600)] hover:underline">
