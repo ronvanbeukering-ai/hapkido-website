@@ -15,6 +15,8 @@ export function ProeflesForm({ compact = false, locatie }: { compact?: boolean; 
   const [state, setState] = useState<State>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [forKid, setForKid] = useState(false);
+  const [gekozenLocatie, setGekozenLocatie] = useState(locatie ?? "");
+  const [voorkeursdagen, setVoorkeursdagen] = useState<string[]>([]);
   const dagen = locatie
     ? (dagPerLocatie[locatie] ?? ["Maandag", "Woensdag", "Zaterdag"])
     : ["Maandag", "Woensdag", "Zaterdag"];
@@ -27,8 +29,7 @@ export function ProeflesForm({ compact = false, locatie }: { compact?: boolean; 
     const naam = String(fd.get("naam") ?? "").trim();
     const telefoon = String(fd.get("telefoon") ?? "").trim();
     const leeftijd = String(fd.get("leeftijd") ?? "").trim();
-    const locatieValue = locatie ?? String(fd.get("locatie") ?? "onbekend");
-    const dag = String(fd.get("dag") ?? "").trim();
+    const locatieValue = effectieveLocatie;
     const opmerking = String(fd.get("opmerking") ?? "").trim();
 
     if (!naam || !telefoon || !leeftijd || !locatieValue) {
@@ -47,7 +48,7 @@ export function ProeflesForm({ compact = false, locatie }: { compact?: boolean; 
       `Voor: ${forKid ? "mijn kind" : "mezelf"}`,
       `Telefoon: ${telefoon}`,
       `Locatie: ${locatieValue}`,
-      `Voorkeursdag: ${dag || "Maakt niet uit"}`,
+      `Voorkeursdag(en): ${voorkeursdagen.length ? voorkeursdagen.join(", ") : "Maakt niet uit"}`,
       opmerking ? `Opmerking: ${opmerking}` : "",
     ].filter(Boolean).join("\n");
 
@@ -74,6 +75,9 @@ export function ProeflesForm({ compact = false, locatie }: { compact?: boolean; 
     );
   }
 
+  const effectieveLocatie = locatie ?? (gekozenLocatie || "onbekend");
+  const beschikbareDagen = dagPerLocatie[effectieveLocatie] ?? ["Maandag", "Woensdag", "Zaterdag"];
+
   return (
     <form onSubmit={onSubmit} className={compact ? "" : "card p-6 md:p-8"}>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -90,12 +94,49 @@ export function ProeflesForm({ compact = false, locatie }: { compact?: boolean; 
           <input id="leeftijd" name="leeftijd" type="number" required min={4} max={99} className="input" placeholder="bv. 28" />
         </div>
         <div>
-          <label htmlFor="dag" className="label">Voorkeursdag</label>
-          <select id="dag" name="dag" className="input" defaultValue="">
-            <option value="">Kies een dag</option>
-            {dagen.map((d) => <option key={d}>{d}</option>)}
-            <option>Maakt niet uit</option>
-          </select>
+          <fieldset>
+            <legend className="label">
+              {effectieveLocatie === "Berkel-Enschot" ? "Voorkeursdagen (maximaal 2)" : "Voorkeursdag"}
+            </legend>
+            {effectieveLocatie === "Berkel-Enschot" ? (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {beschikbareDagen.map((dag) => (
+                  <label
+                    key={dag}
+                    className={`cursor-pointer border rounded-md px-3 py-2 text-sm text-center transition-colors ${voorkeursdagen.includes(dag) ? "border-[color:var(--color-accent-600)] bg-[color:var(--color-accent-600)]/10" : "border-[color:var(--color-border)] text-[color:var(--color-muted)]"}`}
+                  >
+                    <input
+                      type="checkbox"
+                      name="voorkeursdagen"
+                      value={dag}
+                      checked={voorkeursdagen.includes(dag)}
+                      onChange={(event) => {
+                        setVoorkeursdagen((huidig) => {
+                          if (event.target.checked) {
+                            return huidig.length < 2 ? [...huidig, dag] : huidig;
+                          }
+                          return huidig.filter((item) => item !== dag);
+                        });
+                      }}
+                      className="sr-only"
+                    />
+                    {dag}
+                  </label>
+                ))}
+              </div>
+            ) : (
+              <select
+                name="voorkeursdag"
+                className="input"
+                value={voorkeursdagen[0] ?? ""}
+                onChange={(event) => setVoorkeursdagen(event.target.value ? [event.target.value] : [])}
+              >
+                <option value="">Kies een dag</option>
+                {beschikbareDagen.map((dag) => <option key={dag} value={dag}>{dag}</option>)}
+                <option value="Maakt niet uit">Maakt niet uit</option>
+              </select>
+            )}
+          </fieldset>
         </div>
       </div>
 
@@ -121,12 +162,12 @@ export function ProeflesForm({ compact = false, locatie }: { compact?: boolean; 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {locations.map((l) => (
               <label key={l.slug} className="cursor-pointer border border-[color:var(--color-border)] rounded-md px-4 py-3 text-sm text-[color:var(--color-text)] has-[:checked]:border-[color:var(--color-accent-600)] has-[:checked]:bg-[color:var(--color-accent-600)]/10">
-                <input type="radio" name="locatie" value={l.city} required className="sr-only" />
+                <input type="radio" name="locatie" value={l.city} required onChange={() => { setGekozenLocatie(l.city); setVoorkeursdagen([]); }} className="sr-only" />
                 {l.city}
               </label>
             ))}
             <label className="cursor-pointer border border-[color:var(--color-border)] rounded-md px-4 py-3 text-sm text-[color:var(--color-text)] has-[:checked]:border-[color:var(--color-accent-600)] has-[:checked]:bg-[color:var(--color-accent-600)]/10">
-              <input type="radio" name="locatie" value="onbekend" className="sr-only" />
+              <input type="radio" name="locatie" value="onbekend" onChange={() => { setGekozenLocatie("onbekend"); setVoorkeursdagen([]); }} className="sr-only" />
               Maakt niet uit
             </label>
           </div>
